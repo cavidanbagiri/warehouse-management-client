@@ -12,7 +12,7 @@ const initialState = {
 }
 
 export const userSlice = createSlice({
-    name: 'counter',
+    name: 'userSlice',
     initialState,
     reducers: {
         increment: (state) => {
@@ -37,9 +37,14 @@ export const userSlice = createSlice({
             
         })
         builder.addCase(refreshTokens.fulfilled, (state, action) => {
-            localStorage.setItem('token', action.payload.access);
-            state.user = action.payload.user;
-            state.is_auth = true;
+            if(action.payload != null){
+                localStorage.setItem('token', action.payload.access);
+                state.user = action.payload.user;
+                state.is_auth = true;
+            }
+            else{
+                console.log('there is not  any token');
+            }
             
         })
     }
@@ -80,7 +85,7 @@ export const refreshTokens = createAsyncThunk(
                 data = response.data;
             }).catch((err) => {
                 console.log(' Refresh Error happen : ', err);
-                return null;
+                data = null;
             })
             return data;
     }
@@ -88,4 +93,4 @@ export const refreshTokens = createAsyncThunk(
 
 export const { increment, decrement, incrementByAmount } = userSlice.actions
 
-export default userSlice.reducer
+export default userSlice.reducer;

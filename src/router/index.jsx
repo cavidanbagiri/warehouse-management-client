@@ -3,10 +3,11 @@ import {
 
 } from "react-router-dom";
 
-import DashboardPage from '../pages/dashboard-page.jsx';
-import StockPage from '../pages/stock-page.jsx';
-import ProfilePage from "../pages/profile-page.jsx";
-import Navbar from "../layouts/navbar.jsx";
+import DashboardPage from '../pages/DashboardPage.jsx';
+import StockPage from '../pages/StockPage.jsx';
+import ProfilePage from "../pages/ProfilePage.jsx";
+import Navbar from "../layouts/Navbar.jsx";
+import CreateMaterialPage from "../pages/CreateMaterialPage.jsx";
 
 
 const router = createBrowserRouter([
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
             {
                 path: "/profile",
                 element: <ProfilePage/>
+            },
+            {
+                path: "/creatematerial",
+                element: <CreateMaterialPage/>
             }
         ]
     },
