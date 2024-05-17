@@ -7,30 +7,30 @@ import ErrorMessage from '../layouts/ErrorMessage';
 function CreateMaterialPage() {
   const table = useSelector((state) => state.createTableSlice.table);
   const table_size = useSelector((state) => state.createTableSlice.table_size);
-  const show_error = useSelector((state)=>state.createTableSlice.show_error);
+  const show_error = useSelector((state) => state.createTableSlice.show_error);
   const dispatch = useDispatch();
 
-  function addRows(){
+  function addRows() {
     dispatch(addTableCheck());
   }
-  function delRows(){
+  function delRows() {
     dispatch(delRow());
-    setTimeout(()=>{
+    setTimeout(() => {
       dispatch(setShowFalse())
-    },1000)
+    }, 1000)
   }
-  function postFunc(){
+  function postFunc() {
     console.log('clicked');
     dispatch(postFuncStore(table));
   }
 
   return (
     <div style={{ fontFamily: 'Saira Condensed' }} className='flex flex-col  p-2'>
-      
+
       {
         show_error && <ErrorMessage message={'Minimum Row Size Must Be One'} />
-      } 
-    {/* {table.length}
+      }
+      {/* {table.length}
       <ul>
       
         {table.map((item, index) => (
@@ -49,21 +49,23 @@ function CreateMaterialPage() {
       
       </ul>  */}
 
-      <div className='flex flex-row justify-between'>
-      <span className='text-3xl my-1'>
-        Welcome Back Cavidan
-      </span>
-      <div>
-        <button onClick={addRows} className='py-2 px-5 bg-slate-700 text-white mx-1 hover:bg-slate-500 duration-300' >Add Row</button>
-        <button onClick={delRows} className='py-2 px-5 bg-slate-700 text-white mx-1 hover:bg-slate-500 duration-300' >Del Row</button>
-        <button onClick={postFunc} className='py-2 px-5 bg-green-500 text-white mx-1 hover:bg-green-300 duration-300' >Post</button>
+      <div className='flex flex-col justify-between'>
+        <span className='text-3xl text-start text-gray-400 my-2'>Add Material To Warehouse</span>
+        <div className='flex justify-between my-1 items-center'>
+          <div className='text-lg' >
+            Total Created Row: {table.length}
+          </div>
+          <div>
+          <button onClick={addRows} className='rounded-lg py-2 px-5 bg-slate-900 text-white mx-1 hover:bg-slate-500 duration-300' >Add Row</button>
+          <button onClick={delRows} className='rounded-lg py-2 px-5 bg-slate-900 text-white mx-1 hover:bg-slate-500 duration-300' >Del Row</button>
+          <button onClick={postFunc} className='rounded-lg py-2 px-5 bg-green-500 text-white mx-1 hover:bg-green-300 duration-300' >Post</button>
+          </div>
+        </div>
       </div>
-      </div>
-      <span className='text-2xl text-center'>Add Material To Stock</span>
 
       <table>
-        <CreateTableNavbarHeaderComponent/>
-        <TableBodyComponent/>
+        <CreateTableNavbarHeaderComponent />
+        <TableBodyComponent />
       </table>
 
     </div>

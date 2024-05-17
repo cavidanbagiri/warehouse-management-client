@@ -2,7 +2,7 @@ import React from 'react'
 
 function CreateTableNavbarHeaderComponent() {
   return (
-    <thead className="text-gray-100 bg-slate-700 border text-sm font-thin" >
+    <thead className="text-gray-100 bg-slate-900 border text-sm font-thin" >
           <tr>
             <th scope="col" className="px-6 py-2 text-center border font-thin">
               S/S

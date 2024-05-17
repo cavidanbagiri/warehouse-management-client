@@ -19,7 +19,7 @@ function Navbar() {
 
             {/* Check if User Authenticated */ }
             {is_auth ?
-                <div className='sticky top-0 left-0 z-20 bg-slate-700 float-left h-screen flex flex-col items-center p-2'>
+                <div className='sticky top-0 left-0 z-20 bg-slate-900 float-left h-screen flex flex-col items-center p-2'>
 
                     {/* Home Page */}
                     <Link to='/'>

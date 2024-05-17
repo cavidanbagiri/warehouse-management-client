@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
 import { addRow, updateRow } from '../../store/create_table-store';
 
-
 function TableRowComponent(props) {
 
-    // const table = useSelector((state) => state.createTableSlice.table);
+    const companies = useSelector((state) => state.commonSlice.companies);
+    const projects = useSelector((state) => state.commonSlice.projects);  
+    const users = useSelector((state) => state.commonSlice.users);  
     const [total, setTotal] = useState(0);
     const dispatch = useDispatch();
 
@@ -20,7 +21,7 @@ function TableRowComponent(props) {
         qty: 1,
         unit: '',
         price: 0,
-        total:  0,
+        total: 0,
         currency: '',
         ordered: '',
         po: '',
@@ -36,7 +37,8 @@ function TableRowComponent(props) {
                 {row.ss}
             </td>
             <td>
-                12-05-2024
+                {/* {Date.now()} */}
+                {row.date}
             </td>
             <td>
                 <select className='p-2  outline-none' onChange={(event) => {
@@ -44,10 +46,12 @@ function TableRowComponent(props) {
                         ...each,
                         project: event.target.value
                     }))
-                    dispatch(updateRow({ss:row.ss, name:'project', value:event.target.value}))
+                    dispatch(updateRow({ ss: row.ss, name: 'project', value: event.target.value }))
                 }}>
-                    <option value="sru">Moscow SRU</option>
-                    <option value="dcu">Moscow SRU</option>
+                    {projects.map((item) => (
+                        <option key={item.id} value={item.id} >{item.project_name}</option>
+
+                    ))}
                 </select>
             </td>
             <td>
@@ -56,11 +60,12 @@ function TableRowComponent(props) {
                         ...each,
                         company: event.target.value
                     }))
-                    dispatch(updateRow({ss:row.ss, name:'company', value:event.target.value}))
+                    dispatch(updateRow({ ss: row.ss, name: 'company', value: event.target.value }))
                 }}>
-                    <option value="Iridium Group">Iridium Group</option>
-                    <option value="Linde Gaz Rus">Linde Gaz Rus</option>
-                    <option value="Stroitelni Dvor">Stroitelni Dvor</option>
+                    {companies.map((item) => (
+                        <option key={item.id} value={item.id} >{item.company_name}</option>
+
+                    ))}
                 </select>
             </td>
             <td>
@@ -70,7 +75,7 @@ function TableRowComponent(props) {
                             ...each,
                             document: event.target.value
                         }))
-                        dispatch(updateRow({ss:row.ss, name:'document', value:event.target.value}))
+                        dispatch(updateRow({ ss: row.ss, name: 'document', value: event.target.value }))
                     }}
                 />
             </td>
@@ -81,7 +86,7 @@ function TableRowComponent(props) {
                             ...each,
                             material_name: event.target.value
                         }))
-                        dispatch(updateRow({ss:row.ss, name:'material_name', value:event.target.value}))
+                        dispatch(updateRow({ ss: row.ss, name: 'material_name', value: event.target.value }))
                     }} />
             </td>
             <td>
@@ -90,7 +95,7 @@ function TableRowComponent(props) {
                         ...each,
                         type: event.target.value
                     }))
-                    dispatch(updateRow({ss:row.ss, name:'type', value:event.target.value}))
+                    dispatch(updateRow({ ss: row.ss, name: 'type', value: event.target.value }))
                 }}>
                     <option value="project">Project</option>
                     <option value="consumable">Consumable</option>
@@ -103,10 +108,10 @@ function TableRowComponent(props) {
                         setRow((each) => ({
                             ...each,
                             qty: event.target.value,
-                            total: row.price*event.target.value
+                            total: row.price * event.target.value
                         }))
                         // dispatch(updateRow({ss:row.ss, qty:event.target.value}))
-                        dispatch(updateRow({ss:row.ss, name:'qty', value:event.target.value}))
+                        dispatch(updateRow({ ss: row.ss, name: 'qty', value: event.target.value }))
                     }} />
             </td>
             <td className=''>
@@ -115,7 +120,7 @@ function TableRowComponent(props) {
                         ...each,
                         unit: event.target.value
                     }))
-                    dispatch(updateRow({ss:row.ss, name:'unit', value:event.target.value}))
+                    dispatch(updateRow({ ss: row.ss, name: 'unit', value: event.target.value }))
                 }}>
                     <option value="pcs">Pcs</option>
                     <option value="ton">Ton</option>
@@ -132,9 +137,9 @@ function TableRowComponent(props) {
                         setRow((each) => ({
                             ...each,
                             price: event.target.value,
-                            total: row.qty*event.target.value
+                            total: row.qty * event.target.value
                         }))
-                        dispatch(updateRow({ss:row.ss, name:'price', value:event.target.value}))
+                        dispatch(updateRow({ ss: row.ss, name: 'price', value: event.target.value }))
                     }} />
             </td>
             <td>
@@ -143,7 +148,7 @@ function TableRowComponent(props) {
                         ...each,
                         currency: event.target.value
                     }))
-                    dispatch(updateRow({ss:row.ss, name:'currency', value:event.target.value}))
+                    dispatch(updateRow({ ss: row.ss, name: 'currency', value: event.target.value }))
                 }}>
                     <option value="rub">Rub</option>
                     <option value="usd">USD</option>
@@ -162,11 +167,12 @@ function TableRowComponent(props) {
                         ...each,
                         ordered: event.target.value
                     }))
-                    dispatch(updateRow({ss:row.ss, name:'ordered', value:event.target.value}))
+                    dispatch(updateRow({ ss: row.ss, name: 'ordered', value: event.target.value }))
                 }}>
-                    <option value="Ozan Harmanci">Ozan Harmanci</option>
-                    <option value="Ibrahim sef">Ibrahim Avsar</option>
-                    <option value="Mehmet Ugur Dogan">Mehmet Ugur Dogan</option>
+                    {users.map((item) => (
+                        <option key={item.id} value={item.id} >
+                            {item.firstName.charAt(0).toUpperCase()+item.firstName.slice(1)} {item.lastName.charAt(0).toUpperCase()+item.lastName.slice(1)}</option>
+                    ))}
                 </select>
             </td>
             <td>
@@ -176,7 +182,7 @@ function TableRowComponent(props) {
                             ...each,
                             po: event.target.value
                         }))
-                        dispatch(updateRow({ss:row.ss, name:'po', value:event.target.value}))
+                        dispatch(updateRow({ ss: row.ss, name: 'po', value: event.target.value }))
                     }} />
             </td>
         </tr>

@@ -6,6 +6,7 @@ import router from './router/index.jsx';
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { refreshTokens } from "./store/user-store.js";
+import CommonService from "./services/common.services.js";
 
 
 
@@ -18,7 +19,13 @@ function App() {
     if(is_auth == false){
       dispatch(refreshTokens());
     }
-  })
+    if(is_auth){
+      dispatch(CommonService.fetchCompanies());
+      dispatch(CommonService.fetchProjects());
+      dispatch(CommonService.fetchUsers());
+    }
+  });
+
 
   return (
     <>
