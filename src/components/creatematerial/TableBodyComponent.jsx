@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import TableRowComponent from './table_row-component'
+import TableRowComponent from './TableRowComponent'
 import { useSelector, useDispatch } from 'react-redux';
 function TableBodyComponent() {
 

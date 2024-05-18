@@ -1,8 +1,8 @@
 import React from 'react'
-import CreateTableNavbarHeaderComponent from '../components/creatematerial/table_header-component'
-import TableBodyComponent from '../components/creatematerial/table_body-component'
+import CreateTableNavbarHeaderComponent from '../components/creatematerial/TableHeaderComponent'
+import TableBodyComponent from '../components/creatematerial/TableBodyComponent'
 import { useSelector, useDispatch } from 'react-redux';
-import { addTableCheck, addRow, delRow, setShowFalse, postFuncStore } from '../store/create_table-store';
+import { addTableCheck, delRow, setShowFalse, postFuncStore } from '../store/create_table-store';
 import ErrorMessage from '../layouts/ErrorMessage';
 function CreateMaterialPage() {
   const table = useSelector((state) => state.createTableSlice.table);
@@ -50,15 +50,15 @@ function CreateMaterialPage() {
       </ul>  */}
 
       <div className='flex flex-col justify-between'>
-        <span className='text-3xl text-start text-gray-400 my-2'>Add Material To Warehouse</span>
+        <span className='text-4xl text-start text-gray-400 my-2'>Add Material To Warehouse</span>
         <div className='flex justify-between my-1 items-center'>
           <div className='text-lg' >
             Total Created Row: {table.length}
           </div>
           <div>
-          <button onClick={addRows} className='rounded-lg py-2 px-5 bg-slate-900 text-white mx-1 hover:bg-slate-500 duration-300' >Add Row</button>
-          <button onClick={delRows} className='rounded-lg py-2 px-5 bg-slate-900 text-white mx-1 hover:bg-slate-500 duration-300' >Del Row</button>
-          <button onClick={postFunc} className='rounded-lg py-2 px-5 bg-green-500 text-white mx-1 hover:bg-green-300 duration-300' >Post</button>
+          <button onClick={addRows} className='py-2 px-5 bg-slate-900 text-white mx-1 hover:bg-slate-500 duration-300' >Add Row</button>
+          <button onClick={delRows} className='py-2 px-5 bg-slate-900 text-white mx-1 hover:bg-slate-500 duration-300' >Del Row</button>
+          <button onClick={postFunc} className='py-2 px-5 bg-green-500 text-white mx-1 hover:bg-green-300 duration-300' >Post</button>
           </div>
         </div>
       </div>

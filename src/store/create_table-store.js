@@ -18,7 +18,6 @@ export const createTableSlice = createSlice({
             state.table_check.push({});
         },
         addRow: (state, actions) => {
-            console.log('add row work');
             if(state.table.length === 0){
                 state.table.push(actions.payload.row);
             }
@@ -49,6 +48,16 @@ export const createTableSlice = createSlice({
         updateRow: (state, actions) => {
             let updated_row = state.table.find((row) => row.ss === actions.payload.ss);
             updated_row[actions.payload.name] = actions.payload.value;
+            //updateRow[actions.payload.second_name] = actions.payload.second_val;
+            // console.log('-> ', actions.payload);
+            if(actions.payload.second_name){
+                console.log('if work');
+                updated_row[actions.payload.second_name] = actions.payload.second_val;
+            }
+            else{
+                console.log('else work');
+            }
+            console.log('update row is work');
         },
         setShowFalse: (state) => {
             state.show_error = false;

@@ -24,7 +24,6 @@ export const commonSlice = createSlice({
         }),
         builder.addCase(CommonService.fetchUsers.fulfilled, (state, action)=>{
             if(action.payload!==null){
-                console.log('act : ', action.payload);
                 state.users = action.payload;
             }
         })
