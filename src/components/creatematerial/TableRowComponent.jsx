@@ -1,31 +1,34 @@
+
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
+
 import { addRow, updateRow } from '../../store/create_table-store';
+
 import DropDownComponent from '../common/DropdownComponent';
 
 function TableRowComponent(props) {
 
     const companies = useSelector((state) => state.commonSlice.companies);
-    const projects = useSelector((state) => state.commonSlice.projects);  
-    const users = useSelector((state) => state.commonSlice.users);  
-    const [total, setTotal] = useState(0);
+    const projects = useSelector((state) => state.commonSlice.projects);
+    const users = useSelector((state) => state.commonSlice.users);
     const dispatch = useDispatch();
 
     const [row, setRow] = useState({
         ss: props.index,
         date: '13-05-2024',
-        project: 'Moscow SRU',
-        company: '',
+        projectId: 2,
+        project_name: 'Moscow SRU',
+        companyId: '',
         company_name: '',
         document: '',
         material_name: '',
         type: 'Consumables',
-        qty: 1,
+        qty: 0,
         unit: 'Pcs',
         price: 0,
         total: 0,
-        currency: '',
-        ordered: '',
+        currency: 'Rub',
+        orderedId: '',
         ordered_name: '',
         po: '',
     });
@@ -38,10 +41,10 @@ function TableRowComponent(props) {
     const listenCompany = (val, second_val) => {
         setRow((each) => ({
             ...each,
-            company: val,
+            companyId: val,
             company_name: second_val
         }));
-        dispatch(updateRow({ ss: row.ss, name: 'company', value: val, second_name: 'company_name', second_val:second_val }));
+        dispatch(updateRow({ ss: row.ss, name: 'companyId', value: val, second_name: 'company_name', second_val: second_val }));
         setIsCompanyDropDown(!isCompanyDropDown)
     }
 
@@ -49,10 +52,10 @@ function TableRowComponent(props) {
     const listenUser = (val, second_val) => {
         setRow((each) => ({
             ...each,
-            ordered: val,
+            orderedId: val,
             ordered_name: second_val
         }))
-        dispatch(updateRow({ ss: row.ss, name: 'ordered', value: val, second_name: 'ordered_name', second_val:second_val }));
+        dispatch(updateRow({ ss: row.ss, name: 'orderedId', value: val, second_name: 'ordered_name', second_val: second_val }));
         setIsUserDropDown(!isUserDropDown);
     }
 
@@ -61,8 +64,8 @@ function TableRowComponent(props) {
     const [isUserDropDown, setIsUserDropDown] = useState(false);
 
     return (
-        <tr className='border-b relative'>
-            <td>
+        <tr className=' relative'>
+            <td className='py-3'>
                 {row.ss}
             </td>
             <td>
@@ -70,44 +73,32 @@ function TableRowComponent(props) {
                 {row.date}
             </td>
             <td>
-                <select value={row.project} className='p-2  outline-none' onChange={(event) => {
+            {row.project_name}
+                {/* <select value={row.projectId} className='p-2  outline-none' onChange={(event) => {
                     setRow((each) => ({
                         ...each,
-                        project: event.target.value
+                        projectId: event.target.value
                     }))
-                    dispatch(updateRow({ ss: row.ss, name: 'project', value: event.target.value }))
+                    dispatch(updateRow({ ss: row.ss, name: 'projectId', value: event.target.value }))
                 }}>
                     {projects.map((item) => (
                         <option key={item.id} value={item.id} >{item.project_name}</option>
                     ))}
-                </select>
+                </select> */}
             </td>
-            <td className='text-start pl-1' >
-                <button onClick={() => {
+            <td className={` text-start  pl-1`} >
+                <button className='' onClick={() => {
                     setIsCompanyDropDown(!isCompanyDropDown)
                 }}>
-                    {row.company==='' ? 'Company' : row.company_name}
+                    {row.companyId === '' ? 'Select' : row.company_name}
                 </button>
                 {
-                    isCompanyDropDown && <DropDownComponent 
-                    data={companies}
-                    text_name={'company_name'}
-                    input_name={'Company...'}
-                    somefunc={listenCompany}  />
+                    isCompanyDropDown && <DropDownComponent
+                        data={companies}
+                        text_name={'company_name'}
+                        input_name={'Company...'}
+                        somefunc={listenCompany} />
                 }
-                {/* <select className='  p-2 outline-none' onChange={(event) => {
-                    setRow((each) => ({
-                        ...each,
-                        company: event.target.value
-                    }))
-                    dispatch(updateRow({ ss: row.ss, name: 'company', value: event.target.value }))
-                }}>
-                    {companies.map((item) => (
-                        <option key={item.id} value={item.id} >{item.company_name}</option>
-
-                    ))}
-                </select> */}
-
             </td>
             <td>
                 <input className="  outline-none  w-full h-full p-2 " type="text" placeholder="Doc Num..." onChange={
@@ -131,7 +122,7 @@ function TableRowComponent(props) {
                     }} />
             </td>
             <td>
-                <select className=' p-2 outline-none' onChange={(event) => {
+                <select className=' p-2 outline-none text-gray-500 appearance-none' onChange={(event) => {
                     setRow((each) => ({
                         ...each,
                         type: event.target.value
@@ -156,7 +147,7 @@ function TableRowComponent(props) {
                     }} />
             </td>
             <td className=''>
-                <select value={row.unit} className='  p-2 outline-none' onChange={(event) => {
+                <select value={row.unit} className='  p-2 outline-none appearance-none' onChange={(event) => {
                     setRow((each) => ({
                         ...each,
                         unit: event.target.value
@@ -184,7 +175,7 @@ function TableRowComponent(props) {
                     }} />
             </td>
             <td>
-                <select className=' p-2 w-full outline-none' onChange={(event) => {
+                <select value={row.currency} className=' p-2 w-full outline-none appearance-none' onChange={(event) => {
                     setRow((each) => ({
                         ...each,
                         currency: event.target.value
@@ -203,31 +194,18 @@ function TableRowComponent(props) {
                 <span>{row.total}</span>
             </td>
             <td className='text-start pl-1'>
-            <button className='text-start pl-1' onClick={() => {
+                <button className='text-start pl-1' onClick={() => {
                     setIsUserDropDown(!isUserDropDown)
-                    console.log(isUserDropDown);
                 }}>
-                    {row.ordered==='' ? 'Orderer' : row.ordered_name}
+                    {row.orderedId === '' ? 'Orderer' : row.ordered_name}
                 </button>
                 {
-                    isUserDropDown && <DropDownComponent 
-                    data={users}
-                    text_name={'username'}
-                    input_name={'Orderer...'}
-                    somefunc={listenUser}  />
+                    isUserDropDown && <DropDownComponent
+                        data={users}
+                        text_name={'username'}
+                        input_name={'Orderer...'}
+                        somefunc={listenUser} />
                 }
-                {/* <select className=' outline-none' onChange={(event) => {
-                    setRow((each) => ({
-                        ...each,
-                        ordered: event.target.value
-                    }))
-                    dispatch(updateRow({ ss: row.ss, name: 'ordered', value: event.target.value }))
-                }}>
-                    {users.map((item) => (
-                        <option key={item.id} value={item.id} >
-                            {item.firstName.charAt(0).toUpperCase()+item.firstName.slice(1)} {item.lastName.charAt(0).toUpperCase()+item.lastName.slice(1)}</option>
-                    ))}
-                </select> */}
             </td>
             <td>
                 <input className="outline-none  w-full h-full p-2 " type="text" placeholder="STF No..." onChange={

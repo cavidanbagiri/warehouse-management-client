@@ -1,11 +1,13 @@
 
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import CreateTableService from "../services/create_table-service";
+
 
 const initialState = {
     table: [],
     table_check: [{}],
-    table_size: 1,
-    show_error: false,
+    show_load: false,
+    show_message: false,
 }
 
 export const createTableSlice = createSlice({
@@ -13,10 +15,12 @@ export const createTableSlice = createSlice({
     name: 'createTableSlice',
     initialState,
     reducers: {
+        
         // This function for iterate table size time component and send new component data to main table
         addTableCheck: (state) => {
             state.table_check.push({});
         },
+
         addRow: (state, actions) => {
             if(state.table.length === 0){
                 state.table.push(actions.payload.row);
@@ -30,55 +34,44 @@ export const createTableSlice = createSlice({
                     }
                 }
                 if(cond){
-                    state.table_size+=1;
                     state.table.push(actions.payload.row);
                 }
             }
+        },
 
-        },
         delRow: (state) => {
-            if(state.table_check.length>1){
-                state.table_check.pop();
-                state.table.pop();
-            }
-            else{
-               state.show_error = true;
-            }
+            state.table_check.pop();
+            state.table.pop();
         },
+
         updateRow: (state, actions) => {
             let updated_row = state.table.find((row) => row.ss === actions.payload.ss);
             updated_row[actions.payload.name] = actions.payload.value;
-            //updateRow[actions.payload.second_name] = actions.payload.second_val;
-            // console.log('-> ', actions.payload);
             if(actions.payload.second_name){
-                console.log('if work');
                 updated_row[actions.payload.second_name] = actions.payload.second_val;
             }
-            else{
-                console.log('else work');
-            }
-            console.log('update row is work');
         },
-        setShowFalse: (state) => {
-            state.show_error = false;
-        },
+
+        setShowMessageFalse: (state, action) => {
+            state.show_message = false;
+        }
+
     },
     extraReducers: (builder) => {
-        builder.addCase(postFuncStore.fulfilled, (state, action) => {
-
+        builder.addCase(CreateTableService.receiveWarehouse.pending, (state, action) => {
+            state.show_load = true;
+        })
+        builder.addCase(CreateTableService.receiveWarehouse.fulfilled, (state, action) => {
+            console.log(state.table);
+            state.table = [];
+            state.table_check = [];
+            state.show_load = false;
+            state.show_message = true;
         })
     }
 });
 
-export const postFuncStore = createAsyncThunk(
-    'creatematerial/',
-    async(table_data) => {
-        for(let i of table_data){
-            console.log('i is : ', i);
-        }
-    }
-) 
 
-export const {addTableCheck, addRow, delRow, updateRow, setShowFalse}  = createTableSlice.actions;
+export const {addTableCheck, addRow, delRow, updateRow, setShowMessageFalse }  = createTableSlice.actions;
 
 export default createTableSlice.reducer;
