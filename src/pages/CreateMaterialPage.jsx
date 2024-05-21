@@ -41,6 +41,11 @@ function CreateMaterialPage() {
     dispatch(addTableCheck());
   }
 
+  // Add New Row To Table
+  function addGroup() {
+    console.log('you cant create any new group');
+  }
+
   // Delete Row From Table
   function delRows() {
     if (table.length > 1) {
@@ -127,7 +132,7 @@ function CreateMaterialPage() {
           <div className='text-xs' style={{ fontWeight: 500 }}>
             <button onClick={addCompany} className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:bg-orange-400 hover:text-white hover:border-none duration-200' >Add Company</button>
             <button onClick={addOrdered} className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:bg-orange-400 hover:text-white hover:border-none  duration-200' >Add Ordered</button>
-            <button onClick={addRows} className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:bg-orange-400 hover:text-white hover:border-none  duration-200' >Add Group</button>
+            <button onClick={addGroup} className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:bg-orange-400 hover:text-white hover:border-none  duration-200' >Add Group</button>
             <button onClick={addRows} className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:bg-orange-400 hover:text-white hover:border-none  duration-200' >Add Row</button>
             <button onClick={delRows} className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:bg-orange-400 hover:text-white hover:border-none  duration-200' >Delete Row</button>
             <button onClick={postFunc} className='py-2 px-5 border rounded-md border-gray-400 bg-white text-green-500 mx-2 hover:bg-green-500 hover:text-white duration-200' >Insert From Excel </button>
@@ -154,40 +159,6 @@ function CreateMaterialPage() {
                 {table.length}.00
               </span>
             </div>
-            {/* <div className='text-lg pl-40' >
-              <p className='text-gray-400 text-md'>
-                Project:
-              </p>
-              <span className='font-bold text-2xl'>
-                {table.length}
-              </span>
-            </div>
-            <div className='text-lg pl-40' >
-              <p className='text-gray-400 text-md'>
-                Consumable:
-              </p>
-              <span className='font-bold text-2xl'>
-                {table.length}
-              </span>
-            </div>
-            <div className='text-lg pl-40' >
-              <p className='text-gray-400 text-md'>
-                Fixture:
-              </p>
-              <span className='font-bold text-2xl'>
-                {table.length}
-              </span>
-            </div> */}
-            {/* <div className='text-lg pl-40' >
-            <p className='text-gray-400 text-md'>
-              Material Type Inform:
-            </p>
-            <span className='font-bold text-xl'>
-              <span className='text-gray-600 font-medium text-lg'>Cons.</span> 1
-              <span className='font-medium text-lg pl-4'>Project</span> 13
-              <span className='font-medium text-lg pl-4'>Fix</span> 0
-            </span>
-          </div> */}
           </div>
 
           <div>

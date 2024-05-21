@@ -9,7 +9,7 @@ import { PiStackThin } from "react-icons/pi";
 
 function NavbarItemComponent(props) {
     return (
-        <div className='relative text-white hover:bg-slate-200 px-[10px] py-[10px] flex items-center rounded-lg'>
+        <div className='relative text-white hover:bg-gray-100 px-[10px] py-[10px] flex items-center rounded-lg'>
             <span
                 onMouseEnter={() => props.setIsShown(true)}
                 onMouseLeave={() => props.setIsShown(false)}>
