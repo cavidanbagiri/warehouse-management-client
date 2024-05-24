@@ -24,7 +24,6 @@ class CommonService {
             let data = {};
             await $api.get('/projects')
             .then((response) => {
-                console.log('data is ',response);
                 data = response.data;
             }).catch((err) => {
                 console.log('fetch projects Error happen : ', err);

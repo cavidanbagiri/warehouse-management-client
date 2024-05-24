@@ -17,16 +17,16 @@ function CreateTableNavbarHeaderComponent() {
                 Project
               </div>
             </th>
-            <th scope="col" className="px-6 py-1 text-center border font-medium ">
+            {/* <th scope="col" className="px-6 py-1 text-center border font-medium ">
               <div className="">
                 Company
               </div>
-            </th>
-            <th scope="col" className="px-6 py-1 text-center border font-medium ">
+            </th> */}
+            {/* <th scope="col" className="px-6 py-1 text-center border font-medium ">
               <div className="">
                 Document
               </div>
-            </th>
+            </th> */}
             <th scope="col" className="px-6 py-1 text-center border w-1/3 font-medium ">
               <div className="">
                 Material Name
@@ -46,17 +46,17 @@ function CreateTableNavbarHeaderComponent() {
             <th scope="col" className="px-6 py-1 text-center border w-4 font-medium ">
               Price
             </th>
-            <th scope="col" className="px-6 py-1 text-center border w-4 font-medium ">
+            {/* <th scope="col" className="px-6 py-1 text-center border w-4 font-medium ">
               Currency
-            </th>
+            </th> */}
             <th scope="col" className="px-6 py-1 text-center border w-8 font-medium ">
               Total
             </th>
-            <th scope="col" className="px-6 py-1 text-center border w-8 font-medium ">
+            {/* <th scope="col" className="px-6 py-1 text-center border w-8 font-medium ">
               Ordered
-            </th>
-            <th scope="col" className="px-6 py-1 text-center border w-8 font-medium ">
-              PO
+            </th> */}
+            <th scope="col" className="px-6 py-1 text-center border w-24 font-medium ">
+              STF No
             </th>
 
           </tr>

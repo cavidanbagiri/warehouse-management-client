@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 
 import AdminService from '../../services/admin-service';
-import { setCreateCompanyMessageFalse, setCreateCompanyCondFalse } from '../../store/admin-store';
+import { setCreateCompanyMessageFalse, setCreateCompanyAvailableFalse, setCreateCompanyCondFalse } from '../../store/admin-store';
 
 import LoadingButton from '@mui/lab/LoadingButton';
 
@@ -12,6 +12,8 @@ function AddCompanyComponent() {
     const dispatch = useDispatch();
     const create_company_message = useSelector((state) => state.adminSlice.create_company_message);
     const create_company_cond = useSelector((state) => state.adminSlice.create_company_cond);
+    const create_company_available = useSelector((state) => state.adminSlice.create_company_available);
+    
     const [err_msg, setErrMsg] = useState(false);
 
     let [company_data, setCompanyData] = useState({
@@ -26,7 +28,6 @@ function AddCompanyComponent() {
             dispatch(AdminService.createCompany(company_data));
         }
         else {
-            console.log('is empty');
             setErrMsg(true);
         }
     }
@@ -35,10 +36,20 @@ function AddCompanyComponent() {
         setTimeout(() => {
             if (create_company_message) {
                 dispatch(setCreateCompanyMessageFalse());
+                dispatch(setCreateCompanyCondFalse());
             }
         }, 2000)
     }, [create_company_message, create_company_cond]);
 
+    useEffect(() => {
+        setTimeout(() => {
+            if (create_company_available) {
+                dispatch(setCreateCompanyAvailableFalse());
+                dispatch(setCreateCompanyCondFalse());
+            }
+        }, 2000)
+    }, [create_company_available, create_company_cond]);
+    
     useEffect(() => {
         if (create_company_cond) {
             setCompanyData((each) => ({
@@ -66,6 +77,10 @@ function AddCompanyComponent() {
 
             {
                 err_msg && <span className='text-red-500 w-full text-end'>Company Name Cant Be Empty</span>
+            }
+
+            {
+                create_company_available && <span className='text-red-500 w-full text-end'>Company Already Available</span>
             }
 
 

@@ -2,6 +2,7 @@ import React from 'react'
 import { IoCloseSharp } from "react-icons/io5";
 import AddCompanyComponent from '../components/admin/AddCompanyComponent';
 import AddOrderedComponent from '../components/admin/AddOrderedComponent';
+import AddGroupComponent from '../components/admin/AddGroupComponent';
 
 
 function AdminModal(props) {
@@ -15,8 +16,7 @@ function AdminModal(props) {
                     }} />
                 </div>
                 {
-                    props.show_component === 'company' ? <AddCompanyComponent/> : <AddOrderedComponent/>
-                    // props.show_component === 'company' ? 'company' : 'ordered'
+                    props.show_component === 'company' ? <AddCompanyComponent/> : props.show_component === 'group' ?  <AddGroupComponent/> : <AddOrderedComponent/>
                 }
                 {/* <AddCompanyComponent/> */}
             </div>

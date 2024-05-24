@@ -8,6 +8,11 @@ const initialState = {
     table_check: [{}],
     show_load: false,
     show_message: false,
+    type_data: {
+        Project: 0,
+        Fixture: 0,
+        Consumable: 0
+    }
 }
 
 export const createTableSlice = createSlice({
@@ -15,26 +20,28 @@ export const createTableSlice = createSlice({
     name: 'createTableSlice',
     initialState,
     reducers: {
-        
+
         // This function for iterate table size time component and send new component data to main table
         addTableCheck: (state) => {
             state.table_check.push({});
         },
 
         addRow: (state, actions) => {
-            if(state.table.length === 0){
+            if (state.table.length === 0) {
                 state.table.push(actions.payload.row);
+                state.type_data.Consumable +=1;
             }
-            else{
+            else {
                 let cond = true;
-                for(let i of state.table){
-                    if(i.ss === actions.payload.row.ss){
+                for (let i of state.table) {
+                    if (i.ss === actions.payload.row.ss) {
                         cond = false;
                         break;
                     }
                 }
-                if(cond){
+                if (cond) {
                     state.table.push(actions.payload.row);
+                    state.type_data.Consumable +=1;
                 }
             }
         },
@@ -47,7 +54,26 @@ export const createTableSlice = createSlice({
         updateRow: (state, actions) => {
             let updated_row = state.table.find((row) => row.ss === actions.payload.ss);
             updated_row[actions.payload.name] = actions.payload.value;
-            if(actions.payload.second_name){
+
+            if(actions.payload.name === 'type'){
+                state.type_data.Consumable = 0;
+                state.type_data.Project = 0;
+                state.type_data.Fixture = 0;
+                for(let i of state.table){
+                    if(i.type === 'Consumable'){
+                        state.type_data.Consumable +=1;
+                    }
+                    if(i.type === 'Project'){
+                        state.type_data.Project +=1;
+                    }
+                    if(i.type === 'Fixture'){
+                        state.type_data.Fixture +=1;
+                    }
+                    console.log('-----------');
+                }
+            }
+
+            if (actions.payload.second_name) {
                 updated_row[actions.payload.second_name] = actions.payload.second_val;
             }
         },
@@ -62,7 +88,6 @@ export const createTableSlice = createSlice({
             state.show_load = true;
         })
         builder.addCase(CreateTableService.receiveWarehouse.fulfilled, (state, action) => {
-            console.log(state.table);
             state.table = [];
             state.table_check = [];
             state.show_load = false;
@@ -72,6 +97,6 @@ export const createTableSlice = createSlice({
 });
 
 
-export const {addTableCheck, addRow, delRow, updateRow, setShowMessageFalse }  = createTableSlice.actions;
+export const { addTableCheck, addRow, delRow, updateRow, setShowMessageFalse } = createTableSlice.actions;
 
 export default createTableSlice.reducer;

@@ -34,6 +34,21 @@ class AdminService {
         }
     )
 
+    static createGroup = createAsyncThunk(
+        '/creategroup',
+        async(group_data) => {
+            let data = {};
+            await $api.post('/admin/creategroup', group_data)
+            .then((response)=>{
+                data = response.data
+            })
+            .catch((err)=>{
+                console.log('Cant Create New Group');
+            })
+            return data;
+        }
+    )
+
     static fetchGroups = createAsyncThunk(
         '/groups',
         async()=>{

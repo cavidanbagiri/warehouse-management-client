@@ -3,7 +3,9 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 
 import AdminService from '../../services/admin-service';
-import { setCreateOrderedMessageFalse, setCreateOrderedCondFalse } from '../../store/admin-store';
+import { setCreateOrderedMessageFalse, 
+    setCreateOrderedAvailableFalse,
+    setCreateOrderedCondFalse } from '../../store/admin-store';
 
 import LoadingButton from '@mui/lab/LoadingButton';
 
@@ -13,6 +15,7 @@ function AddOrderedComponent() {
     const dispatch = useDispatch();
     const create_ordered_message = useSelector((state) => state.adminSlice.create_ordered_message);
     const create_ordered_cond = useSelector((state) => state.adminSlice.create_ordered_cond);
+    const create_ordered_available = useSelector((state) => state.adminSlice.create_ordered_available);
     const [err_msg, setErrMsg] = useState(false);
 
     let groups = useSelector((state) => state.adminSlice.groups);
@@ -46,11 +49,21 @@ function AddOrderedComponent() {
     // Control after creating new ordered conditions and messages
     useEffect(() => {
         setTimeout(() => {
-            if(create_ordered_cond){
+            if(create_ordered_message){
                 dispatch(setCreateOrderedMessageFalse());
+                dispatch(setCreateOrderedCondFalse());
             }
         }, 2000)
     }, [create_ordered_message, create_ordered_cond]);
+
+    useEffect(() => {
+        setTimeout(() => {
+            if(create_ordered_available){
+                dispatch(setCreateOrderedAvailableFalse());
+                dispatch(setCreateOrderedCondFalse());
+            }
+        }, 2000)
+    }, [create_ordered_available, create_ordered_cond]);
 
     useEffect(() => {
         if (create_ordered_cond) {
@@ -84,6 +97,10 @@ function AddOrderedComponent() {
             
             {
                 err_msg && <span className='text-red-500 w-full text-end'>First name or Last name cant be empty</span>
+            }
+
+            {
+                create_ordered_available && <span className='text-red-500 w-full text-end'>User Already Available</span>
             }
 
             <div className='flex justify-between text-sm my-3'>
@@ -144,21 +161,9 @@ function AddOrderedComponent() {
                     {groups.map((item) => (
                         <option key={item.id} value={item.id} >{item.group_name}</option>
                     ))}
-                    {/* <option value={'1'}> Construction</option>
-                    <option value={'2'}> Piping</option>
-                    <option value={'3'}> Welding</option>
-                    <option value={'4'}> Steel Structure</option>
-                    <option value={'5'}> HSE</option>
-                    <option value={'6'}> Adminstration</option>
-                    <option value={'7'}> Warehouse</option>
-                    <option value={'8'}> Procurement</option>
-                    <option value={'9'}> Hydro Test</option>
-                    <option value={'10'}> Mechanic</option>
-                    <option value={'11'}> Electric</option> */}
                 </select>
             </div>
             <div className='opacity-70'>
-
 
                 {
                     !create_ordered_cond ?
