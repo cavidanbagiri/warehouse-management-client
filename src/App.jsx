@@ -14,6 +14,7 @@ function App() {
 
   const is_auth = useSelector((state)=>state.userSlice.is_auth);
   const dispatch = useDispatch();
+    
 
   useEffect(()=>{
     if(is_auth == false){
@@ -23,9 +24,13 @@ function App() {
       dispatch(CommonService.fetchCompanies());
       dispatch(CommonService.fetchProjects());
       dispatch(CommonService.fetchUsers());
+      dispatch(CommonService.getTypeCount());
     }
   });
 
+  // useEffect(()=>{
+  //   // dispatch(CommonService.getTypeCount());
+  // }, [type_count])
 
   return (
     <>

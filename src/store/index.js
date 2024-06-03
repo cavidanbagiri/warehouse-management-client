@@ -5,6 +5,7 @@ import createTableSlice  from './create_table-store';
 import commonSlice from './common-store';
 import messageBoxSlice from './message_box-store';
 import adminSlice from './admin-store';
+import warehouseSlice from './warehouse-store';
 
 export const store = configureStore({
   reducer: {
@@ -13,5 +14,6 @@ export const store = configureStore({
     commonSlice: commonSlice,
     messageBoxSlice,
     adminSlice,
+    warehouseSlice
   },
 })

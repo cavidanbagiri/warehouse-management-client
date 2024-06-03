@@ -64,13 +64,9 @@ function TableRowComponent(props) {
     const [isUserDropDown, setIsUserDropDown] = useState(false);
 
     return (
-        <tr className=' relative'>
-            <td className='py-3'>
+        <tr className=' relative border-b'>
+            <td className='py-4'>
                 {row.ss}
-            </td>
-            <td>
-                {/* {Date.now()} */}
-                {row.date}
             </td>
             <td>
             {row.project_name}
@@ -122,7 +118,7 @@ function TableRowComponent(props) {
                     }} />
             </td>
             <td>
-                <select defaultValue={'Consumable'} className=' p-2 outline-none text-gray-500 appearance-none' onChange={(event) => {
+                <select defaultValue={'Consumable'} className=' p-2 outline-none text-gray-500 appearance-none hover:cursor-pointer' onChange={(event) => {
                     setRow((each) => ({
                         ...each,
                         type: event.target.value
@@ -132,10 +128,12 @@ function TableRowComponent(props) {
                     <option value="Consumable">Consumable</option>
                     <option value="Project">Project</option>
                     <option value="Fixture">Fixture</option>
+                    <option value="Safety">Safety</option>
+                    <option value="Hand Tools">Hand Tools</option>
                 </select>
             </td>
             <td>
-                <input className="  outline-none  w-full h-full p-2 " type="number" placeholder="Amount..." onChange={
+                <input className="outline-none w-full h-full p-2 text-center" type="number" placeholder="Amount..." onChange={
                     (event) => {
                         setRow((each) => ({
                             ...each,
@@ -164,7 +162,7 @@ function TableRowComponent(props) {
                 </select>
             </td>
             <td>
-                <input className="  outline-none  w-full h-full p-2 " type="number" placeholder="Price..." onChange={
+                <input className="outline-none w-full h-full p-2 text-center" type="number" placeholder="Price..." onChange={
                     (event) => {
                         setRow((each) => ({
                             ...each,
@@ -208,7 +206,7 @@ function TableRowComponent(props) {
                 }
             </td> */}
             <td>
-                <input className="outline-none  w-full h-full p-2 " type="text" placeholder="STF No..." onChange={
+                <input className="outline-none w-full h-full p-2 text-center" type="text" placeholder="STF No..." onChange={
                     (event) => {
                         setRow((each) => ({
                             ...each,

@@ -9,10 +9,10 @@ import { filterCompany, filterOrdered } from '../store/common-store';
 import CreateTableService from '../services/create_table-service';
 import CommonService from '../services/common.services';
 
-import CreateTableNavbarHeaderComponent from '../components/creatematerial/TableHeaderComponent'
+import TableHeaderComponent from '../components/creatematerial/TableHeaderComponent'
 import TableBodyComponent from '../components/creatematerial/TableBodyComponent'
 import DropDownComponent from '../components/common/DropdownComponent';
-import ErrorMessage from '../layouts/ErrorMessage';
+import MessageBox from '../layouts/MessageBox.jsx';
 import AdminModal from '../layouts/AdminModal';
 
 import LoadingButton from '@mui/lab/LoadingButton';
@@ -22,8 +22,8 @@ function CreateMaterialPage() {
 
   const dispatch = useDispatch();
 
-  const companies = useSelector((state) => state.commonSlice.companies);
-  const users = useSelector((state) => state.commonSlice.users);
+  const filtered_companies = useSelector((state) => state.commonSlice.filtered_companies);
+  const filter_users = useSelector((state) => state.commonSlice.filter_users);
   const table = useSelector((state) => state.createTableSlice.table);
   const show_message_box = useSelector((state) => state.messageBoxSlice.toggle_message);
   const show_load = useSelector((state) => state.createTableSlice.show_load);
@@ -38,7 +38,6 @@ function CreateMaterialPage() {
   const [isUserDropDown, setIsUserDropDown] = useState(false);
   const [ company_refresh_message, setCompanyRefreshMessage ] = useState(false);
   const [ ordered_refresh_message, setOrderedRefreshMessage ] = useState(false);
-  // Default Data
   const [company, setCompany] = useState({
     companyId: '',
     company_name: ''
@@ -135,12 +134,11 @@ function CreateMaterialPage() {
   }
   const filterChange = (event, comp) => {
     if(comp === 'username'){
-      console.log('filter for username ',event.target.value);
-      dispatch(filterCompany(event.target.value));
+      dispatch(filterOrdered(event.target.value));
     }
     else if(comp === 'company_name'){
       console.log('filter for company_name ',event.target.value);
-      dispatch(filterOrdered(event.target.value));
+      dispatch(filterCompany(event.target.value));
     }
   }
   const refreshCompany = () => {
@@ -179,16 +177,28 @@ function CreateMaterialPage() {
     }
   },[company_refresh_message, ordered_refresh_message])
 
+  useEffect(()=>{
+    document.addEventListener('keydown', handleEscape, true);
+    // document.addEventListener
+  },[])
+
+  function handleEscape(e){
+    if(e.key === 'Escape'){
+      setIsCompanyDropDown(false);
+      setIsUserDropDown(false)
+    }
+  }
+
   return (
 
     <div style={{ fontFamily: 'IBM Plex Sans' }} className='flex flex-col '>
 
       {
-        show_message_box && <ErrorMessage message={message} />
+        show_message_box && <MessageBox message={message} color={'bg-red-500'} />
       }
 
       {
-        show_message && <ErrorMessage message={'Material Received In Warehouse'} />
+        show_message && <MessageBox message={'Material Received In Warehouse'} color={'bg-green-500'} />
       }
 
       {
@@ -204,11 +214,11 @@ function CreateMaterialPage() {
       }
 
       {
-        company_refresh_message && <ErrorMessage message={'Companies Refreshed'} />
+        company_refresh_message && <MessageBox message={'Companies Refreshed'} color={'bg-green-500'} />
       }
 
       {
-        ordered_refresh_message && <ErrorMessage message={'Ordered Refreshed'} />
+        ordered_refresh_message && <MessageBox message={'Ordered Refreshed'} color={'bg-green-500'} />
       }
 
 
@@ -336,16 +346,16 @@ function CreateMaterialPage() {
           <div className='flex items-center'>
 
             {/* Doc Number Side */}
-            <div>
-              <p className='text-xs text-gray-400'>Doc Num</p>
+            <div className='mr-6'>
+              <p className='text-xs text-gray-400 pl-1'>Doc Num</p>
               <input className=' text-xs bg-white border border-gray-300 rounded-lg w-36 p-2 outline-none text-center' type="text" placeholder='Doc Num' onChange={(e) => {
                 setDocNum(e.target.value);
               }} />
             </div>
             
             {/* Company Side */}
-            <div className='relative ml-3'>
-              <p className='text-xs text-gray-400'>Company</p>
+            <div className='relative mr-6'>
+              <p className='text-xs text-gray-400 pl-1'>Company</p>
               <button className='text-xs bg-white border border-gray-300  rounded-lg  p-2 w-48 text-ellipsis overflow-hidden text-nowrap outline-none' onClick={() => {
                 setIsCompanyDropDown(!isCompanyDropDown)
               }}>
@@ -353,7 +363,7 @@ function CreateMaterialPage() {
               </button>
               {
                 isCompanyDropDown && <DropDownComponent
-                  data={companies}
+                  data={filtered_companies}
                   text_name={'company_name'}
                   input_name={'Company...'}
                   listenFunc={listenCompany} 
@@ -363,8 +373,8 @@ function CreateMaterialPage() {
             </div>
             
             {/* Ordered Side */}
-            <div className='relative ml-3'>
-              <p className='text-xs text-gray-400'>Ordered</p>
+            <div className='relative'>
+              <p className='text-xs text-gray-400 pl-1'>Ordered</p>
               <button className='text-xs bg-white border border-gray-300 rounded-lg p-2 w-48 text-ellipsis overflow-hidden text-nowrap outline-none hover:border-orange-300 ' onClick={() => {
                 setIsUserDropDown(!isUserDropDown)
               }}>
@@ -372,7 +382,7 @@ function CreateMaterialPage() {
               </button>
               {
                 isUserDropDown && <DropDownComponent
-                  data={users}
+                  data={filter_users}
                   text_name={'username'}
                   input_name={'Orderer...'}
                   listenFunc={listenUser} 
@@ -404,7 +414,7 @@ function CreateMaterialPage() {
       </div>
 
       <table>
-        <CreateTableNavbarHeaderComponent />
+        <TableHeaderComponent />
         <TableBodyComponent />
       </table>
 

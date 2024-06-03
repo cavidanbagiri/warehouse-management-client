@@ -1,16 +1,18 @@
 
-
-import React from 'react'
+import React, { useEffect } from 'react'
 
 function DropDownComponent(props) {
+
+    useEffect(()=>{
+
+    })
+
     return (
         <div style={{ fontFamily: 'Saira Condensed' }} className='absolute top-15 z-10 rounded-xl flex flex-col items-start bg-white border shadow-2xl max-h-96 overflow-hidden overflow-y-auto w-96'>
             <div className='flex flex-col w-full bg-white'>
                 <div className='sticky top-0 p-4 bg-white'>
                     <input className=' w-full p-2 text-lg bg-gray-100 rounded-lg' type="text" placeholder={props.input_name} onChange={(event)=>{
-                        //if(props.text_name === 'company_name'){
-                            props.filterChange(event, props.text_name)
-                        //}
+                        props.filterChange(event, props.text_name)
                     }} />
                 </div>
                 <ul className='w-full px-4'>
