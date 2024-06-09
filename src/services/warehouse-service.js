@@ -11,6 +11,7 @@ class WarehouseService {
             await $api.get('/warehouse/')
             .then((response) => {
                 data = response.data;
+                console.log(data)
             }).catch((err) => {
                 console.log('fetch warehouse data Error happen : ', err);
             });

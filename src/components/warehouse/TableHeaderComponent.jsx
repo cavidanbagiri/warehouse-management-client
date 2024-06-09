@@ -1,8 +1,11 @@
-import React from 'react'
 
 import { TbSelect } from "react-icons/tb";
+import {useSelector} from "react-redux";
 
 function CreateTableNavbarHeaderComponent() {
+
+  const user_status = useSelector(state => state.userSlice.user_status);
+
   return (
     <thead className="text-black bg-gray-100 border font-medium text-sm" >
           <tr>
@@ -43,12 +46,17 @@ function CreateTableNavbarHeaderComponent() {
             <th scope="col" className="px-6 py-1 text-center border w-4 font-medium ">
               Unit
             </th>
-            {/* <th scope="col" className="px-6 py-1 text-center border w-28 font-medium ">
-              Price
-            </th>
-            <th scope="col" className="px-6 py-1 text-center border font-medium  w-28">
-              Currency
-            </th> */}
+            {
+              (user_status === '10000' || user_status === '10001' || user_status === '10002' )  &&
+                <>
+                  <th scope="col" className="px-6 py-1 text-center border w-28 font-medium ">
+                    Price
+                  </th>
+                  <th scope="col" className="px-6 py-1 text-center border font-medium  w-28">
+                    Currency
+                  </th>
+                </>
+            }
             <th scope="col" className="px-6 py-1 text-center border font-medium min-w-32">
               Ordered
             </th>

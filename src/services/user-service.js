@@ -29,6 +29,16 @@ class UserService {
         }
     )
 
+   static userLogout = createAsyncThunk(
+       '/users/logout',
+       async ()=>{
+           await axios.post('http://localhost:3001/api/user/logout')
+           .then((response) => {
+               console.log('user logout ',response);
+           })
+       }
+   )
+
 }
 
 
