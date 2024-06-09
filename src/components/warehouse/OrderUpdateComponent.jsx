@@ -2,7 +2,12 @@
 import { useEffect, useState } from 'react'
 import { IoMdClose } from "react-icons/io";
 import { useDispatch, useSelector } from 'react-redux';
-import { setOrderSelectionUpdateToggleFalse } from '../../store/warehouse-store';
+import {
+    setOrderSelectionUpdateToggleFalse,
+    setOrderUpdateMessageBoxTrue,
+    setorderUpdateErrorMessage,
+    setOrderUpdateMessageBoxFalse
+} from '../../store/warehouse-store';
 import DropDownComponent from '../common/DropdownComponent';
 import { filterOrdered, filterCompany } from '../../store/common-store';
 import WarehouseService from '../../services/warehouse-service';
@@ -12,6 +17,7 @@ function OrderUpdateComponent() {
     const dispatch = useDispatch();
     const po_data = useSelector((state) => state.warehouseSlice.po_data);
     const selected_items = useSelector((state) => state.warehouseSlice.selected_items);
+    const order_update_message_box = useSelector((state) => state.warehouseSlice.order_update_message_box);
     const filtered_companies = useSelector((state) => state.commonSlice.filtered_companies);
     const filter_users = useSelector((state) => state.commonSlice.filter_users);
 
@@ -60,7 +66,18 @@ function OrderUpdateComponent() {
         }
     }
     const postFunc = () => {
-        console.log('_>',selected_items[0]);
+        let cond = true;
+
+        if(material_name.toString().trim().length === 0){
+            dispatch(setOrderUpdateMessageBoxTrue());
+            dispatch(setorderUpdateErrorMessage({message: 'Material name cant be empty'}))
+            cond = false;
+        }
+        else if(qty <= 0) {
+            dispatch(setOrderUpdateMessageBoxTrue());
+            dispatch(setorderUpdateErrorMessage({message: 'Quantity Cant be less than zero'}))
+            cond = false;
+        }
         const updated_data = {
             id: selected_items[0],
             companyId: company.companyId,
@@ -72,8 +89,11 @@ function OrderUpdateComponent() {
             type: material_type,
             po: po,
         }
-        console.log('post function can work and result un below : ', updated_data);
-        dispatch(WarehouseService.updatePO(updated_data));
+        if(cond){
+            dispatch(WarehouseService.updatePO(updated_data))
+            dispatch(setorderUpdateErrorMessage({message: 'Data Successfully Updated'}))
+        }
+
     }
 
     useEffect(()=>{
@@ -97,7 +117,13 @@ function OrderUpdateComponent() {
                 ordered_name: po_data?.UserModel?.firstName.charAt(0).toUpperCase()+po_data?.UserModel?.firstName.slice(1) + ' ' + po_data?.UserModel?.lastName.charAt(0).toUpperCase()+po_data?.UserModel?.lastName.slice(1)
             }))
         }
-    },[po_data])
+    },[po_data]);
+
+    // useEffect(()=>{
+    //     setTimeout(()=>{
+    //         dispatch(setOrderUpdateMessageBoxFalse());
+    //     },2000)
+    // },[order_update_message_box])
 
     return (
         <div className='flex flex-row justify-between z-10 fixed top-0 right-0 w-full h-full bg-black bg-opacity-30'>
@@ -193,12 +219,31 @@ function OrderUpdateComponent() {
                     </div>
 
                     {/* Material Unit Side */}
+                    {/*<div className='flex mt-5'>*/}
+                    {/*    <span className='w-1/3'>Unit </span>*/}
+                    {/*    <div className='relative w-full'>*/}
+                    {/*        <input value={unit} className='placeholder-black text-xs bg-white border border-gray-300 rounded-lg w-full  p-2 outline-none text-center ' type="text" placeholder='Material Name' onChange={(e) => {*/}
+                    {/*            setUnit(e.target.value);*/}
+                    {/*        }} />*/}
+                    {/*    </div>*/}
+                    {/*</div>*/}
+
+                    {/* Matterial Type Side */}
                     <div className='flex mt-5'>
                         <span className='w-1/3'>Unit </span>
                         <div className='relative w-full'>
-                            <input value={unit} className='placeholder-black text-xs bg-white border border-gray-300 rounded-lg w-full  p-2 outline-none text-center ' type="text" placeholder='Material Name' onChange={(e) => {
-                                setUnit(e.target.value);
-                            }} />
+                            <select value={unit} className='w-full border p-2 outline-none rounded-lg text-xs text-center'
+                                    onChange={(e)=>{
+                                        setUnit(e.target.value);
+                                    }}>
+                                <option value="pcs">Pcs</option>
+                                <option value="ton">Ton</option>
+                                <option value="kg">Kg</option>
+                                <option value="lt">Lt</option>
+                                <option value="mt">Mt</option>
+                                <option value="mt2">Mt2</option>
+                                <option value="mt3">Mt3</option>
+                            </select>
                         </div>
                     </div>
 
@@ -206,9 +251,11 @@ function OrderUpdateComponent() {
                     <div className='flex mt-5'>
                         <span className='w-1/3'>Order Num </span>
                         <div className='relative w-full'>
-                        <input value={po} className='placeholder-black text-xs bg-white border border-gray-300 rounded-lg w-full  p-2 outline-none text-center ' type="text" placeholder='Order Num' onChange={(e) => {
-                            setPO(e.target.value);
-                        }} />
+                            <input value={po}
+                                   className='placeholder-black text-xs bg-white border border-gray-300 rounded-lg w-full  p-2 outline-none text-center '
+                                   type="text" placeholder='Order Num' onChange={(e) => {
+                                setPO(e.target.value);
+                            }}/>
                         </div>
                     </div>
 

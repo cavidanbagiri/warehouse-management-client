@@ -29,12 +29,12 @@ const router = createBrowserRouter([
                 element: <WarehousePage/>
             },
             {
-                path: "/profile",
-                element: <ProfilePage/>
-            },
-            {
                 path: "/creatematerial",
                 element: <CreateMaterialPage/>
+            },
+            {
+                path: "/profile",
+                element: <ProfilePage/>
             }
         ]
     },

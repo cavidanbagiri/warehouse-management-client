@@ -1,5 +1,3 @@
-import React from 'react'
-
 
 import { CiHome } from "react-icons/ci";
 import { PiWarehouseThin } from "react-icons/pi";

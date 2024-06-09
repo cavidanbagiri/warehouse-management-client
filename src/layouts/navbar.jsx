@@ -1,5 +1,5 @@
 
-import React from 'react'
+// import React from 'react'
 import { useState } from 'react';
 import { Outlet, Link } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -21,7 +21,7 @@ function Navbar() {
         <div className='relative '>
 
             {/* Check if User Authenticated */}
-            {is_auth ?
+            {is_auth &&
                 <div className='sticky top-0 left-0 z-20  float-left h-screen flex flex-col items-center p-2 rounded-md bg-white'>
 
                     <Link to='/'>
@@ -51,9 +51,9 @@ function Navbar() {
                     </Link>
 
                 </div>
-                :
-                /* If not send to login page */
-                <ProfilePage />
+                // :
+                // /* If not send to login page */
+                // <ProfilePage />
             }
 
             <Outlet />

@@ -9,11 +9,13 @@ import OrderSelectedComponent from '../components/warehouse/OrderSelectedCompone
 import DropDownComponent from '../components/common/DropdownComponent';
 import ZeroFilteredComponent from '../components/warehouse/ZeroFilteredComponent';
 import MaterialTypeInform from '../components/warehouse/MaterialTypeInformComponent';
-
-import { filterCompany, filterOrdered } from '../store/common-store';
 import MessageBox from '../layouts/MessageBox';
 import OrderInformationComponent from '../components/warehouse/OrderInformationComponent';
 import OrderUpdateComponent from '../components/warehouse/OrderUpdateComponent';
+
+import { filterCompany, filterOrdered } from '../store/common-store';
+
+import {setOrderUpdateMessageBoxFalse} from "../store/warehouse-store.js";
 
 function WarehousePage() {
 
@@ -26,6 +28,8 @@ function WarehousePage() {
     const selected_items = useSelector((state) => state.warehouseSlice.selected_items);
     const order_information_toggle = useSelector((state) => state.warehouseSlice.order_information_toggle);
     const order_update_toggle = useSelector((state) => state.warehouseSlice.order_update_toggle);
+    const order_update_message_box = useSelector((state) => state.warehouseSlice.order_update_message_box);
+    const order_update_error_message = useSelector((state) => state.warehouseSlice.order_update_error_message);
 
     const [show_message_box, setShowMessageBox] = useState(false);
     const [show_message_box_message, setShowMessageBoxMessage] = useState('');
@@ -133,12 +137,24 @@ function WarehousePage() {
         }
     }
 
+    useEffect(()=>{
+        if(order_update_message_box){
+            setTimeout(()=>{
+                dispatch(setOrderUpdateMessageBoxFalse());
+            },2000)
+        }
+    },[order_update_message_box]);
+
     return (
 
         <div className='flex flex-col items-center'>
 
             {
                 show_message_box && <MessageBox message={show_message_box_message} color={'bg-red-500'} />
+            }
+
+            {
+                order_update_message_box && <MessageBox message={order_update_error_message} color={'bg-green-500'} />
             }
 
             {
@@ -169,11 +185,11 @@ function WarehousePage() {
                     <div className='flex items-start w-full '>
                         {
                             type_count.map((item, index) => (
-                                item.type === 'Consumable' ? <MaterialTypeInform color={'red'} key={index + 1} item={item} getTypeFilter={getTypeFilter} />
-                                    : item.type === 'Project' ? <MaterialTypeInform color={'green'} key={index + 1} item={item} getTypeFilter={getTypeFilter} />
-                                        : item.type === 'Fixture' ? <MaterialTypeInform color={'blue'} key={index + 1} item={item} getTypeFilter={getTypeFilter} />
-                                            : item.type === 'Safety' ? <MaterialTypeInform color={'pink'} key={index + 1} item={item} getTypeFilter={getTypeFilter} />
-                                                : <MaterialTypeInform key={index + 1} color={'orange'} item={item} getTypeFilter={getTypeFilter} />
+                                item.type === 'Consumable' ? <MaterialTypeInform color={'border-red-500'} key={index + 1} item={item} getTypeFilter={getTypeFilter} />
+                                    : item.type === 'Project' ? <MaterialTypeInform color={'border-green-500'} key={index + 1} item={item} getTypeFilter={getTypeFilter} />
+                                        : item.type === 'Fixture' ? <MaterialTypeInform color={'border-blue-500'} key={index + 1} item={item} getTypeFilter={getTypeFilter} />
+                                            : item.type === 'Safety' ? <MaterialTypeInform color={'border-pink-500'} key={index + 1} item={item} getTypeFilter={getTypeFilter} />
+                                                : <MaterialTypeInform key={index + 1} color={'border-orange-500'} item={item} getTypeFilter={getTypeFilter} />
                             ))
                         }
                     </div>

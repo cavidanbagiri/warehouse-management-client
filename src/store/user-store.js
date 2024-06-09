@@ -2,48 +2,46 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import $api from '../http';
+import UserService from "../services/user-service.js";
+import {unstable_ClassNameGenerator} from "@mui/material";
 axios.defaults.withCredentials = true;
 const initialState = {
     user: {
         email: 'unknown'
     },
     is_admin: false,
-    is_auth: false
+    is_auth: false,
+    is_login_error: false,
 }
 
 export const userSlice = createSlice({
     name: 'userSlice',
     initialState,
     reducers: {
-        increment: (state) => {
-            state.value += 1
-        },
-        decrement: (state) => {
-            state.value -= 1
-        },
-        incrementByAmount: (state, action) => {
-            state.value += action.payload
-        },
+
     },
     extraReducers: (builder) => {
         // Add reducers for additional action types here, and handle loading state as needed
-        builder.addCase(userLogin.fulfilled, (state, action) => {
-            state.user = action.payload.user;
-            state.is_auth = true;
-            state.is_admin = action.payload.user.is_admin
-            localStorage.setItem('token', action.payload.access);
+        builder.addCase(UserService.userLogin.fulfilled, (state, action) => {
+            console.log('this is work')
+            if(action.payload!==null){
+                state.user = action.payload.user;
+                state.is_auth = true;
+                state.is_admin = action.payload.user.is_admin
+                localStorage.setItem('token', action.payload.access);
+                localStorage.setItem('status_code', action.payload.user.status_code)
+                state.is_login_error = false;
+            }
+            else{
+                console.log('else work')
+                state.is_login_error = true;
+            }
         })
-        builder.addCase(fetchUsers.fulfilled, (state, action) => {
-            
-        })
-        builder.addCase(refreshTokens.fulfilled, (state, action) => {
+        builder.addCase(UserService.refreshTokens.fulfilled, (state, action) => {
             if(action.payload != null){
                 localStorage.setItem('token', action.payload.access);
                 state.user = action.payload.user;
                 state.is_auth = true;
-            }
-            else{
-                console.log('there is not  any token');
             }
             
         })
@@ -51,19 +49,19 @@ export const userSlice = createSlice({
 
 });
 
-export const userLogin = createAsyncThunk(
-    'users/login',
-    async (user_data) => {
-        let data = {};
-        await axios.post('http://localhost:3001/api/user/login', user_data)
-            .then((response) => {
-                data = response.data;
-            }).catch((err) => {
-                console.log('Error happen : ', err);
-            })
-        return data;
-    }
-);
+// export const userLogin = createAsyncThunk(
+//     'users/login',
+//     async (user_data) => {
+//         let data = {};
+//         await axios.post('http://localhost:3001/api/user/login', user_data)
+//             .then((response) => {
+//                 data = response.data;
+//             }).catch((err) => {
+//                 console.log('Error happen : ', err);
+//             })
+//         return data;
+//     }
+// );
 
 export const fetchUsers = createAsyncThunk(
     'user/users',
@@ -76,21 +74,21 @@ export const fetchUsers = createAsyncThunk(
             })
     }
 )
-export const refreshTokens = createAsyncThunk(
-    'user/refresh',
-    async () => {
-        let data = null;
-        await axios.get('http://localhost:3001/api/user/refresh')
-            .then((response) => {
-                data = response.data;
-            }).catch((err) => {
-                console.log(' Refresh Error happen : ', err);
-                data = null;
-            })
-            return data;
-    }
-)
+// export const refreshTokens = createAsyncThunk(
+//     'user/refresh',
+//     async () => {
+//         let data = null;
+//         await axios.get('http://localhost:3001/api/user/refresh')
+//             .then((response) => {
+//                 data = response.data;
+//             }).catch((err) => {
+//                 console.log(' Refresh Error happen : ', err);
+//                 data = null;
+//             })
+//             return data;
+//     }
+// )
 
-export const { increment, decrement, incrementByAmount } = userSlice.actions
+export const {  } = userSlice.actions
 
 export default userSlice.reducer;

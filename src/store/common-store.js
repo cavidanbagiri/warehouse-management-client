@@ -37,7 +37,6 @@ export const commonSlice = createSlice({
             if(action.payload!==null){
                 state.companies = action.payload;
                 state.filtered_companies = action.payload;
-                console.log('fetch companies');
             }
         }),
         builder.addCase(CommonService.fetchProjects.fulfilled, (state, action)=>{
@@ -54,7 +53,6 @@ export const commonSlice = createSlice({
         builder.addCase(CommonService.getTypeCount.fulfilled, (state, action)=>{
             if(action.payload!==null){
                 state.type_count = action.payload;
-                console.log('type count is : ', state.type_count);
             }
         })
     }

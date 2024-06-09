@@ -2,6 +2,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 import WarehouseService from "../services/warehouse-service";
+import {unstable_ClassNameGenerator} from "@mui/material";
 
 const initialState = {
     warehouse_data: [],
@@ -9,7 +10,9 @@ const initialState = {
     selected_items: [],
     po_data: {},
     order_information_toggle: false,
-    order_update_toggle: false
+    order_update_toggle: false,
+    order_update_message_box: false,
+    order_update_error_message: '',
 }
 
 export const warehouseSlice = createSlice({
@@ -33,6 +36,16 @@ export const warehouseSlice = createSlice({
         },
         setOrderSelectionUpdateToggleFalse: (state, action) => {
             state.order_update_toggle = false;
+        },
+        setOrderUpdateMessageBoxFalse: (state, action) => {
+          state.order_update_message_box = false;
+        },
+        setOrderUpdateMessageBoxTrue: (state, action) => {
+            state.order_update_message_box = true;
+        },
+        setorderUpdateErrorMessage: (state, action) => {
+            console.log(action.payload);
+            state.order_update_error_message = action.payload.message;
         }
     },
     extraReducers: (builder) => {
@@ -50,13 +63,14 @@ export const warehouseSlice = createSlice({
         builder.addCase(WarehouseService.getPOById.fulfilled, (state, action)=>{
             if(action.payload!==null){
                 state.po_data = action.payload;
-                console.log('state : ', state.po_data);
             }
         }),
-        builder.addCase(WarehouseService.updatePO.fulfilled, (state, action)=>{
-            console.log('update data worked');
+            builder.addCase(WarehouseService.updatePO.pending, (state, action)=>{
+                state.order_update_message_box = true;
+            })
+            builder.addCase(WarehouseService.updatePO.fulfilled, (state, action)=>{
             if(action.payload!==null){
-                console.log('data updated : ', action.payload);
+                console.log(action.payload);
             }
         })
     }
@@ -65,7 +79,8 @@ export const warehouseSlice = createSlice({
 
 export const { selectRow, unselectRow, 
     setOrderSelectionInformationToggleTrue, setOrderSelectionInformationToggleFalse,
-    setOrderSelectionUpdateToggleTrue, setOrderSelectionUpdateToggleFalse
+    setOrderSelectionUpdateToggleTrue, setOrderSelectionUpdateToggleFalse,
+    setOrderUpdateMessageBoxFalse, setOrderUpdateMessageBoxTrue, setorderUpdateErrorMessage
 } = warehouseSlice.actions;
 
 
