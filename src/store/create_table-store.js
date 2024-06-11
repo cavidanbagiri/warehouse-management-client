@@ -69,7 +69,6 @@ export const createTableSlice = createSlice({
                     if(i.type === 'Fixture'){
                         state.type_data.Fixture +=1;
                     }
-                    console.log('-----------');
                 }
             }
 

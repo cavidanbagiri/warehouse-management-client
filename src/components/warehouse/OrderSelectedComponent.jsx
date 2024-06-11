@@ -8,7 +8,9 @@ import { IoIosInformationCircleOutline } from "react-icons/io";
 
 import '../../css/dropdown.css';
 import WarehouseService from '../../services/warehouse-service';
-import { setOrderSelectionInformationToggleTrue, setOrderSelectionUpdateToggleTrue } from '../../store/warehouse-store';
+import {
+    setOrderSelectionInformationToggleTrue,
+    setOrderSelectionUpdateToggleTrue } from '../../store/warehouse-store';
 
 function OrderSelectedComponent(props) {
 

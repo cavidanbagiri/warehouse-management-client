@@ -17,7 +17,7 @@ function OrderUpdateComponent() {
     const dispatch = useDispatch();
     const po_data = useSelector((state) => state.warehouseSlice.po_data);
     const selected_items = useSelector((state) => state.warehouseSlice.selected_items);
-    const order_update_message_box = useSelector((state) => state.warehouseSlice.order_update_message_box);
+    //const order_update_message_box = useSelector((state) => state.warehouseSlice.order_update_message_box);
     const filtered_companies = useSelector((state) => state.commonSlice.filtered_companies);
     const filter_users = useSelector((state) => state.commonSlice.filter_users);
 
@@ -30,6 +30,7 @@ function OrderUpdateComponent() {
     const [qty, setQty] = useState(0);
     const [unit, setUnit] = useState('');
     const [po, setPO] = useState('');
+    const [price, setPrice] = useState(0);
     
     const [company, setCompany] = useState({
         companyId: 0,
@@ -86,10 +87,12 @@ function OrderUpdateComponent() {
             material_name: material_name,
             qty: qty,
             unit: unit,
+            price: price,
             type: material_type,
             po: po,
         }
         if(cond){
+            console.log('data ', updated_data);
             dispatch(WarehouseService.updatePO(updated_data))
             dispatch(setorderUpdateErrorMessage({message: 'Data Successfully Updated'}))
         }
@@ -109,6 +112,7 @@ function OrderUpdateComponent() {
             setQty(po_data.qty);
             setPO(po_data.po);
             setUnit(po_data.unit);
+            setPrice(po_data.price);
         }
         if(po_data?.UserModel?.user_id){
             setOrdered((each) => ({
@@ -212,21 +216,11 @@ function OrderUpdateComponent() {
                     <div className='flex mt-5'>
                         <span className='w-1/3'>Quantity </span>
                         <div className='relative w-full'>
-                            <input value={qty} className='placeholder-black text-xs bg-white border border-gray-300 rounded-lg w-full  p-2 outline-none text-center ' type="text" placeholder='Material Name' onChange={(e) => {
+                            <input value={qty} className='placeholder-black text-xs bg-white border border-gray-300 rounded-lg w-full  p-2 outline-none text-center ' type="text" placeholder='Quantity' onChange={(e) => {
                                 setQty(e.target.value);
                             }} />
                         </div>
                     </div>
-
-                    {/* Material Unit Side */}
-                    {/*<div className='flex mt-5'>*/}
-                    {/*    <span className='w-1/3'>Unit </span>*/}
-                    {/*    <div className='relative w-full'>*/}
-                    {/*        <input value={unit} className='placeholder-black text-xs bg-white border border-gray-300 rounded-lg w-full  p-2 outline-none text-center ' type="text" placeholder='Material Name' onChange={(e) => {*/}
-                    {/*            setUnit(e.target.value);*/}
-                    {/*        }} />*/}
-                    {/*    </div>*/}
-                    {/*</div>*/}
 
                     {/* Matterial Type Side */}
                     <div className='flex mt-5'>
@@ -244,6 +238,16 @@ function OrderUpdateComponent() {
                                 <option value="mt2">Mt2</option>
                                 <option value="mt3">Mt3</option>
                             </select>
+                        </div>
+                    </div>
+
+                    {/* Material Qty Side */}
+                    <div className='flex mt-5'>
+                        <span className='w-1/3'>Price </span>
+                        <div className='relative w-full'>
+                            <input value={price} className='placeholder-black text-xs bg-white border border-gray-300 rounded-lg w-full  p-2 outline-none text-center ' type="text" placeholder='Price' onChange={(e) => {
+                                setPrice(e.target.value);
+                            }} />
                         </div>
                     </div>
 
@@ -276,9 +280,6 @@ function OrderUpdateComponent() {
                         </select>
                         </div>
                     </div>
-                    
-
-                    
 
                     {/* Button Field */}
                     <div className='flex justify-end mt-10'>

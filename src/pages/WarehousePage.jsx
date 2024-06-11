@@ -12,10 +12,18 @@ import MaterialTypeInform from '../components/warehouse/MaterialTypeInformCompon
 import MessageBox from '../layouts/MessageBox';
 import OrderInformationComponent from '../components/warehouse/OrderInformationComponent';
 import OrderUpdateComponent from '../components/warehouse/OrderUpdateComponent';
+import TableColumnFilterComponent from "../components/warehouse/TableColumnFilterComponent.jsx";
+
+import { IoFilterOutline } from "react-icons/io5";
 
 import { filterCompany, filterOrdered } from '../store/common-store';
 
-import {setOrderUpdateMessageBoxFalse} from "../store/warehouse-store.js";
+import {
+    setOrderSelectionInformationToggleTrue,
+    setOrderSelectionUpdateToggleTrue,
+    setOrderUpdateMessageBoxFalse,
+    clearSelected
+} from "../store/warehouse-store.js";
 
 function WarehousePage() {
 
@@ -34,6 +42,8 @@ function WarehousePage() {
     const [show_message_box, setShowMessageBox] = useState(false);
     const [show_message_box_message, setShowMessageBoxMessage] = useState('');
 
+    const [show_table_column_component, setShowTableColumnCompoenent] = useState(false);
+
     const [isCompanyDropDown, setIsCompanyDropDown] = useState(false);
     const [isUserDropDown, setIsUserDropDown] = useState(false);
     const [documentnum, setDocumentNum] = useState('');
@@ -48,8 +58,6 @@ function WarehousePage() {
         orderedId: '',
         ordered_name: '',
     })
-
-
 
     const listenCompany = (val, second_val) => {
         setCompany((each) => ({
@@ -99,9 +107,15 @@ function WarehousePage() {
         }
         dispatch(WarehouseService.filterWarehouseData(data));
     }
+    function handleEscape(e) {
+        if (e.key === 'Escape') {
+            setIsCompanyDropDown(false);
+            setIsUserDropDown(false)
+        }
+    }
 
     // Show Message Box Message Controller
-    const showMessaggeBoxMessageHandle = (key, value) => {
+    const showMessageBoxMessageHandle = (key, value) => {
         if (key === 'update') {
             setShowMessageBox(true);
             setShowMessageBoxMessage(value)
@@ -124,19 +138,10 @@ function WarehousePage() {
             }, 2000)
         }
     }, [show_message_box])
-
-
     // Escapee Keydown controller
     useEffect(() => {
         document.addEventListener('keydown', handleEscape, true);
     }, [])
-    function handleEscape(e) {
-        if (e.key === 'Escape') {
-            setIsCompanyDropDown(false);
-            setIsUserDropDown(false)
-        }
-    }
-
     useEffect(()=>{
         if(order_update_message_box){
             setTimeout(()=>{
@@ -144,6 +149,10 @@ function WarehousePage() {
             },2000)
         }
     },[order_update_message_box]);
+    useEffect(() => {
+        console.log('filtered data work ');
+        dispatch(WarehouseService.fetchWarehouseData());
+    }, [dispatch])
 
     return (
 
@@ -168,8 +177,8 @@ function WarehousePage() {
             {/* Page Title */}
             <div className='flex flex-col p-2 w-full'>
                 <div className='flex flex-row w-full justify-between items-center bg-gray-50 rounded-lg px-4 mt-4 mb-3'>
-                    <span style={{ fontWeight: 500 }} className='py-4 px-2 rounded-lg text-3xl text-start '>Warehouse All Material List</span>
-                    <div className='text-xs' style={{ fontWeight: 500 }}>
+                    <span style={{ fontWeight: 500 , fontFamily: 'IBM Plex Sans' }} className='py-4 px-2 rounded-lg text-3xl text-start '>Warehouse All Material List</span>
+                    <div className='text-sm' style={{ fontWeight: 500 }}>
                         <button className='bg-orange-500 text-white px-5 py-3 rounded-lg'>
                             Go To Stock
                         </button>
@@ -180,8 +189,10 @@ function WarehousePage() {
 
             {/* Type Information */}
             <div className='flex flex-col w-full px-1'>
-                <span style={{ fontWeight: 600, fontFamily: 'Open Sans' }} className='py-2 px-4 rounded-lg text-2xl text-start my-2 tracking-wide'>Material Type Information</span>
+                <span style={{ fontWeight: 500, fontFamily: 'IBM Plex Sans' }} className='px-2 text-2xl text-start my-2 '>Material Type Information</span>
                 <div className='flex  w-full items-start px-2 mt-2 mb-5 '>
+
+                    {/* Material Type Section */}
                     <div className='flex items-start w-full '>
                         {
                             type_count.map((item, index) => (
@@ -193,12 +204,59 @@ function WarehousePage() {
                             ))
                         }
                     </div>
-                    <div className='flex justify-end text-xs w-full' style={{ fontWeight: 600 }}>
-                        <button onClick={() => { }} className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:bg-orange-400 hover:text-white duration-200' >Add To Stock</button>
-                        <button onClick={() => { }} className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:bg-orange-400 hover:text-white duration-200' >Update Row</button>
-                        <button onClick={() => { }} className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:bg-orange-400 hover:text-white duration-200' >Delete Row</button>
-                        <button onClick={() => { }} className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:bg-orange-400 hover:text-white duration-200' >Get Information</button>
-                        <button onClick={resetFunc} className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:bg-orange-400 hover:text-white duration-200' >Clear Filter</button>
+
+                    <div className='flex flex-col justify-between items-start w-full '>
+
+                        {/* Working Buttons Section */}
+                        <div className='flex justify-end text-xs w-full' style={{ fontWeight: 600 }}>
+                            <button className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400  hover:bg-orange-400 hover:text-white duration-200' >Add To Stock</button>
+                            <button onClick={()=>{
+                                if(selected_items.length > 1){
+                                    showMessageBoxMessageHandle('update', 'Cant update two or more column same time');
+                                }
+                                else{
+                                    dispatch(setOrderSelectionUpdateToggleTrue());
+                                    dispatch(WarehouseService.getPOById(selected_items[0]));
+                                }
+                            }}
+                                    className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400 hover:bg-orange-400 hover:text-white duration-200' >Update Row</button>
+                            <button onClick={()=>{
+                                showMessageBoxMessageHandle('delete', 'Dont have authorization for deleting');
+                            }}
+                                className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400 hover:bg-orange-400 hover:text-white duration-200' >Delete Row</button>
+                            <button onClick={()=>{
+                                if(selected_items.length > 1){
+                                    console.log('if work ',selected_items);
+                                    showMessageBoxMessageHandle('inform', 'Cant get inform two or more column same time');
+                                }
+                                else{
+                                    console.log('else work ',selected_items);
+                                    dispatch(setOrderSelectionInformationToggleTrue());
+                                    dispatch(WarehouseService.getPOById(selected_items[0]));
+                                }
+                            }}
+                                    className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400 hover:bg-orange-400 hover:text-white duration-200' >Get Information</button>
+                            <button onClick={resetFunc} className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400 hover:bg-orange-400 hover:text-white duration-200' >Clear Filter</button>
+                            <button onClick={()=>{
+                                dispatch(clearSelected());
+                            }} className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400 hover:bg-orange-400 hover:text-white duration-200' >Reset Select</button>
+                        </div>
+
+                        {/* Table Column Name Section */}
+                        <div className='flex justify-end items-center relative text-xs w-full px-4 mt-8' style={{ fontWeight: 600 }}>
+                            <span onClick={()=>{
+                                show_table_column_component ? setShowTableColumnCompoenent(false) : setShowTableColumnCompoenent(true);
+                            }}
+                                className='text-sm font-medium text-gray-700 ml-2 hover:cursor-pointer' >Table Columns Filter</span>
+                            <span onClick={()=>{
+                                show_table_column_component ? setShowTableColumnCompoenent(false) : setShowTableColumnCompoenent(true);
+                            }}
+                                className='pl-2'><IoFilterOutline  className='text-base hover:cursor-pointer' /></span>
+                            {
+                                show_table_column_component && <TableColumnFilterComponent/>
+                            }
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -206,7 +264,7 @@ function WarehousePage() {
 
             {/* Filter Title Section */}
             <div className='flex px-4 justify-start w-full'>
-                <span className='text-2xl  tracking-wide' style={{ fontWeight: 500, fontFamily: 'Open Sans' }}>Filter</span>
+                <span className='text-2xl  tracking-tighter' style={{ fontWeight: 500, fontFamily: 'IBM Plex Sans' }}>Filter</span>
             </div>
 
 
@@ -316,6 +374,7 @@ function WarehousePage() {
                 <TableHeaderComponent />
                 <TableBodyComponent />
             </table>
+
             {
                 !filtered_warehouse_data.length && <ZeroFilteredComponent resetFunc={resetFunc} />
             }
@@ -323,7 +382,7 @@ function WarehousePage() {
             {/* Row Selected Section */}
             {
                 selected_items.length >= 1 ? <OrderSelectedComponent
-                    showMessaggeBoxMessageHandle={showMessaggeBoxMessageHandle}
+                    showMessaggeBoxMessageHandle={showMessageBoxMessageHandle}
                 /> : <div></div>
             }
 

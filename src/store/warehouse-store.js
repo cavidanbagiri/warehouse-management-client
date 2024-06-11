@@ -2,13 +2,27 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 import WarehouseService from "../services/warehouse-service";
-import {unstable_ClassNameGenerator} from "@mui/material";
 
 const initialState = {
     warehouse_data: [],
     filtered_warehouse_data: [],
     selected_items: [],
     po_data: {},
+    warehouse_column_filter:{
+        date: true,
+        company: true,
+        document: true,
+        material_name: true,
+        type: true,
+        qty: true,
+        unit: true,
+        price: true,
+        currency: true,
+        ordered: true,
+        po: true,
+        certificate: true,
+        passport: true
+    },
     order_information_toggle: false,
     order_update_toggle: false,
     order_update_message_box: false,
@@ -25,27 +39,32 @@ export const warehouseSlice = createSlice({
         unselectRow: (state, action) => {
             state.selected_items = state.selected_items.filter((item)=>item!==action.payload);
         },
-        setOrderSelectionInformationToggleTrue: (state, action) => {
+        clearSelected: (state) => {
+            state.selected_items = [];
+        },
+        setOrderSelectionInformationToggleTrue: (state) => {
             state.order_information_toggle = true;
         },
-        setOrderSelectionInformationToggleFalse: (state, action) => {
+        setOrderSelectionInformationToggleFalse: (state) => {
             state.order_information_toggle = false;
         },
-        setOrderSelectionUpdateToggleTrue: (state, action) => {
+        setOrderSelectionUpdateToggleTrue: (state) => {
             state.order_update_toggle = true;
         },
-        setOrderSelectionUpdateToggleFalse: (state, action) => {
+        setOrderSelectionUpdateToggleFalse: (state) => {
             state.order_update_toggle = false;
         },
-        setOrderUpdateMessageBoxFalse: (state, action) => {
+        setOrderUpdateMessageBoxFalse: (state) => {
           state.order_update_message_box = false;
         },
-        setOrderUpdateMessageBoxTrue: (state, action) => {
+        setOrderUpdateMessageBoxTrue: (state) => {
             state.order_update_message_box = true;
         },
         setorderUpdateErrorMessage: (state, action) => {
-            console.log(action.payload);
             state.order_update_error_message = action.payload.message;
+        },
+        setWarehouseColumnFilter: (state, action) => {
+            state.warehouse_column_filter[action.payload.key] = action.payload.value;
         }
     },
     extraReducers: (builder) => {
@@ -54,21 +73,26 @@ export const warehouseSlice = createSlice({
                 state.warehouse_data = action.payload;
                 state.filtered_warehouse_data = action.payload;
             }
-        }),
+        })
         builder.addCase(WarehouseService.filterWarehouseData.fulfilled, (state, action)=>{
             if(action.payload!==null){
+                console.log('if ');
                 state.filtered_warehouse_data = action.payload;
+                console.log('filtered warehouse data is : ', state.filtered_warehouse_data)
             }
-        }),
+            else{
+                console.log('if ');
+            }
+        })
         builder.addCase(WarehouseService.getPOById.fulfilled, (state, action)=>{
             if(action.payload!==null){
                 state.po_data = action.payload;
             }
-        }),
-            builder.addCase(WarehouseService.updatePO.pending, (state, action)=>{
-                state.order_update_message_box = true;
-            })
-            builder.addCase(WarehouseService.updatePO.fulfilled, (state, action)=>{
+        })
+        builder.addCase(WarehouseService.updatePO.pending, (state)=>{
+            state.order_update_message_box = true;
+        })
+        builder.addCase(WarehouseService.updatePO.fulfilled, (state, action)=>{
             if(action.payload!==null){
                 console.log(action.payload);
             }
@@ -80,7 +104,9 @@ export const warehouseSlice = createSlice({
 export const { selectRow, unselectRow, 
     setOrderSelectionInformationToggleTrue, setOrderSelectionInformationToggleFalse,
     setOrderSelectionUpdateToggleTrue, setOrderSelectionUpdateToggleFalse,
-    setOrderUpdateMessageBoxFalse, setOrderUpdateMessageBoxTrue, setorderUpdateErrorMessage
+    setOrderUpdateMessageBoxFalse, setOrderUpdateMessageBoxTrue,
+    setorderUpdateErrorMessage,setWarehouseColumnFilter,
+    clearSelected
 } = warehouseSlice.actions;
 
 

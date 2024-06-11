@@ -17,7 +17,6 @@ function App() {
 
   const is_auth = useSelector((state)=>state.userSlice.is_auth);
 
-
   useEffect(()=>{
     if(is_auth === false){
       dispatch(UserService.refreshTokens());
@@ -30,10 +29,6 @@ function App() {
       dispatch(CommonService.getTypeCount());
     }
   });
-
-  // useEffect(()=>{
-  //   // dispatch(CommonService.getTypeCount());
-  // }, [type_count])
 
   return (
     <>

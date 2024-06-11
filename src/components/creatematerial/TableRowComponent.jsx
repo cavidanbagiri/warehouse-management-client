@@ -26,6 +26,8 @@ function TableRowComponent(props) {
         orderedId: '',
         ordered_name: '',
         po: '',
+        certificate: false,
+        passport: false
     });
 
     useEffect(() => {
@@ -33,33 +35,36 @@ function TableRowComponent(props) {
     })
 
     return (
-        <tr className=' relative border-b'>
+        <tr  className=' relative border-b'>
             <td className='py-4'>
                 {row.ss}
             </td>
             <td>
-            {row.project_name}
+                {row.project_name}
             </td>
 
 
             <td>
-                <input className=" outline-none  w-full h-full p-2 " type="text" placeholder="Material Name..." onChange={
-                    (event) => {
-                        setRow((each) => ({
-                            ...each,
-                            material_name: event.target.value
-                        }))
-                        dispatch(updateRow({ ss: row.ss, name: 'material_name', value: event.target.value }))
-                    }} />
+                <input className=" outline-none  w-full h-full p-2 " type="text" placeholder="Material Name..."
+                       onChange={
+                           (event) => {
+                               setRow((each) => ({
+                                   ...each,
+                                   material_name: event.target.value
+                               }))
+                               dispatch(updateRow({ss: row.ss, name: 'material_name', value: event.target.value}))
+                           }}/>
             </td>
             <td>
-                <select defaultValue={'Consumable'} className=' p-2 outline-none text-gray-500 appearance-none hover:cursor-pointer' onChange={(event) => {
-                    setRow((each) => ({
-                        ...each,
-                        type: event.target.value
-                    }))
-                    dispatch(updateRow({ ss: row.ss, name: 'type', value: event.target.value }))
-                }}>
+                <select defaultValue={'Consumable'}
+                        className=' p-2 outline-none text-gray-500 appearance-none hover:cursor-pointer'
+                        onChange={(event) => {
+                            setRow((each) => ({
+                                ...each,
+                                type: event.target.value
+                            }))
+                            dispatch(updateRow({ss: row.ss, name: 'type', value: event.target.value}))
+                        }}>
                     <option value="Consumable">Consumable</option>
                     <option value="Project">Project</option>
                     <option value="Fixture">Fixture</option>
@@ -68,16 +73,17 @@ function TableRowComponent(props) {
                 </select>
             </td>
             <td>
-                <input className="outline-none w-full h-full p-2 text-center" type="number" placeholder="Amount..." onChange={
-                    (event) => {
-                        setRow((each) => ({
-                            ...each,
-                            qty: event.target.value,
-                            total: row.price * event.target.value
-                        }))
-                        // dispatch(updateRow({ss:row.ss, qty:event.target.value}))
-                        dispatch(updateRow({ ss: row.ss, name: 'qty', value: event.target.value }))
-                    }} />
+                <input className="outline-none w-full h-full p-2 text-center" type="number" placeholder="Amount..."
+                       onChange={
+                           (event) => {
+                               setRow((each) => ({
+                                   ...each,
+                                   qty: event.target.value,
+                                   total: row.price * event.target.value
+                               }))
+                               // dispatch(updateRow({ss:row.ss, qty:event.target.value}))
+                               dispatch(updateRow({ss: row.ss, name: 'qty', value: event.target.value}))
+                           }}/>
             </td>
             <td className=''>
                 <select value={row.unit} className='  p-2 outline-none appearance-none' onChange={(event) => {
@@ -85,7 +91,7 @@ function TableRowComponent(props) {
                         ...each,
                         unit: event.target.value
                     }))
-                    dispatch(updateRow({ ss: row.ss, name: 'unit', value: event.target.value }))
+                    dispatch(updateRow({ss: row.ss, name: 'unit', value: event.target.value}))
                 }}>
                     <option value="pcs">Pcs</option>
                     <option value="ton">Ton</option>
@@ -97,32 +103,54 @@ function TableRowComponent(props) {
                 </select>
             </td>
             <td>
-                <input className="outline-none w-full h-full p-2 text-center" type="number" placeholder="Price..." onChange={
-                    (event) => {
-                        setRow((each) => ({
-                            ...each,
-                            price: event.target.value,
-                            total: row.qty * event.target.value
-                        }))
-                        dispatch(updateRow({ ss: row.ss, name: 'price', value: event.target.value }))
-                    }} />
+                <input className="outline-none w-full h-full p-2 text-center" type="number" placeholder="Price..."
+                       onChange={
+                           (event) => {
+                               setRow((each) => ({
+                                   ...each,
+                                   price: event.target.value,
+                                   total: row.qty * event.target.value
+                               }))
+                               dispatch(updateRow({ss: row.ss, name: 'price', value: event.target.value}))
+                           }}/>
             </td>
 
             <td>
-                {/* {row.total} */}
                 <span>{row.total.toFixed(2)}</span>
             </td>
 
             <td>
-                <input className="outline-none w-full h-full p-2 text-center" type="text" placeholder="STF No..." onChange={
-                    (event) => {
-                        setRow((each) => ({
-                            ...each,
-                            po: event.target.value
-                        }))
-                        dispatch(updateRow({ ss: row.ss, name: 'po', value: event.target.value }))
-                    }} />
+                <input className="outline-none w-full h-full p-2 text-center" type="text" placeholder="PO No..."
+                       onChange={
+                           (event) => {
+                               setRow((each) => ({
+                                   ...each,
+                                   po: event.target.value
+                               }))
+                               dispatch(updateRow({ss: row.ss, name: 'po', value: event.target.value}))
+                           }}/>
             </td>
+
+            <td>
+                <input value={row.certificate} type="checkbox" onChange={(event)=>{
+                    setRow((each)=>({
+                        ...each,
+                        certificate: event.target.checked
+                    }))
+                    dispatch(updateRow({ss: row.ss, name: 'certificate', value: event.target.checked}))
+                }} />
+            </td>
+
+            <td>
+                <input value={row.passport} type="checkbox" onChange={(event) => {
+                    setRow((each) => ({
+                        ...each,
+                        passport: event.target.checked
+                    }))
+                    dispatch(updateRow({ss: row.ss, name: 'passport', value: event.target.checked}))
+                }}/>
+            </td>
+
         </tr>
     )
 }

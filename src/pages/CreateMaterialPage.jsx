@@ -106,6 +106,7 @@ function CreateMaterialPage() {
         default_data: default_data,
         table_data: table
       }
+      // console.log(common_data);
       dispatch(CreateTableService.receiveWarehouse(common_data));
     }
     else {
