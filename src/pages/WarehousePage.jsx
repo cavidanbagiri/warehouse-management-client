@@ -113,6 +113,15 @@ function WarehousePage() {
             setIsUserDropDown(false)
         }
     }
+    const showSelectedItemInform = () => {
+        if(selected_items.length > 1){
+            showMessageBoxMessageHandle('inform', 'Cant get inform two or more column same time');
+        }
+        else{
+            dispatch(setOrderSelectionInformationToggleTrue());
+            dispatch(WarehouseService.getPOById(selected_items[0]));
+        }
+    }
 
     // Show Message Box Message Controller
     const showMessageBoxMessageHandle = (key, value) => {
@@ -224,22 +233,12 @@ function WarehousePage() {
                                 showMessageBoxMessageHandle('delete', 'Dont have authorization for deleting');
                             }}
                                 className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400 hover:bg-orange-400 hover:text-white duration-200' >Delete Row</button>
-                            <button onClick={()=>{
-                                if(selected_items.length > 1){
-                                    console.log('if work ',selected_items);
-                                    showMessageBoxMessageHandle('inform', 'Cant get inform two or more column same time');
-                                }
-                                else{
-                                    console.log('else work ',selected_items);
-                                    dispatch(setOrderSelectionInformationToggleTrue());
-                                    dispatch(WarehouseService.getPOById(selected_items[0]));
-                                }
-                            }}
+                            <button onClick={showSelectedItemInform}
                                     className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400 hover:bg-orange-400 hover:text-white duration-200' >Get Information</button>
                             <button onClick={resetFunc} className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400 hover:bg-orange-400 hover:text-white duration-200' >Clear Filter</button>
-                            <button onClick={()=>{
-                                dispatch(clearSelected());
-                            }} className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400 hover:bg-orange-400 hover:text-white duration-200' >Reset Select</button>
+                            {/*<button onClick={()=>{*/}
+                            {/*    dispatch(clearSelected());*/}
+                            {/*}} className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400 hover:bg-orange-400 hover:text-white duration-200' >Reset Select</button>*/}
                         </div>
 
                         {/* Table Column Name Section */}

@@ -20,7 +20,7 @@ function ZeroFilteredComponent(props) {
                     props.resetFunc();
                 }}
             >
-                Reset Filter
+                Clear Filter
             </button>
         </div>
     )

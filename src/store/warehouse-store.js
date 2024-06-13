@@ -78,10 +78,6 @@ export const warehouseSlice = createSlice({
             if(action.payload!==null){
                 console.log('if ');
                 state.filtered_warehouse_data = action.payload;
-                console.log('filtered warehouse data is : ', state.filtered_warehouse_data)
-            }
-            else{
-                console.log('if ');
             }
         })
         builder.addCase(WarehouseService.getPOById.fulfilled, (state, action)=>{
@@ -95,6 +91,13 @@ export const warehouseSlice = createSlice({
         builder.addCase(WarehouseService.updatePO.fulfilled, (state, action)=>{
             if(action.payload!==null){
                 console.log(action.payload);
+            }
+        })
+        builder.addCase(WarehouseService.updateCertOrPassportById.fulfilled, (state, action)=>{
+            if(action.payload!==null){
+                const item = state.filtered_warehouse_data.find((item)=>item.id===action.payload.id);
+                item.certificate = action.payload.certificate;
+                item.passport = action.payload.passport;
             }
         })
     }

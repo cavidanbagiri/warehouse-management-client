@@ -5,8 +5,12 @@ import moment from 'moment';
 import Checkbox from '@mui/material/Checkbox';
 import { BsThreeDotsVertical } from "react-icons/bs";
 import {useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import WarehouseService from "../../services/warehouse-service.js";
 
 function TableRowComponent(props) {
+
+    const dispatch = useDispatch();
 
     const [certificate, setCertificate] = useState(false);
     const [passport, setPassport] = useState(false);
@@ -14,17 +18,23 @@ function TableRowComponent(props) {
     const [cert_opposite, setCertOpposite] = useState(false);
     const [passport_opposite, setPassportOpposite] = useState(false);
 
-    const toggleOpposite = (name) => {
-        console.log(name, ' and id is : ', props.item.id);
-    }
+    const [checked, setChecked] = useState(false);
 
     return (
-        <tr  className={`relative border-b hover:bg-gray-100 cursor-pointer `}>
+        <tr
+            onDoubleClick={()=>{
+                props.doubleClickInform(props.item.id)
+            }}
+            className={`relative border-b hover:bg-gray-100 cursor-pointer `}>
             <td className='py-1'>
                 {props.index}
             </td>
             <td className='py-1'>
-                <Checkbox value={props.item.id} color="warning" size="small" onChange={props.handleChange} />
+                <Checkbox value={props.item.id} color="warning" size="small" onChange={props.handleChange}
+                          onClick={(event)=>{
+                              event.target.checked ? setChecked(true) : setChecked(false);
+                          }}
+                          checked={checked} />
             </td>
             {props.warehouse_column_filter.date &&
                 <td className={` text-center `} >
@@ -125,8 +135,17 @@ function TableRowComponent(props) {
                         }
                         {
                             cert_opposite &&
-                            <div className={`absolute flex justify-center top-5 right-1 p-1 w-40 rounded-lg bg-white z-10 shadow-lg border-b border-gray-200 `}>
-                                <span onClick={toggleOpposite('certificate')}
+                            <div onClick={()=>{
+                                console.log(`${props.item.id} certf clicked`);
+                                const data = {
+                                    id: props.item.id,
+                                    key: 'certificate',
+                                    value: props.item.certificate
+                                }
+                                dispatch(WarehouseService.updateCertOrPassportById(data));
+                                setCertOpposite(!cert_opposite);
+                            }} className={`absolute flex justify-center top-5 right-1 p-1 w-40 rounded-lg bg-white z-10 shadow-lg border-b border-gray-200 `}>
+                                <span
                                     className={`hover:bg-gray-100 w-full p-2 rounded-lg text-base`}>
                                     Set Opposite
                                 </span>
@@ -165,7 +184,15 @@ function TableRowComponent(props) {
                         {
                             passport_opposite &&
                             <div className={`absolute flex justify-center top-5 right-1 p-1 w-40 rounded-lg bg-white z-10 shadow-lg border-b border-gray-200 `}>
-                                <span onClick={toggleOpposite('passport')}
+                                <span onClick={()=>{
+                                    const data = {
+                                        id: props.item.id,
+                                        key: 'passport',
+                                        value: props.item.passport
+                                    }
+                                    dispatch(WarehouseService.updateCertOrPassportById(data));
+                                    setPassportOpposite(!passport_opposite);
+                                }}
                                       className={`hover:bg-gray-100 w-full p-2 rounded-lg text-base`}>
                                     Set Opposite
                                 </span>

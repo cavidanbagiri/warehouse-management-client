@@ -38,7 +38,6 @@ class WarehouseService {
         '/warehouse/update/:id',
         async(updated_data) => {
             let data = {};
-            console.log('updated data is : ', updated_data);
             await $api.post(`/warehouse/update/${updated_data.id}`, updated_data).
             then((response)=>{
                 data = response.data;
@@ -47,6 +46,20 @@ class WarehouseService {
             .catch((err)=>{
                 console.log('Get Row Id Error : ', err);
             })
+            return data;
+        }
+    )
+
+    static updateCertOrPassportById = createAsyncThunk(
+        '/warehouse/updatecertorpassportbyid',
+        async(updated_data) => {
+            let data = {};
+            await $api.post(`/warehouse/updatecertorpassportbyid`, updated_data)
+                .then((response) => {
+                    data = response.data;
+                }).catch((err)=>{
+                    console.log('Update Row Id Error : ', err);
+                })
             return data;
         }
     )
