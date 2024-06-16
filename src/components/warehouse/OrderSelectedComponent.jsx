@@ -9,8 +9,10 @@ import { IoIosInformationCircleOutline } from "react-icons/io";
 import '../../css/dropdown.css';
 import WarehouseService from '../../services/warehouse-service';
 import {
+    addStockToggleTrue,
     setOrderSelectionInformationToggleTrue,
-    setOrderSelectionUpdateToggleTrue } from '../../store/warehouse-store';
+    setOrderSelectionUpdateToggleTrue
+} from '../../store/warehouse-store';
 
 function OrderSelectedComponent(props) {
 
@@ -66,9 +68,15 @@ function OrderSelectedComponent(props) {
                         <span className="text-xs w-16 text-center">Delete Row</span>
                     </div>
                     <div
-                    onClick={()=>{
-                        console.log('add to stock can work');
-                    }}
+                        onClick={()=>{
+                            if(selected_items.length === 0){
+                                props.showMessageBoxMessageHandle('addstock', 'Please, Choose at least one row to adding stock');
+                            }
+                            else{
+                                dispatch(addStockToggleTrue());
+                                dispatch(WarehouseService.fetchSelectedItemsById(selected_items));
+                            }
+                        }}
                     className="flex flex-col items-center mx-3 cursor-pointer w-full hover:bg-gray-50">
                         <IoIosAddCircleOutline className='text-2xl text-gray-800' />
                         <span className="text-xs w-20 text-center">Add To Stock</span>

@@ -71,6 +71,12 @@ function TableRowComponent(props) {
                 </td>
             }
             {
+                props.warehouse_column_filter.leftover &&
+                <td>
+                    {props.item.leftover}
+                </td>
+            }
+            {
                 props.warehouse_column_filter.unit &&
                 <td className=''>
                     {props.item.unit.charAt(0).toUpperCase() + props.item.unit.slice(1)}

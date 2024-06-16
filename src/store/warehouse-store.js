@@ -15,18 +15,28 @@ const initialState = {
         material_name: true,
         type: true,
         qty: true,
+        leftover: true,
         unit: true,
-        price: true,
-        currency: true,
+        price: false,
+        currency: false,
         ordered: true,
         po: true,
         certificate: true,
         passport: true
     },
     order_information_toggle: false,
+
     order_update_toggle: false,
     order_update_message_box: false,
     order_update_error_message: '',
+
+    addstock_toggle: false,
+    addstock_message_box: false,
+    addstock_error_message: '',
+    addstock_pending: false,
+
+    fetch_selected_items: null,
+
 }
 
 export const warehouseSlice = createSlice({
@@ -42,6 +52,7 @@ export const warehouseSlice = createSlice({
         clearSelected: (state) => {
             state.selected_items = [];
         },
+
         setOrderSelectionInformationToggleTrue: (state) => {
             state.order_information_toggle = true;
         },
@@ -54,18 +65,43 @@ export const warehouseSlice = createSlice({
         setOrderSelectionUpdateToggleFalse: (state) => {
             state.order_update_toggle = false;
         },
+
         setOrderUpdateMessageBoxFalse: (state) => {
-          state.order_update_message_box = false;
+            state.order_update_message_box = false;
         },
         setOrderUpdateMessageBoxTrue: (state) => {
             state.order_update_message_box = true;
         },
-        setorderUpdateErrorMessage: (state, action) => {
+        setOrderUpdateErrorMessage: (state, action) => {
             state.order_update_error_message = action.payload.message;
         },
+
+
+        addStockToggleTrue: (state) => {
+            state.addstock_toggle = true;
+        },
+        addStockToggleFalse: (state) => {
+            state.addstock_toggle = false;
+        },
+        setAddStockMessageBoxTrue: (state) => {
+            state.addstock_message_box = true;
+        },
+        setAddStockMessageBoxFalse: (state) => {
+            state.addstock_message_box = false;
+        },
+        setAddStockMessageBoxMessage: (state, action) => {
+            state.addstock_error_message = action.payload;
+        },
+
         setWarehouseColumnFilter: (state, action) => {
             state.warehouse_column_filter[action.payload.key] = action.payload.value;
+        },
+
+        updatefetchSelectedItems: (state, action) => {
+            const item = state.fetch_selected_items.find((item)=>item.id === action.payload.id);
+            item['entered_amount'] = action.payload.entered_amount;
         }
+
     },
     extraReducers: (builder) => {
         builder.addCase(WarehouseService.fetchWarehouseData.fulfilled, (state, action)=>{
@@ -100,6 +136,21 @@ export const warehouseSlice = createSlice({
                 item.passport = action.payload.passport;
             }
         })
+        builder.addCase(WarehouseService.fetchSelectedItemsById.fulfilled, (state, action)=>{
+            if(action.payload!==null){
+                state.fetch_selected_items = action.payload;
+            }
+        })
+        builder.addCase(WarehouseService.receiveToStock.pending, (state, action)=>{
+            state.addstock_pending = true;
+        })
+        builder.addCase(WarehouseService.receiveToStock.fulfilled, (state, action)=>{
+            if(action.payload!==null){
+                state.addstock_message_box = true;
+                state.addstock_toggle = false;
+                state.addstock_pending = false
+            }
+        })
     }
 })
 
@@ -108,8 +159,10 @@ export const { selectRow, unselectRow,
     setOrderSelectionInformationToggleTrue, setOrderSelectionInformationToggleFalse,
     setOrderSelectionUpdateToggleTrue, setOrderSelectionUpdateToggleFalse,
     setOrderUpdateMessageBoxFalse, setOrderUpdateMessageBoxTrue,
-    setorderUpdateErrorMessage,setWarehouseColumnFilter,
-    clearSelected
+    setOrderUpdateErrorMessage,setWarehouseColumnFilter,
+    addStockToggleTrue, addStockToggleFalse, setAddStockMessageBoxFalse,
+    setAddStockMessageBoxMessage, setAddStockMessageBoxTrue,
+    clearSelected, updatefetchSelectedItems
 } = warehouseSlice.actions;
 
 

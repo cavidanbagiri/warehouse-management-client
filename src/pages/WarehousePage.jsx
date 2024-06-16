@@ -22,8 +22,12 @@ import {
     setOrderSelectionInformationToggleTrue,
     setOrderSelectionUpdateToggleTrue,
     setOrderUpdateMessageBoxFalse,
-    clearSelected
+    clearSelected,
+    addStockToggleTrue,
+    addStockToggleFalse,
+    setAddStockMessageBoxFalse
 } from "../store/warehouse-store.js";
+import AddStockComponent from "../components/warehouse/AddStockComponent.jsx";
 
 function WarehousePage() {
 
@@ -35,9 +39,16 @@ function WarehousePage() {
     const filtered_warehouse_data = useSelector((state) => state.warehouseSlice.filtered_warehouse_data);
     const selected_items = useSelector((state) => state.warehouseSlice.selected_items);
     const order_information_toggle = useSelector((state) => state.warehouseSlice.order_information_toggle);
+
     const order_update_toggle = useSelector((state) => state.warehouseSlice.order_update_toggle);
     const order_update_message_box = useSelector((state) => state.warehouseSlice.order_update_message_box);
     const order_update_error_message = useSelector((state) => state.warehouseSlice.order_update_error_message);
+
+    const addstock_toggle = useSelector((state) => state.warehouseSlice.addstock_toggle);
+
+    const addstock_message_box = useSelector((state) => state.warehouseSlice.addstock_message_box);
+    const addstock_error_message = useSelector((state) => state.warehouseSlice.addstock_error_message);
+
 
     const [show_message_box, setShowMessageBox] = useState(false);
     const [show_message_box_message, setShowMessageBoxMessage] = useState('');
@@ -113,15 +124,15 @@ function WarehousePage() {
             setIsUserDropDown(false)
         }
     }
-    const showSelectedItemInform = () => {
-        if(selected_items.length > 1){
-            showMessageBoxMessageHandle('inform', 'Cant get inform two or more column same time');
-        }
-        else{
-            dispatch(setOrderSelectionInformationToggleTrue());
-            dispatch(WarehouseService.getPOById(selected_items[0]));
-        }
-    }
+    // const showSelectedItemInform = () => {
+    //     if(selected_items.length > 1){
+    //         showMessageBoxMessageHandle('inform', 'Cant get inform two or more column same time');
+    //     }
+    //     else{
+    //         dispatch(setOrderSelectionInformationToggleTrue());
+    //         dispatch(WarehouseService.getPOById(selected_items[0]));
+    //     }
+    // }
 
     // Show Message Box Message Controller
     const showMessageBoxMessageHandle = (key, value) => {
@@ -137,8 +148,20 @@ function WarehousePage() {
             setShowMessageBox(true);
             setShowMessageBoxMessage(value)
         }
+        else if (key === 'addstock') {
+            setShowMessageBox(true);
+            setShowMessageBoxMessage(value)
+        }
     }
 
+    // Toggle Message Box after adding stock the elemant
+    useEffect(()=>{
+        if(addstock_message_box === true){
+            setTimeout(()=>{
+                dispatch(setAddStockMessageBoxFalse());
+            },2000)
+        }
+    },[addstock_message_box, dispatch])
     // Show Message Box Controller
     useEffect(() => {
         if (show_message_box) {
@@ -167,6 +190,7 @@ function WarehousePage() {
 
         <div className='flex flex-col items-center'>
 
+
             {
                 show_message_box && <MessageBox message={show_message_box_message} color={'bg-red-500'} />
             }
@@ -176,11 +200,19 @@ function WarehousePage() {
             }
 
             {
+                addstock_message_box && <MessageBox message={addstock_error_message} color={'bg-green-500'} />
+            }
+
+            {
                 order_information_toggle && <OrderInformationComponent />
             }
 
             {
                 order_update_toggle && <OrderUpdateComponent />
+            }
+
+            {
+                addstock_toggle && <AddStockComponent />
             }
 
             {/* Page Title */}
@@ -218,10 +250,22 @@ function WarehousePage() {
 
                         {/* Working Buttons Section */}
                         <div className='flex justify-end text-xs w-full' style={{ fontWeight: 600 }}>
-                            <button className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400  hover:bg-orange-400 hover:text-white duration-200' >Add To Stock</button>
+                            <button onClick={()=>{
+                                if(selected_items.length === 0){
+                                    showMessageBoxMessageHandle('addstock', 'Please, Choose at least one row to adding stock');
+                                }
+                                else{
+                                    dispatch(addStockToggleTrue());
+                                    dispatch(WarehouseService.fetchSelectedItemsById(selected_items));
+                                }
+                            }}
+                                className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400  hover:bg-orange-400 hover:text-white duration-200' >Add To Stock</button>
                             <button onClick={()=>{
                                 if(selected_items.length > 1){
                                     showMessageBoxMessageHandle('update', 'Cant update two or more column same time');
+                                }
+                                else if(selected_items.length === 0){
+                                    showMessageBoxMessageHandle('update', 'Please Choose at least one row');
                                 }
                                 else{
                                     dispatch(setOrderSelectionUpdateToggleTrue());
@@ -233,7 +277,18 @@ function WarehousePage() {
                                 showMessageBoxMessageHandle('delete', 'Dont have authorization for deleting');
                             }}
                                 className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400 hover:bg-orange-400 hover:text-white duration-200' >Delete Row</button>
-                            <button onClick={showSelectedItemInform}
+                            <button onClick={()=>{
+                                if(selected_items.length > 1){
+                                    showMessageBoxMessageHandle('inform', 'Cant get inform two or more column same time');
+                                }
+                                else if(selected_items.length === 0){
+                                    showMessageBoxMessageHandle('inform', 'Please Choose at least one row');
+                                }
+                                else{
+                                    dispatch(setOrderSelectionInformationToggleTrue());
+                                    dispatch(WarehouseService.getPOById(selected_items[0]));
+                                }
+                            }}
                                     className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400 hover:bg-orange-400 hover:text-white duration-200' >Get Information</button>
                             <button onClick={resetFunc} className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400 hover:bg-orange-400 hover:text-white duration-200' >Clear Filter</button>
                             {/*<button onClick={()=>{*/}

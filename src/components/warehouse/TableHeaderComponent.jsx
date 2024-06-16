@@ -64,6 +64,12 @@ function CreateTableNavbarHeaderComponent() {
                 Qty
               </th>
             }
+            { /* Qty */
+                warehouse_column_filter.leftover &&
+                <th scope="col" className="px-6 py-1 text-center border w-28 font-medium ">
+                  Leftover
+                </th>
+            }
             { /* Unit */
                 warehouse_column_filter.unit &&
                 <th scope="col" className="px-6 py-1 text-center border w-28 font-medium ">

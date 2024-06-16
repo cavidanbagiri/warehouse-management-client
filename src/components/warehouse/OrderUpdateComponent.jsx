@@ -5,8 +5,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
     setOrderSelectionUpdateToggleFalse,
     setOrderUpdateMessageBoxTrue,
-    setorderUpdateErrorMessage,
-    setOrderUpdateMessageBoxFalse
+    setOrderUpdateErrorMessage,
+    // setOrderUpdateMessageBoxFalse
 } from '../../store/warehouse-store';
 import DropDownComponent from '../common/DropdownComponent';
 import { filterOrdered, filterCompany } from '../../store/common-store';
@@ -68,15 +68,19 @@ function OrderUpdateComponent() {
     }
     const postFunc = () => {
         let cond = true;
-
+        if(po_data.leftover <= 0){
+            cond = false;
+            dispatch(setOrderUpdateMessageBoxTrue());
+            dispatch(setOrderUpdateErrorMessage({message: 'Leftover is 0, Cant change quantity'}));
+        }
         if(material_name.toString().trim().length === 0){
             dispatch(setOrderUpdateMessageBoxTrue());
-            dispatch(setorderUpdateErrorMessage({message: 'Material name cant be empty'}))
+            dispatch(setOrderUpdateErrorMessage({message: 'Material name cant be empty'}))
             cond = false;
         }
         else if(qty <= 0) {
             dispatch(setOrderUpdateMessageBoxTrue());
-            dispatch(setorderUpdateErrorMessage({message: 'Quantity Cant be less than zero'}))
+            dispatch(setOrderUpdateErrorMessage({message: 'Quantity Cant be less than zero'}))
             cond = false;
         }
         const updated_data = {
@@ -92,9 +96,8 @@ function OrderUpdateComponent() {
             po: po,
         }
         if(cond){
-            console.log('data ', updated_data);
             dispatch(WarehouseService.updatePO(updated_data))
-            dispatch(setorderUpdateErrorMessage({message: 'Data Successfully Updated'}))
+            dispatch(setOrderUpdateErrorMessage({message: 'Data Successfully Updated'}))
         }
 
     }
@@ -122,12 +125,6 @@ function OrderUpdateComponent() {
             }))
         }
     },[po_data]);
-
-    // useEffect(()=>{
-    //     setTimeout(()=>{
-    //         dispatch(setOrderUpdateMessageBoxFalse());
-    //     },2000)
-    // },[order_update_message_box])
 
     return (
         <div className='flex flex-row justify-between z-10 fixed top-0 right-0 w-full h-full bg-black bg-opacity-30'>

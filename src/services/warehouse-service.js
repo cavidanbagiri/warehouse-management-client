@@ -1,5 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import $api from "../http";
+import {unstable_ClassNameGenerator} from "@mui/material";
+import * as response from "autoprefixer";
 
 
 class WarehouseService {
@@ -80,6 +82,35 @@ class WarehouseService {
             }).catch((err) => {
                 console.log('fetch warehouse data Error happen : ', err);
             });
+            return data;
+        }
+    )
+
+    static fetchSelectedItemsById = createAsyncThunk(
+        '/warehouse/fetselecteditems',
+        async(selected_ids) => {
+            let data = {};
+            await $api.post(`/warehouse/fetchselecteditems/`, selected_ids)
+            .then((response) => {
+                data = response.data;
+                console.log('selected ', data);
+            }).catch((err) => {
+                console.log('fetch selected ids error : ', err);
+            })
+            return data;
+        }
+    )
+
+    static receiveToStock = createAsyncThunk(
+        '/warehouse/receivetostock',
+        async(selected_items) => {
+            let data = {};
+            await $api.post(`/warehouse/receivetostock`, selected_items)
+                .then((respond)=>{
+                    data = respond.data;
+                }).catch((err)=>{
+                    console.log('receive tostock Error : ', err);
+                });
             return data;
         }
     )
