@@ -6,7 +6,6 @@ import {
     setOrderSelectionUpdateToggleFalse,
     setOrderUpdateMessageBoxTrue,
     setOrderUpdateErrorMessage,
-    // setOrderUpdateMessageBoxFalse
 } from '../../store/warehouse-store';
 import DropDownComponent from '../common/DropdownComponent';
 import { filterOrdered, filterCompany } from '../../store/common-store';
@@ -31,7 +30,7 @@ function OrderUpdateComponent() {
     const [unit, setUnit] = useState('');
     const [po, setPO] = useState('');
     const [price, setPrice] = useState(0);
-    
+
     const [company, setCompany] = useState({
         companyId: 0,
         company_name: ''
@@ -68,19 +67,19 @@ function OrderUpdateComponent() {
     }
     const postFunc = () => {
         let cond = true;
-        if(po_data.leftover <= 0){
+        if (po_data.leftover <= 0) {
             cond = false;
             dispatch(setOrderUpdateMessageBoxTrue());
-            dispatch(setOrderUpdateErrorMessage({message: 'Leftover is 0, Cant change quantity'}));
+            dispatch(setOrderUpdateErrorMessage({ message: 'Leftover is 0, Cant change quantity' }));
         }
-        if(material_name.toString().trim().length === 0){
+        if (material_name.toString().trim().length === 0) {
             dispatch(setOrderUpdateMessageBoxTrue());
-            dispatch(setOrderUpdateErrorMessage({message: 'Material name cant be empty'}))
+            dispatch(setOrderUpdateErrorMessage({ message: 'Material name cant be empty' }))
             cond = false;
         }
-        else if(qty <= 0) {
+        else if (qty <= 0) {
             dispatch(setOrderUpdateMessageBoxTrue());
-            dispatch(setOrderUpdateErrorMessage({message: 'Quantity Cant be less than zero'}))
+            dispatch(setOrderUpdateErrorMessage({ message: 'Quantity Cant be less than zero' }))
             cond = false;
         }
         const updated_data = {
@@ -95,15 +94,15 @@ function OrderUpdateComponent() {
             type: material_type,
             po: po,
         }
-        if(cond){
+        if (cond) {
             dispatch(WarehouseService.updatePO(updated_data))
-            dispatch(setOrderUpdateErrorMessage({message: 'Data Successfully Updated'}))
+            dispatch(setOrderUpdateErrorMessage({ message: 'Data Successfully Updated' }))
         }
 
     }
 
-    useEffect(()=>{
-        if(po_data?.CompanyModel?.company_id){
+    useEffect(() => {
+        if (po_data?.CompanyModel?.company_id) {
             setCompany((each) => ({
                 ...each,
                 companyId: po_data?.CompanyModel?.company_id,
@@ -117,14 +116,14 @@ function OrderUpdateComponent() {
             setUnit(po_data.unit);
             setPrice(po_data.price);
         }
-        if(po_data?.UserModel?.user_id){
+        if (po_data?.UserModel?.user_id) {
             setOrdered((each) => ({
                 ...each,
                 orderedId: po_data?.UserModel?.user_id,
-                ordered_name: po_data?.UserModel?.firstName.charAt(0).toUpperCase()+po_data?.UserModel?.firstName.slice(1) + ' ' + po_data?.UserModel?.lastName.charAt(0).toUpperCase()+po_data?.UserModel?.lastName.slice(1)
+                ordered_name: po_data?.UserModel?.firstName.charAt(0).toUpperCase() + po_data?.UserModel?.firstName.slice(1) + ' ' + po_data?.UserModel?.lastName.charAt(0).toUpperCase() + po_data?.UserModel?.lastName.slice(1)
             }))
         }
-    },[po_data]);
+    }, [po_data]);
 
     return (
         <div className='flex flex-row justify-between z-10 fixed top-0 right-0 w-full h-full bg-black bg-opacity-30'>
@@ -144,14 +143,11 @@ function OrderUpdateComponent() {
                     </span>
                 </div>
                 <div className='flex flex-col p-4 '>
-                        {/* {
-                            material_type
-                        } */}
                     {/* Company Section */}
-                    <div className='flex'>
+                    <div className='flex items-center justify-between'>
                         <span className='w-1/3'>Company Name </span>
-                        <div className='relative w-full'>
-                            <button className='text-xs bg-white border border-gray-300  rounded-lg  p-2 w-full text-ellipsis overflow-hidden text-nowrap outline-none' onClick={() => {
+                        <div className='relative'>
+                            <button className='text-xs bg-white border border-gray-300 w-96 rounded-lg p-2 text-ellipsis overflow-hidden text-nowrap outline-none' onClick={() => {
                                 setIsCompanyDropDown(!isCompanyDropDown)
                             }}>
                                 {company.companyId === '' ? 'Company' : company.company_name}
@@ -169,64 +165,64 @@ function OrderUpdateComponent() {
                     </div>
 
                     {/* Ordered Side */}
-                    <div className='flex mt-5'>
+                    <div className='flex items-center justify-between mt-3'>
                         <span className='w-1/3'>Ordered Name </span>
-                        <div className='relative w-full'>
-                            <button className='text-xs bg-white border border-gray-300  rounded-lg  p-2 w-full text-ellipsis overflow-hidden text-nowrap outline-none' onClick={() => {
+                        <div className='relative'>
+                            <button className='text-xs bg-white border border-gray-300 w-64 rounded-lg  p-2  text-ellipsis overflow-hidden text-nowrap outline-none' onClick={() => {
                                 setIsUserDropDown(!isUserDropDown)
                             }}>
                                 {ordered.orderedId === '' ? 'Orderer' : ordered.ordered_name}
                             </button>
                             {
                                 isUserDropDown && <DropDownComponent
-                                data={filter_users}
-                                text_name={'username'}
-                                input_name={'Orderer...'}
-                                listenFunc={listenUser}
-                                filterChange={filterChange}
-                            />
+                                    data={filter_users}
+                                    text_name={'username'}
+                                    input_name={'Orderer...'}
+                                    listenFunc={listenUser}
+                                    filterChange={filterChange}
+                                />
                             }
                         </div>
                     </div>
-                    
+
                     {/* Doc Number Side */}
-                    <div className='flex mt-5'>
+                    <div className='flex items-center justify-between mt-3'>
                         <span className='w-1/3'>Document Number </span>
-                        <div className='relative w-full'>
-                        <input value={documentnum} className='placeholder-black text-xs bg-white border border-gray-300 rounded-lg w-full p-2 outline-none text-center' type="text" placeholder='Document' onChange={(e) => {
-                            setDocumentNum(e.target.value);
-                        }} />
+                        <div className='relative'>
+                            <input value={documentnum} className='placeholder-black text-xs bg-white border border-gray-300 rounded-lg p-2 outline-none text-center' type="text" placeholder='Document' onChange={(e) => {
+                                setDocumentNum(e.target.value);
+                            }} />
                         </div>
                     </div>
 
                     {/* Material Name Side */}
-                    <div className='flex mt-5'>
+                    <div className='flex items-center justify-between mt-3'>
                         <span className='w-1/3'>Material Name </span>
                         <div className='relative w-full'>
-                        <input value={material_name} className='placeholder-black text-xs bg-white border border-gray-300 rounded-lg w-full  p-2 outline-none text-center ' type="text" placeholder='Material Name' onChange={(e) => {
-                            setMaterialName(e.target.value);
-                        }} />
+                            <input value={material_name} className='placeholder-black text-xs bg-white border border-gray-300 w-full rounded-lg p-2 outline-none text-center ' type="text" placeholder='Material Name' onChange={(e) => {
+                                setMaterialName(e.target.value);
+                            }} />
                         </div>
                     </div>
 
                     {/* Material Qty Side */}
-                    <div className='flex mt-5'>
+                    <div className='flex items-center justify-between mt-3'>
                         <span className='w-1/3'>Quantity </span>
-                        <div className='relative w-full'>
-                            <input value={qty} className='placeholder-black text-xs bg-white border border-gray-300 rounded-lg w-full  p-2 outline-none text-center ' type="text" placeholder='Quantity' onChange={(e) => {
+                        <div className='relative'>
+                            <input value={qty} className='placeholder-black text-xs bg-white border border-gray-300 rounded-lg p-2 outline-none text-center ' type="text" placeholder='Quantity' onChange={(e) => {
                                 setQty(e.target.value);
                             }} />
                         </div>
                     </div>
 
                     {/* Matterial Type Side */}
-                    <div className='flex mt-5'>
+                    <div className='flex items-center justify-between mt-3'>
                         <span className='w-1/3'>Unit </span>
-                        <div className='relative w-full'>
-                            <select value={unit} className='w-full border p-2 outline-none rounded-lg text-xs text-center'
-                                    onChange={(e)=>{
-                                        setUnit(e.target.value);
-                                    }}>
+                        <div className='relative'>
+                            <select value={unit} className='w-48 border p-2 outline-none rounded-lg text-xs text-center'
+                                onChange={(e) => {
+                                    setUnit(e.target.value);
+                                }}>
                                 <option value="pcs">Pcs</option>
                                 <option value="ton">Ton</option>
                                 <option value="kg">Kg</option>
@@ -239,49 +235,49 @@ function OrderUpdateComponent() {
                     </div>
 
                     {/* Material Qty Side */}
-                    <div className='flex mt-5'>
+                    <div className='flex items-center justify-between mt-3'>
                         <span className='w-1/3'>Price </span>
-                        <div className='relative w-full'>
-                            <input value={price} className='placeholder-black text-xs bg-white border border-gray-300 rounded-lg w-full  p-2 outline-none text-center ' type="text" placeholder='Price' onChange={(e) => {
+                        <div className='relative'>
+                            <input value={price} className='placeholder-black text-xs bg-white border border-gray-300 rounded-lg w-36  p-2 outline-none text-center ' type="text" placeholder='Price' onChange={(e) => {
                                 setPrice(e.target.value);
                             }} />
                         </div>
                     </div>
 
                     {/* Material Name Side */}
-                    <div className='flex mt-5'>
+                    <div className='flex items-center justify-between mt-3'>
                         <span className='w-1/3'>Order Num </span>
-                        <div className='relative w-full'>
+                        <div className='relative'>
                             <input value={po}
-                                   className='placeholder-black text-xs bg-white border border-gray-300 rounded-lg w-full  p-2 outline-none text-center '
-                                   type="text" placeholder='Order Num' onChange={(e) => {
-                                setPO(e.target.value);
-                            }}/>
+                                className='placeholder-black text-xs bg-white border border-gray-300 rounded-lg   p-2 outline-none text-center '
+                                type="text" placeholder='Order Num' onChange={(e) => {
+                                    setPO(e.target.value);
+                                }} />
                         </div>
                     </div>
 
                     {/* Matterial Type Side */}
-                    <div className='flex mt-5'>
+                    <div className='flex items-center justify-between mt-3'>
                         <span className='w-1/3'>Material Type </span>
-                        <div className='relative w-full'>
-                        <select onChange={(event)=>{
-                            setMaterialType(event.target.value);
-                        }}
-                         className='w-full border p-2 outline-none rounded-lg text-xs'
-                        value={material_type}>
-                            <option value="Project">Project</option>
-                            <option value="Consumable">Consumable</option>
-                            <option value="Fixture">Fixture</option>
-                            <option value="Hand Tools">Hand Tools</option>
-                            <option value="Safety">Safety</option>
-                        </select>
+                        <div className='relative '>
+                            <select onChange={(event) => {
+                                setMaterialType(event.target.value);
+                            }}
+                                className='w-full border p-2 outline-none rounded-lg text-xs'
+                                value={material_type}>
+                                <option value="Project">Project</option>
+                                <option value="Consumable">Consumable</option>
+                                <option value="Fixture">Fixture</option>
+                                <option value="Hand Tools">Hand Tools</option>
+                                <option value="Safety">Safety</option>
+                            </select>
                         </div>
                     </div>
 
                     {/* Button Field */}
                     <div className='flex justify-end mt-10'>
                         <button onClick={postFunc}
-                         className='px-6 py-3 bg-green-500 rounded-lg text-white'>Post</button>
+                            className='px-6 py-3 bg-green-500 rounded-lg text-white'>Post</button>
                     </div>
                 </div>
             </div>

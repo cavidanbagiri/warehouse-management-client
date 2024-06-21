@@ -13,6 +13,7 @@ import MessageBox from '../layouts/MessageBox';
 import OrderInformationComponent from '../components/warehouse/OrderInformationComponent';
 import OrderUpdateComponent from '../components/warehouse/OrderUpdateComponent';
 import TableColumnFilterComponent from "../components/warehouse/TableColumnFilterComponent.jsx";
+import AddStockComponent from "../components/warehouse/AddStockComponent.jsx";
 
 import { IoFilterOutline } from "react-icons/io5";
 
@@ -22,12 +23,10 @@ import {
     setOrderSelectionInformationToggleTrue,
     setOrderSelectionUpdateToggleTrue,
     setOrderUpdateMessageBoxFalse,
-    clearSelected,
     addStockToggleTrue,
-    addStockToggleFalse,
-    setAddStockMessageBoxFalse
+    setAddStockMessageBoxFalse,
+    clearSelected,
 } from "../store/warehouse-store.js";
-import AddStockComponent from "../components/warehouse/AddStockComponent.jsx";
 
 function WarehousePage() {
 
@@ -124,15 +123,7 @@ function WarehousePage() {
             setIsUserDropDown(false)
         }
     }
-    // const showSelectedItemInform = () => {
-    //     if(selected_items.length > 1){
-    //         showMessageBoxMessageHandle('inform', 'Cant get inform two or more column same time');
-    //     }
-    //     else{
-    //         dispatch(setOrderSelectionInformationToggleTrue());
-    //         dispatch(WarehouseService.getPOById(selected_items[0]));
-    //     }
-    // }
+
 
     // Show Message Box Message Controller
     const showMessageBoxMessageHandle = (key, value) => {
@@ -154,7 +145,7 @@ function WarehousePage() {
         }
     }
 
-    // Toggle Message Box after adding stock the elemant
+    // Toggle Message Box after adding stock the element
     useEffect(()=>{
         if(addstock_message_box === true){
             setTimeout(()=>{
@@ -180,7 +171,7 @@ function WarehousePage() {
                 dispatch(setOrderUpdateMessageBoxFalse());
             },2000)
         }
-    },[order_update_message_box]);
+    },[order_update_message_box, dispatch]);
     useEffect(() => {
         console.log('filtered data work ');
         dispatch(WarehouseService.fetchWarehouseData());
@@ -241,6 +232,7 @@ function WarehousePage() {
                                     : item.type === 'Project' ? <MaterialTypeInform color={'border-green-500'} key={index + 1} item={item} getTypeFilter={getTypeFilter} />
                                         : item.type === 'Fixture' ? <MaterialTypeInform color={'border-blue-500'} key={index + 1} item={item} getTypeFilter={getTypeFilter} />
                                             : item.type === 'Safety' ? <MaterialTypeInform color={'border-pink-500'} key={index + 1} item={item} getTypeFilter={getTypeFilter} />
+                                            : item.type === 'Administrative' ? <MaterialTypeInform color={'border-sky-500'} key={index + 1} item={item} getTypeFilter={getTypeFilter} />
                                                 : <MaterialTypeInform key={index + 1} color={'border-orange-500'} item={item} getTypeFilter={getTypeFilter} />
                             ))
                         }
@@ -291,9 +283,9 @@ function WarehousePage() {
                             }}
                                     className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400 hover:bg-orange-400 hover:text-white duration-200' >Get Information</button>
                             <button onClick={resetFunc} className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400 hover:bg-orange-400 hover:text-white duration-200' >Clear Filter</button>
-                            {/*<button onClick={()=>{*/}
-                            {/*    dispatch(clearSelected());*/}
-                            {/*}} className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400 hover:bg-orange-400 hover:text-white duration-200' >Reset Select</button>*/}
+                            <button onClick={()=>{
+                                dispatch(clearSelected());
+                            }} className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400 hover:bg-orange-400 hover:text-white duration-200' >Reset Select</button>
                         </div>
 
                         {/* Table Column Name Section */}

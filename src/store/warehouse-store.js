@@ -100,6 +100,8 @@ export const warehouseSlice = createSlice({
         updatefetchSelectedItems: (state, action) => {
             const item = state.fetch_selected_items.find((item)=>item.id === action.payload.id);
             item['entered_amount'] = action.payload.entered_amount;
+            item['serial_number'] = action.payload.serial_number;
+            item['material_id'] = action.payload.material_id;
         }
 
     },
@@ -112,7 +114,6 @@ export const warehouseSlice = createSlice({
         })
         builder.addCase(WarehouseService.filterWarehouseData.fulfilled, (state, action)=>{
             if(action.payload!==null){
-                console.log('if ');
                 state.filtered_warehouse_data = action.payload;
             }
         })
@@ -141,14 +142,20 @@ export const warehouseSlice = createSlice({
                 state.fetch_selected_items = action.payload;
             }
         })
-        builder.addCase(WarehouseService.receiveToStock.pending, (state, action)=>{
+        builder.addCase(WarehouseService.receiveToStock.pending, (state)=>{
             state.addstock_pending = true;
         })
         builder.addCase(WarehouseService.receiveToStock.fulfilled, (state, action)=>{
-            if(action.payload!==null){
+            if(action.payload === 200){
                 state.addstock_message_box = true;
                 state.addstock_toggle = false;
-                state.addstock_pending = false
+                state.addstock_pending = false;
+                state.addstock_error_message = 'Successfully Add To Stock';
+            }
+            else{
+                state.addstock_message_box = true;
+                state.addstock_pending = false;
+                state.addstock_error_message = 'Entering amount greater than leftover.';
             }
         })
     }

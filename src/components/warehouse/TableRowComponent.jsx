@@ -4,13 +4,15 @@ import moment from 'moment';
 
 import Checkbox from '@mui/material/Checkbox';
 import { BsThreeDotsVertical } from "react-icons/bs";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import WarehouseService from "../../services/warehouse-service.js";
 
 function TableRowComponent(props) {
 
     const dispatch = useDispatch();
+
+    const selected_items = useSelector(state => state.warehouseSlice.selected_items);
 
     const [certificate, setCertificate] = useState(false);
     const [passport, setPassport] = useState(false);
@@ -19,6 +21,13 @@ function TableRowComponent(props) {
     const [passport_opposite, setPassportOpposite] = useState(false);
 
     const [checked, setChecked] = useState(false);
+
+    useEffect(() => {
+        console.log('selected_items.length : ', selected_items.length);
+        if(selected_items.length === 0){
+            setChecked(false);
+        }
+    }, );
 
     return (
         <tr

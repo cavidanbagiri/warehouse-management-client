@@ -265,7 +265,7 @@ function CreateMaterialPage() {
               </span>
               <span className='bg-gray-200 h-2 rounded-lg w-36'>
               </span>
-              <span style={{ fontWeight: 600 }} className='text-green-500 text-sm ml-4'>
+              <span style={{fontWeight: 600}} className='text-green-500 text-sm ml-4'>
                 {type_data.Project}
               </span>
             </div>
@@ -275,7 +275,7 @@ function CreateMaterialPage() {
               </span>
               <span className='bg-gray-200 h-2 rounded-lg w-36'>
               </span>
-              <span style={{ fontWeight: 600 }} className='text-green-500 text-sm ml-4'>
+              <span style={{fontWeight: 600}} className='text-green-500 text-sm ml-4'>
                 {type_data.Fixture}
               </span>
             </div>
@@ -285,7 +285,7 @@ function CreateMaterialPage() {
               </span>
               <span className='bg-gray-200 h-2 rounded-lg w-36'>
               </span>
-              <span style={{ fontWeight: 600 }} className='text-green-500 text-sm ml-4'>
+              <span style={{fontWeight: 600}} className='text-green-500 text-sm ml-4'>
                 {type_data.Consumable}
               </span>
             </div>
@@ -294,8 +294,10 @@ function CreateMaterialPage() {
 
           <div className='flex flex-col items-end'>
             <div className='px-4 text-sm flex items-center'>
-              <span style={{ fontWeight: 500 }} className='text-xs text-gray-400'>Select Currency</span>
-              <select className=' mx-2 text-xs border-2 border-orange-400 text-orange-400 font-bold outline-none rounded-md' defaultValue={'rub'} name="" id="" onChange={(e) => {
+              <span style={{fontWeight: 500}} className='text-xs text-gray-400'>Select Currency</span>
+              <select
+                  className=' mx-2 text-xs border-2 border-orange-400 text-orange-400 font-bold outline-none rounded-md'
+                  defaultValue={'rub'} name="" id="" onChange={(e) => {
                 setCurrency(e.target.value);
               }}>
                 <option value='rub'>Rub</option>

@@ -107,9 +107,13 @@ class WarehouseService {
             let data = {};
             await $api.post(`/warehouse/receivetostock`, selected_items)
                 .then((respond)=>{
-                    data = respond.data;
+
+                    console.log('normal work',respond);
+                    data = respond.status;
                 }).catch((err)=>{
                     console.log('receive tostock Error : ', err);
+                    console.log(err.response.status);
+                    data = err.response.data.msg;
                 });
             return data;
         }

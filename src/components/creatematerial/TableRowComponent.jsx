@@ -70,6 +70,7 @@ function TableRowComponent(props) {
                     <option value="Fixture">Fixture</option>
                     <option value="Safety">Safety</option>
                     <option value="Hand Tools">Hand Tools</option>
+                    <option value="Administrative">Administrative</option>
                 </select>
             </td>
             <td>

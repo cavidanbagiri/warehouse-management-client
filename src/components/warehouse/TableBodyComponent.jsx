@@ -25,7 +25,6 @@ function TableBodyComponent() {
     }
 
     const doubleClickInform = (po_id) => {
-        console.log('worj : ', po_id);
         dispatch(setOrderSelectionInformationToggleTrue());
         dispatch(WarehouseService.getPOById(po_id));
     }
