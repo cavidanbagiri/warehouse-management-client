@@ -23,11 +23,10 @@ function TableRowComponent(props) {
     const [checked, setChecked] = useState(false);
 
     useEffect(() => {
-        console.log('selected_items.length : ', selected_items.length);
         if(selected_items.length === 0){
             setChecked(false);
         }
-    }, );
+    }, [selected_items]);
 
     return (
         <tr

@@ -5,7 +5,7 @@ import $api from "../http/index.js";
 class StockService{
 
     static getcStocks = createAsyncThunk(
-        '/api/stock/getcStocks',
+        '/api/stock/getStocks',
         async ()=>{
             let data = {};
             await $api.get('/stock')
@@ -35,6 +35,54 @@ class StockService{
                 }).catch((err) => {
                     console.log('fetch warehouse data Error happen : ', err);
                 });
+            return data;
+        }
+    )
+
+    static getById = createAsyncThunk(
+        '/stock/:id',
+        async(id) => {
+            let data = {};
+            await $api.get(`/stock/${id}`).
+            then((response)=>{
+                data = response.data;
+                console.log('comming data ',data);
+            })
+                .catch((err)=>{
+                    console.log('Get Row Id Error : ', err);
+                })
+            return data;
+        }
+    )
+
+    static updateStock = createAsyncThunk(
+        '/stock/update',
+        async(updated_data) => {
+            let data = {};
+            await $api.post(`/stock/update`, updated_data).
+            then((response)=>{
+                data.status = response.status;
+            })
+                .catch((err)=>{
+                    data.status = 404;
+                })
+            return data;
+        }
+    )
+
+    static returnToWarehouse = createAsyncThunk(
+        '/stock/return',
+        async(updated_data) => {
+            let data = {};
+            await $api.post(`/stock/return`, updated_data).
+            then((response)=>{
+                console.log('respond is : ', response);
+                data.status = response.status;
+            })
+                .catch((err)=>{
+                    console.log('Return Id Error : ', err);
+                    data.status = err.status;
+                })
             return data;
         }
     )

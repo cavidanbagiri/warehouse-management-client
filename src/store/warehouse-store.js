@@ -59,13 +59,13 @@ export const warehouseSlice = createSlice({
         setOrderSelectionInformationToggleFalse: (state) => {
             state.order_information_toggle = false;
         },
+
         setOrderSelectionUpdateToggleTrue: (state) => {
             state.order_update_toggle = true;
         },
         setOrderSelectionUpdateToggleFalse: (state) => {
             state.order_update_toggle = false;
         },
-
         setOrderUpdateMessageBoxFalse: (state) => {
             state.order_update_message_box = false;
         },
