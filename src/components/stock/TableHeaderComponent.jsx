@@ -110,6 +110,12 @@ function CreateTableNavbarHeaderComponent() {
                   Ordered
                 </th>
             }
+            { /* Ordered */
+                stock_column_filter.group &&
+                <th scope="col" className="px-6 py-1 text-center border font-medium ">
+                  Group
+                </th>
+            }
             { /* PO */
                 stock_column_filter.po &&
                 <th scope="col" className="px-6 py-1 text-center border font-medium w-28">

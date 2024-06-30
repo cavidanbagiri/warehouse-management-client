@@ -8,6 +8,8 @@ import adminSlice from './admin-store';
 import warehouseSlice from './warehouse-store';
 import stockSlice from "./stock-store.jsx";
 
+
+
 export const store = configureStore({
   reducer: {
     userSlice: userSlice,
@@ -18,4 +20,5 @@ export const store = configureStore({
     warehouseSlice,
     stockSlice
   },
+  // middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
 })

@@ -76,12 +76,11 @@ class StockService{
             let data = {};
             await $api.post(`/stock/return`, updated_data).
             then((response)=>{
-                console.log('respond is : ', response);
-                data.status = response.status;
+                data = response;
             })
                 .catch((err)=>{
                     console.log('Return Id Error : ', err);
-                    data.status = err.status;
+                    data = err.response;
                 })
             return data;
         }

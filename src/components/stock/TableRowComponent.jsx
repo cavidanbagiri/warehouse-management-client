@@ -118,6 +118,12 @@ function TableRowComponent(props) {
                 </td>
             }
             {
+                props.stock_column_filter.group &&
+                <td className='pl-1 text-center'>
+                    {props.item.group_name.charAt(0).toUpperCase() + props.item.group_name.slice(1)}
+                </td>
+            }
+            {
                 props.stock_column_filter.po &&
                 <td>
                     {props.item.po === '' ? '-' : props.item.po}

@@ -4,6 +4,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import StockService from "../services/stock-service.js";
 
 const initialState = {
+    po_data: {},
     filter_stock_data: [],
     stock_column_filter:{
         date: true,
@@ -19,22 +20,22 @@ const initialState = {
         price: false,
         currency: false,
         ordered: true,
+        group: true,
         po: false,
-        certificate: true,
-        passport: true
     },
     selected_items: [],
 
     order_update_toggle: false,
     order_update_message_box: false,
     order_update_error_message: '',
+    order_update_pending: false,
+
 
     order_return_toggle: false,
     order_return_message_box: false,
     order_return_error_message: '',
+    order_return_pending: false,
 
-
-    po_data: {},
 
 }
 
@@ -109,21 +110,34 @@ export const stockSlice = createSlice({
                 // console.log('second coming data : ', state.po_data);
             }
         })
+        builder.addCase(StockService.updateStock.pending, (state, action)=>{
+            state.order_update_pending = true;
+        })
         builder.addCase(StockService.updateStock.fulfilled, (state, action)=>{
             if(action.payload.status === 201){
                 state.order_update_message_box = true;
                 state.order_update_error_message = 'Successfully Update';
+                state.order_update_pending = false;
             }
+        })
+        builder.addCase(StockService.returnToWarehouse.pending, (state, action)=>{
+            state.order_return_pending = true
         })
         builder.addCase(StockService.returnToWarehouse.fulfilled, (state, action)=>{
             if(action.payload.status === 201){
                 state.order_return_message_box = true;
                 state.order_return_error_message = 'Successfully Returned';
+                state.order_return_pending = false
+            }
+            else if(action.payload.status === 500){
+                state.order_return_message_box = true;
+                state.order_return_error_message = action.payload.data;
+                state.order_return_pending = false
             }
             else{
-                state.order_return_message_box = true;
-                state.order_return_error_message = 'Returned Amount Is Bigger than stock';
+                console.log('Internal Server Error');
             }
+            console.log('payload is L ',action.payload)
         })
 
     }
