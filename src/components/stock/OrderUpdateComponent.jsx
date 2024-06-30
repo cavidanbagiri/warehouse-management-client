@@ -14,7 +14,7 @@ function OrderUpdateComponent() {
 
     const dispatch = useDispatch();
     const po_data = useSelector((state) => state.stockSlice.po_data);
-    const order_update_pending = useSelector((state) => state.stockSlice.order_update_pending);
+    const order_update = useSelector((state) => state.stockSlice.order_update);
 
     const [material_name, setMaterialName] = useState('');
     const [stock, setStock] = useState(0);
@@ -123,7 +123,7 @@ function OrderUpdateComponent() {
 
                     {/* Button Field */}
                     {
-                        !order_update_pending ?
+                        !order_update.order_update_pending ?
 
                             <div className='flex justify-end mt-10'>
                                 <button onClick={postFunc}

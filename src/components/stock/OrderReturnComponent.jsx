@@ -9,6 +9,7 @@ import {
     setOrderReturnMessageBoxTrue,
     setOrderReturnErrorMessage,
     setOrderSelectionReturnToggleFalse,
+    setOrderReturnColorCond,
 } from '../../store/stock-store.jsx';
 import StockService from "../../services/stock-service.js";
 
@@ -18,7 +19,7 @@ function OrderUpdateComponent() {
 
     const dispatch = useDispatch();
     const po_data = useSelector((state) => state.stockSlice.po_data);
-    const order_return_pending = useSelector((state) => state.stockSlice.order_return_pending);
+    const order_return = useSelector((state) => state.stockSlice.order_return);
 
     const [material_name, setMaterialName] = useState('');
     const [qty, setQty] = useState(0);
@@ -41,10 +42,12 @@ function OrderUpdateComponent() {
         }
         if(cond){
             dispatch(StockService.returnToWarehouse(updated_data));
+            dispatch(setOrderReturnColorCond({color:'bg-green-500'}));
             dispatch(setOrderUpdateErrorMessage({ message: 'Data Successfully Updated' }));
         }
         else{
             dispatch(setOrderReturnMessageBoxTrue());
+            dispatch(setOrderReturnColorCond({color:'bg-red-500'}));
             dispatch(setOrderReturnErrorMessage({ message: 'Entering Amount greater than stock' }));
         }
 
@@ -160,7 +163,7 @@ function OrderUpdateComponent() {
 
                     {/* Button Field */}
                     {
-                        !order_return_pending ?
+                        !order_return.order_return_pending ?
                     <div className='flex justify-end mt-10'>
                             <button onClick={postFunc}
                                     className='px-6 py-3 bg-green-500 rounded-lg text-white'>Post</button>

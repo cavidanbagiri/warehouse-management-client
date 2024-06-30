@@ -1,30 +1,26 @@
 
-import React from "react";
-
 import { useDispatch, useSelector } from 'react-redux';
 
-import {
-    addStockToggleFalse,
-    setAddStockMessageBoxMessage,
-    setAddStockMessageBoxTrue
-} from '../../store/warehouse-store';
-
 import AddStockEachComponent from "./AddStockEachComponent.jsx";
-import LoadingButton from '@mui/lab/LoadingButton';
+import CustomLoadingButton from "../common/CustomLoadingButton.jsx";
 
-import { IoMdClose } from "react-icons/io";
-import SaveIcon from '@mui/icons-material/Save';
 
 import WarehouseService from "../../services/warehouse-service.js";
 
+import { IoMdClose } from "react-icons/io";
+
+import {
+    addStockToggleFalse, setAddStockColorCond,
+    setAddStockMessageBoxMessage,
+    setAddStockMessageBoxTrue
+} from '../../store/warehouse-store';
 
 function AddStockComponent() {
 
     const dispatch = useDispatch();
     const fetch_selected_items = useSelector((state) => state.warehouseSlice.fetch_selected_items);
-    const addstock_pending = useSelector((state) => state.warehouseSlice.addstock_pending);
 
-    const [loading, setLoading] = React.useState(true);
+    const addstock = useSelector((state) => state.warehouseSlice.addstock);
 
     const receiveStock = () => {
         let cond = true;
@@ -47,12 +43,12 @@ function AddStockComponent() {
         }
         if (cond) {
             dispatch(WarehouseService.receiveToStock(fetch_selected_items));
+            // dispatch(setAddStockMessageBoxTrue());
+            // dispatch(setAddStockMessageBoxMessage('Material successfully added to stock'));
+            // dispatch(setAddStockColorCond({color:'bg-green-500'}));
         }
     }
 
-    function handleClick() {
-        setLoading(true);
-    }
 
     return (
 
@@ -82,22 +78,13 @@ function AddStockComponent() {
                     }
                     <div className={'flex justify-end'}>
                         {
-                            addstock_pending === false ?
+                            !addstock.addstock_pending  ?
 
                                 <button className={'bg-green-500 py-2 px-5 text-lg text-white rounded-lg'} onClick={receiveStock}>
                                     Submit
                                 </button>
                                 :
-                                <LoadingButton
-                                    color="secondary"
-                                    onClick={handleClick}
-                                    loading={loading}
-                                    loadingPosition="start"
-                                    startIcon={<SaveIcon />}
-                                    variant="contained"
-                                >
-                                    <span>Save</span>
-                                </LoadingButton>
+                               <CustomLoadingButton/>
                         }
                     </div>
 

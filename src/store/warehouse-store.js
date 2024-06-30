@@ -7,7 +7,12 @@ const initialState = {
     warehouse_data: [],
     filtered_warehouse_data: [],
     selected_items: [],
+    fetch_selected_items: null,
+
     po_data: {},
+
+    order_information_toggle: false,
+
     warehouse_column_filter:{
         date: true,
         company: true,
@@ -24,18 +29,22 @@ const initialState = {
         certificate: true,
         passport: true
     },
-    order_information_toggle: false,
 
-    order_update_toggle: false,
-    order_update_message_box: false,
-    order_update_error_message: '',
+    order_update:{
+        order_update_toggle: false,
+        order_update_message_box: false,
+        order_update_error_message: '',
+        order_update_pending: false,
+        order_update_color_cond: 'bg-green-500',
+    },
 
-    addstock_toggle: false,
-    addstock_message_box: false,
-    addstock_error_message: '',
-    addstock_pending: false,
-
-    fetch_selected_items: null,
+    addstock :{
+        addstock_toggle: false,
+        addstock_message_box: false,
+        addstock_error_message: '',
+        addstock_pending: false,
+        addstock_color_cond: 'bg-green-500',
+    },
 
 }
 
@@ -43,59 +52,36 @@ export const warehouseSlice = createSlice({
     name: 'warehouseSlice',
     initialState,
     reducers:{
-        selectRow: (state, action) => {
-            state.selected_items.push(action.payload);
-        },
-        unselectRow: (state, action) => {
-            state.selected_items = state.selected_items.filter((item)=>item!==action.payload);
-        },
-        clearSelected: (state) => {
-            state.selected_items = [];
-        },
 
-        setOrderSelectionInformationToggleTrue: (state) => {
-            state.order_information_toggle = true;
-        },
-        setOrderSelectionInformationToggleFalse: (state) => {
-            state.order_information_toggle = false;
-        },
+        // Work With Selection Rows
+        selectRow: (state, action) => {state.selected_items.push(action.payload);},
+        unselectRow: (state, action) => {state.selected_items = state.selected_items.filter((item)=>item!==action.payload);},
+        clearSelected: (state) => {state.selected_items = []},
 
-        setOrderSelectionUpdateToggleTrue: (state) => {
-            state.order_update_toggle = true;
-        },
-        setOrderSelectionUpdateToggleFalse: (state) => {
-            state.order_update_toggle = false;
-        },
-        setOrderUpdateMessageBoxFalse: (state) => {
-            state.order_update_message_box = false;
-        },
-        setOrderUpdateMessageBoxTrue: (state) => {
-            state.order_update_message_box = true;
-        },
-        setOrderUpdateErrorMessage: (state, action) => {
-            state.order_update_error_message = action.payload.message;
-        },
+        // Order information
+        setOrderSelectionInformationToggleTrue: (state) => {state.order_information_toggle = true;},
+        setOrderSelectionInformationToggleFalse: (state) => {state.order_information_toggle = false;},
 
 
-        addStockToggleTrue: (state) => {
-            state.addstock_toggle = true;
-        },
-        addStockToggleFalse: (state) => {
-            state.addstock_toggle = false;
-        },
-        setAddStockMessageBoxTrue: (state) => {
-            state.addstock_message_box = true;
-        },
-        setAddStockMessageBoxFalse: (state) => {
-            state.addstock_message_box = false;
-        },
-        setAddStockMessageBoxMessage: (state, action) => {
-            state.addstock_error_message = action.payload;
-        },
+        // Update Section
+        setOrderSelectionUpdateToggleTrue: (state) => {state.order_update.order_update_toggle = true;},
+        setOrderSelectionUpdateToggleFalse: (state) => {state.order_update.order_update_toggle = false;},
+        setOrderUpdateMessageBoxFalse: (state) => {state.order_update.order_update_message_box = false;},
+        setOrderUpdateMessageBoxTrue: (state) => {state.order_update.order_update_message_box = true;},
+        setOrderUpdateErrorMessage: (state, action) => {state.order_update.order_update_error_message = action.payload.message;},
+        setOrderUpdateColorCond: (state, action) => {state.order_update.order_update_color_cond = action.payload.color;},
 
-        setWarehouseColumnFilter: (state, action) => {
-            state.warehouse_column_filter[action.payload.key] = action.payload.value;
-        },
+        // Add Stock
+        addStockToggleTrue: (state) => {state.addstock.addstock_toggle = true;},
+        addStockToggleFalse: (state) => {state.addstock.addstock_toggle = false;},
+        setAddStockMessageBoxTrue: (state) => {state.addstock.addstock_message_box = true;},
+        setAddStockMessageBoxFalse: (state) => {state.addstock.addstock_message_box = false;},
+        setAddStockMessageBoxMessage: (state, action) => {state.addstock.addstock_error_message = action.payload;},
+        setAddStockColorCond: (state, action) => {state.addstock.addstock_color_cond = action.payload.color;},
+
+        // Warehouse Filter
+        setWarehouseColumnFilter: (state, action) => {state.warehouse_column_filter[action.payload.key] = action.payload.value;},
+
 
         updatefetchSelectedItems: (state, action) => {
             const item = state.fetch_selected_items.find((item)=>item.id === action.payload.id);
@@ -106,6 +92,8 @@ export const warehouseSlice = createSlice({
 
     },
     extraReducers: (builder) => {
+
+
         builder.addCase(WarehouseService.fetchWarehouseData.fulfilled, (state, action)=>{
             if(action.payload!==null){
                 state.warehouse_data = action.payload;
@@ -122,11 +110,17 @@ export const warehouseSlice = createSlice({
                 state.po_data = action.payload;
             }
         })
+
+
+        // -------------------------------------------------------------- Update Data Section
         builder.addCase(WarehouseService.updatePO.pending, (state)=>{
-            state.order_update_message_box = true;
+            // state.order_update_message_box = true;
+            state.order_update.order_update_pending = true;
         })
         builder.addCase(WarehouseService.updatePO.fulfilled, (state, action)=>{
             if(action.payload!==null){
+                state.order_update.order_update_pending = false;
+                state.order_update.order_update_message_box = true;
                 console.log(action.payload);
             }
         })
@@ -137,39 +131,45 @@ export const warehouseSlice = createSlice({
                 item.passport = action.payload.passport;
             }
         })
+        // ----------------------------------------------------------------------------------
+
+
+        // -------------------------------------------------------------- Add Stock
         builder.addCase(WarehouseService.fetchSelectedItemsById.fulfilled, (state, action)=>{
             if(action.payload!==null){
                 state.fetch_selected_items = action.payload;
             }
         })
-        builder.addCase(WarehouseService.receiveToStock.pending, (state)=>{
-            state.addstock_pending = true;
-        })
+        builder.addCase(WarehouseService.receiveToStock.pending, (state)=>{state.addstock.addstock_pending = true;})
         builder.addCase(WarehouseService.receiveToStock.fulfilled, (state, action)=>{
             if(action.payload === 200){
-                state.addstock_message_box = true;
-                state.addstock_toggle = false;
-                state.addstock_pending = false;
-                state.addstock_error_message = 'Successfully Add To Stock';
+                state.addstock.addstock_message_box = true;
+                state.addstock.addstock_color_cond = 'bg-green-500';
+                state.addstock.addstock_toggle = false;
+                state.addstock.addstock_pending = false;
+                state.addstock.addstock_error_message = 'Successfully Add To Stock';
             }
             else{
-                state.addstock_message_box = true;
-                state.addstock_pending = false;
-                state.addstock_error_message = 'Entering amount greater than leftover.';
+                state.addstock.addstock_message_box = true;
+                state.addstock.addstock_pending = false;
+                state.addstock.addstock_error_message = 'Entering amount greater than leftover.';
             }
         })
+
     }
 })
 
 
-export const { selectRow, unselectRow, 
+export const {
+    selectRow, unselectRow, clearSelected,
     setOrderSelectionInformationToggleTrue, setOrderSelectionInformationToggleFalse,
     setOrderSelectionUpdateToggleTrue, setOrderSelectionUpdateToggleFalse,
     setOrderUpdateMessageBoxFalse, setOrderUpdateMessageBoxTrue,
-    setOrderUpdateErrorMessage,setWarehouseColumnFilter,
+    setWarehouseColumnFilter,
+    setOrderUpdateErrorMessage,setOrderUpdateColorCond,
     addStockToggleTrue, addStockToggleFalse, setAddStockMessageBoxFalse,
-    setAddStockMessageBoxMessage, setAddStockMessageBoxTrue,
-    clearSelected, updatefetchSelectedItems
+    setAddStockMessageBoxMessage, setAddStockMessageBoxTrue, setAddStockColorCond,
+    updatefetchSelectedItems
 } = warehouseSlice.actions;
 
 

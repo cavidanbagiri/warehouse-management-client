@@ -11,7 +11,6 @@ class WarehouseService {
             await $api.get('/warehouse/')
             .then((response) => {
                 data = response.data;
-                console.log('dara : ', data);
             }).catch((err) => {
                 console.log('fetch warehouse data Error happen : ', err);
             });
@@ -91,7 +90,6 @@ class WarehouseService {
             await $api.post(`/warehouse/fetchselecteditems/`, selected_ids)
             .then((response) => {
                 data = response.data;
-                console.log('selected ', data);
             }).catch((err) => {
                 console.log('fetch selected ids error : ', err);
             })
@@ -105,9 +103,7 @@ class WarehouseService {
             let data = {};
             await $api.post(`/warehouse/receivetostock`, selected_items)
                 .then((respond)=>{
-
-                    console.log('normal work',respond);
-                    data = respond.status;
+                     data = respond.status;
                 }).catch((err)=>{
                     console.log('receive tostock Error : ', err);
                     console.log(err.response.status);

@@ -1,6 +1,11 @@
 import {useEffect, useState} from "react";
 import {useDispatch} from "react-redux";
-import {updatefetchSelectedItems} from "../../store/warehouse-store.js";
+import {
+    setAddStockColorCond,
+    setAddStockMessageBoxMessage,
+    setAddStockMessageBoxTrue,
+    updatefetchSelectedItems
+} from "../../store/warehouse-store.js";
 
 
 
@@ -62,6 +67,9 @@ function AddStockEachComponent(props) {
                            type="number" value={amount} placeholder="Stock Amount" onChange={(e) => {
                         if (e.target.value > props.item.leftover || e.target.value < 0) {
                             console.log('cant entered amount ');
+                            dispatch(setAddStockMessageBoxTrue());
+                            dispatch(setAddStockMessageBoxMessage('Entering amount can\'t bigger than leftover amount'));
+                            dispatch(setAddStockColorCond({color:'bg-red-500'}));
                         } else {
                             setAmount(e.target.value);
                         }

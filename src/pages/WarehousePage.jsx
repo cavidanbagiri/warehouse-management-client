@@ -38,14 +38,9 @@ function WarehousePage() {
     const selected_items = useSelector((state) => state.warehouseSlice.selected_items);
     const order_information_toggle = useSelector((state) => state.warehouseSlice.order_information_toggle);
 
-    const order_update_toggle = useSelector((state) => state.warehouseSlice.order_update_toggle);
-    const order_update_message_box = useSelector((state) => state.warehouseSlice.order_update_message_box);
-    const order_update_error_message = useSelector((state) => state.warehouseSlice.order_update_error_message);
+    const order_update = useSelector((state) => state.warehouseSlice.order_update);
 
-    const addstock_toggle = useSelector((state) => state.warehouseSlice.addstock_toggle);
-
-    const addstock_message_box = useSelector((state) => state.warehouseSlice.addstock_message_box);
-    const addstock_error_message = useSelector((state) => state.warehouseSlice.addstock_error_message);
+    const addstock = useSelector((state) => state.warehouseSlice.addstock);
 
 
     const [show_message_box, setShowMessageBox] = useState(false);
@@ -91,20 +86,20 @@ function WarehousePage() {
 
     // Toggle Message Box after adding stock the element
     useEffect(()=>{
-        if(addstock_message_box === true){
+        if(addstock.addstock_message_box === true){
             setTimeout(()=>{
                 dispatch(setAddStockMessageBoxFalse());
             },2000)
         }
-    },[addstock_message_box, dispatch])
+    },[addstock.addstock_message_box, dispatch])
 
     useEffect(()=>{
-        if(order_update_message_box === true){
+        if(order_update.order_update_message_box === true){
             setTimeout(()=>{
                 dispatch(setOrderUpdateMessageBoxFalse());
             },2000)
         }
-    },[order_update_message_box, dispatch])
+    },[order_update.order_update_message_box, dispatch])
 
     // Show Message Box Controller
     useEffect(() => {
@@ -129,25 +124,30 @@ function WarehousePage() {
                 show_message_box && <MessageBox message={show_message_box_message} color={'bg-red-500'} />
             }
 
+
+            {/* Order Update */}
             {
-                order_update_message_box && <MessageBox message={order_update_error_message} color={'bg-green-500'} />
+                order_update.order_update_toggle && <OrderUpdateComponent />
+            }
+            {
+                order_update.order_update_message_box && <MessageBox message={order_update.order_update_error_message} color={order_update.order_update_color_cond} />
             }
 
+
+            {/* Add Stock */}
             {
-                addstock_message_box && <MessageBox message={addstock_error_message} color={'bg-green-500'} />
+                addstock.addstock_toggle && <AddStockComponent />
+            }
+            {
+                addstock.addstock_message_box && <MessageBox message={addstock.addstock_error_message} color={addstock.addstock_color_cond} />
             }
 
+
+            {/* order Information */}
             {
                 order_information_toggle && <OrderInformationComponent />
             }
 
-            {
-                order_update_toggle && <OrderUpdateComponent />
-            }
-
-            {
-                addstock_toggle && <AddStockComponent />
-            }
 
             {/* Page Title */}
             <div className='flex flex-col p-2 w-full'>

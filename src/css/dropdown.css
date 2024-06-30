@@ -10,11 +10,11 @@
 
 @keyframes message-box-frame {
     from {
-        transform: translateY(-120%);
+        transform: translateX(120%);
     }
 
     to {
-        transform: translateY(0%);
+        transform: translateX(0%);
     }
 }
 

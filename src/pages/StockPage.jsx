@@ -1,5 +1,5 @@
 
-import React, {useEffect, useState} from 'react'
+import  {useEffect, useState} from 'react'
 import TableHeaderComponent from "../components/stock/TableHeaderComponent.jsx";
 import TableBodyComponent from "../components/stock/TableBodyComponent.jsx";
 import {IoFilterOutline} from "react-icons/io5";
@@ -19,13 +19,10 @@ const StockPage = () => {
 
     const selected_items = useSelector((state) => state.stockSlice.selected_items);
 
-    const order_update_toggle = useSelector((state) => state.stockSlice.order_update_toggle);
-    const order_update_message_box = useSelector((state) => state.stockSlice.order_update_message_box);
-    const order_update_error_message = useSelector((state) => state.stockSlice.order_update_error_message);
+    const order_update = useSelector((state) => state.stockSlice.order_update);
 
-    const order_return_toggle = useSelector((state) => state.stockSlice.order_return_toggle);
-    const order_return_message_box = useSelector((state) => state.stockSlice.order_return_message_box);
-    const order_return_error_message = useSelector((state) => state.stockSlice.order_return_error_message);
+
+    const order_return = useSelector((state) => state.stockSlice.order_return);
 
     const [show_table_column_component, setShowTableColumnCompoenent] = useState(false);
 
@@ -71,44 +68,47 @@ const StockPage = () => {
     }, [show_message_box])
 
     useEffect(() => {
-        if (order_update_message_box) {
+        if (order_update.order_update_message_box) {
             setTimeout(() => {
                 dispatch(setOrderUpdateMessageBoxFalse());
             }, 2000)
         }
-    }, [dispatch, order_update_message_box])
+    }, [dispatch, order_update.order_update_message_box])
 
 
     useEffect(() => {
-        if (order_return_message_box) {
+        if (order_return.order_return_message_box) {
             setTimeout(() => {
                 dispatch(setOrderReturnMessageBoxFalse());
             }, 2000)
         }
-    }, [dispatch, order_return_message_box])
+    }, [dispatch, order_return.order_return_message_box])
 
 
     return (
     <div className='flex flex-col items-center'>
 
+        {/* Show Message Box */}
         {
             show_message_box && <MessageBox message={show_message_box_message} color={'bg-red-500'} />
         }
 
+
+        {/* Order Update */}
         {
-            order_update_toggle && <OrderUpdateComponent />
+            order_update.order_update_toggle && <OrderUpdateComponent />
+        }
+        {
+            order_update.order_update_message_box && <MessageBox message={order_update.order_update_error_message} color={'bg-green-500'} />
         }
 
-        {
-            order_update_message_box && <MessageBox message={order_update_error_message} color={'bg-green-500'} />
-        }
 
+        {/* Order Return */}
         {
-            order_return_toggle && <OrderReturnComponent />
+            order_return.order_return_toggle && <OrderReturnComponent />
         }
-
         {
-            order_return_message_box && <MessageBox message={order_return_error_message} color={'bg-green-500'} />
+            order_return.order_return_message_box && <MessageBox message={order_return.order_return_error_message} color={order_return.order_return_color_cond} />
         }
 
       {/* Page Title */}

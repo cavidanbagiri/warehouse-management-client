@@ -1,22 +1,31 @@
 
 import { useEffect, useState } from 'react'
-import { IoMdClose } from "react-icons/io";
 import { useDispatch, useSelector } from 'react-redux';
+
+import DropDownComponent from '../common/DropdownComponent';
+import CustomLoadingButton from "../common/CustomLoadingButton.jsx";
+
+import WarehouseService from '../../services/warehouse-service';
+
+import { filterOrdered, filterCompany } from '../../store/common-store';
 import {
     setOrderSelectionUpdateToggleFalse,
     setOrderUpdateMessageBoxTrue,
-    setOrderUpdateErrorMessage,
+    setOrderUpdateErrorMessage, setOrderUpdateColorCond,
 } from '../../store/warehouse-store';
-import DropDownComponent from '../common/DropdownComponent';
-import { filterOrdered, filterCompany } from '../../store/common-store';
-import WarehouseService from '../../services/warehouse-service';
+
+
+import { IoMdClose } from "react-icons/io";
+
 
 function OrderUpdateComponent() {
 
     const dispatch = useDispatch();
     const po_data = useSelector((state) => state.warehouseSlice.po_data);
     const selected_items = useSelector((state) => state.warehouseSlice.selected_items);
-    //const order_update_message_box = useSelector((state) => state.warehouseSlice.order_update_message_box);
+
+    const order_update = useSelector((state) => state.warehouseSlice.order_update);
+
     const filtered_companies = useSelector((state) => state.commonSlice.filtered_companies);
     const filter_users = useSelector((state) => state.commonSlice.filter_users);
 
@@ -70,15 +79,18 @@ function OrderUpdateComponent() {
         if (po_data.leftover <= 0) {
             cond = false;
             dispatch(setOrderUpdateMessageBoxTrue());
+            dispatch(setOrderUpdateColorCond({color:'bg-red-500'}))
             dispatch(setOrderUpdateErrorMessage({ message: 'Leftover is 0, Cant change quantity' }));
         }
         if (material_name.toString().trim().length === 0) {
             dispatch(setOrderUpdateMessageBoxTrue());
+            dispatch(setOrderUpdateColorCond({color:'bg-red-500'}))
             dispatch(setOrderUpdateErrorMessage({ message: 'Material name cant be empty' }))
             cond = false;
         }
         else if (qty <= 0) {
             dispatch(setOrderUpdateMessageBoxTrue());
+            dispatch(setOrderUpdateColorCond({color:'bg-red-500'}))
             dispatch(setOrderUpdateErrorMessage({ message: 'Quantity Cant be less than zero' }))
             cond = false;
         }
@@ -275,10 +287,15 @@ function OrderUpdateComponent() {
                     </div>
 
                     {/* Button Field */}
+                    {
+                        !order_update.order_update_pending ?
                     <div className='flex justify-end mt-10'>
                         <button onClick={postFunc}
                             className='px-6 py-3 bg-green-500 rounded-lg text-white'>Post</button>
                     </div>
+                            :
+                            <CustomLoadingButton/>
+                    }
                 </div>
             </div>
         </div>

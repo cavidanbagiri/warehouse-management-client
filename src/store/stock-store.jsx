@@ -1,11 +1,15 @@
 
-
 import { createSlice } from "@reduxjs/toolkit";
 import StockService from "../services/stock-service.js";
 
 const initialState = {
+
     po_data: {},
+
     filter_stock_data: [],
+
+    selected_items: [],
+
     stock_column_filter:{
         date: true,
         company: false,
@@ -23,19 +27,21 @@ const initialState = {
         group: true,
         po: false,
     },
-    selected_items: [],
 
-    order_update_toggle: false,
-    order_update_message_box: false,
-    order_update_error_message: '',
-    order_update_pending: false,
+    order_update: {
+        order_update_toggle: false,
+        order_update_message_box: false,
+        order_update_error_message: '',
+        order_update_pending: false,
+    },
 
-
-    order_return_toggle: false,
-    order_return_message_box: false,
-    order_return_error_message: '',
-    order_return_pending: false,
-
+    order_return: {
+        order_return_toggle: false,
+        order_return_message_box: false,
+        order_return_error_message: '',
+        order_return_pending: false,
+        order_return_color_cond: 'bg-green-500',
+    }
 
 }
 
@@ -43,56 +49,33 @@ export const stockSlice = createSlice({
     name: "warehouse",
     initialState,
     reducers:{
-        setStockColumnFilter: (state, action) => {
-            state.stock_column_filter[action.payload.key] = action.payload.value;
-        },
 
-        selectRow: (state, action) => {
-            state.selected_items.push(action.payload);
-        },
-        unselectRow: (state, action) => {
-            state.selected_items = state.selected_items.filter((item)=>item!==action.payload);
-        },
-        clearSelected: (state) => {
-            state.selected_items = [];
-        },
+        // Column Filter Section
+        setStockColumnFilter: (state, action) => {state.stock_column_filter[action.payload.key] = action.payload.value;},
+
+        // Selected Row Section
+        selectRow: (state, action) => {state.selected_items.push(action.payload);},
+        unselectRow: (state, action) => {state.selected_items = state.selected_items.filter((item)=>item!==action.payload)},
+        clearSelected: (state) => {state.selected_items = [];},
 
         // Order Update Functions
-        setOrderSelectionUpdateToggleTrue: (state) => {
-            state.order_update_toggle = true;
-        },
-        setOrderSelectionUpdateToggleFalse: (state) => {
-            state.order_update_toggle = false;
-        },
-        setOrderUpdateMessageBoxFalse: (state) => {
-            state.order_update_message_box = false;
-        },
-        setOrderUpdateMessageBoxTrue: (state) => {
-            state.order_update_message_box = true;
-        },
-        setOrderUpdateErrorMessage: (state, action) => {
-            state.order_update_error_message = action.payload.message;
-        },
+        setOrderSelectionUpdateToggleTrue: (state) => {state.order_update.order_update_toggle = true;},
+        setOrderSelectionUpdateToggleFalse: (state) => {state.order_update.order_update_toggle = false;},
+        setOrderUpdateMessageBoxFalse: (state) => {state.order_update.order_update_message_box = false;},
+        setOrderUpdateMessageBoxTrue: (state) => {state.order_update.order_update_message_box = true;},
+        setOrderUpdateErrorMessage: (state, action) => {state.order_update.order_update_error_message = action.payload.message;},
 
         // Order Return To Warehouse Functions
-        setOrderSelectionReturnToggleTrue: (state) => {
-            state.order_return_toggle = true;
-        },
-        setOrderSelectionReturnToggleFalse: (state) => {
-            state.order_return_toggle = false;
-        },
-        setOrderReturnMessageBoxFalse: (state) => {
-            state.order_return_message_box = false;
-        },
-        setOrderReturnMessageBoxTrue: (state) => {
-            state.order_return_message_box = true;
-        },
-        setOrderReturnErrorMessage: (state, action) => {
-            state.order_return_error_message = action.payload.message;
-        },
+        setOrderSelectionReturnToggleTrue: (state) => {state.order_return.order_return_toggle = true;},
+        setOrderSelectionReturnToggleFalse: (state) => {state.order_return.order_return_toggle = false;},
+        setOrderReturnMessageBoxFalse: (state) => {state.order_return.order_return_message_box = false;},
+        setOrderReturnMessageBoxTrue: (state) => {state.order_return.order_return_message_box = true;},
+        setOrderReturnErrorMessage: (state, action) => {state.order_return.order_return_error_message = action.payload.message;},
+        setOrderReturnColorCond: (state, action) => {state.order_return.order_return_color_cond = action.payload.color;},
 
     },
     extraReducers:(builder)=>{
+
         builder.addCase(StockService.getcStocks.fulfilled, (state, action)=>{
             if(action.payload!==null){
                 state.filter_stock_data = action.payload;
@@ -110,29 +93,29 @@ export const stockSlice = createSlice({
                 // console.log('second coming data : ', state.po_data);
             }
         })
-        builder.addCase(StockService.updateStock.pending, (state, action)=>{
-            state.order_update_pending = true;
-        })
+
+        // Update Stock Section
+        builder.addCase(StockService.updateStock.pending, (state)=>{state.order_update.order_update_pending = true;})
         builder.addCase(StockService.updateStock.fulfilled, (state, action)=>{
             if(action.payload.status === 201){
-                state.order_update_message_box = true;
-                state.order_update_error_message = 'Successfully Update';
-                state.order_update_pending = false;
+                state.order_update.order_update_message_box = true;
+                state.order_update.order_update_error_message = 'Successfully Update';
+                state.order_update.order_update_pending = false;
             }
         })
-        builder.addCase(StockService.returnToWarehouse.pending, (state, action)=>{
-            state.order_return_pending = true
-        })
+
+        // Return Stock Section
+        builder.addCase(StockService.returnToWarehouse.pending, (state)=>{state.order_return.order_return_pending = true})
         builder.addCase(StockService.returnToWarehouse.fulfilled, (state, action)=>{
             if(action.payload.status === 201){
-                state.order_return_message_box = true;
-                state.order_return_error_message = 'Successfully Returned';
-                state.order_return_pending = false
+                state.order_return.order_return_message_box = true;
+                state.order_return.order_return_error_message = 'Successfully Returned';
+                state.order_return.order_return_pending = false
             }
             else if(action.payload.status === 500){
-                state.order_return_message_box = true;
-                state.order_return_error_message = action.payload.data;
-                state.order_return_pending = false
+                state.order_return.order_return_message_box = true;
+                state.order_return.order_return_error_message = action.payload.data;
+                state.order_return.order_return_pending = false
             }
             else{
                 console.log('Internal Server Error');
@@ -148,7 +131,7 @@ export const {
     setStockColumnFilter,
     selectRow, unselectRow, clearSelected,
     setOrderSelectionUpdateToggleTrue, setOrderSelectionUpdateToggleFalse, setOrderUpdateMessageBoxTrue,setOrderUpdateMessageBoxFalse, setOrderUpdateErrorMessage,
-    setOrderSelectionReturnToggleTrue, setOrderSelectionReturnToggleFalse, setOrderReturnMessageBoxTrue,setOrderReturnMessageBoxFalse, setOrderReturnErrorMessage,
+    setOrderSelectionReturnToggleTrue, setOrderSelectionReturnToggleFalse, setOrderReturnMessageBoxTrue,setOrderReturnMessageBoxFalse, setOrderReturnErrorMessage, setOrderReturnColorCond
 } = stockSlice.actions;
 
 
