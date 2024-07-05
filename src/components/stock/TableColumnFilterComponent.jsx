@@ -2,7 +2,7 @@
 import { useSelector, useDispatch } from 'react-redux';
 
 import Switch from '@mui/material/Switch';
-import {setStockColumnFilter} from "../../store/stock-store.jsx";
+import {setStockColumnFilter} from "../../store/stock-store.js";
 
 
 function TableColumnFilterComponent() {

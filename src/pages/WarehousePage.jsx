@@ -26,7 +26,8 @@ import {
     setOrderUpdateMessageBoxFalse,
     addStockToggleTrue,
     setAddStockMessageBoxFalse,
-    clearSelected, setOrderUpdateMessageBoxTrue,
+    clearSelected, 
+    setOrderUpdateMessageBoxTrue,
 } from "../store/warehouse-store.js";
 
 function WarehousePage() {
@@ -180,6 +181,7 @@ function WarehousePage() {
                             ))
                         }
                     </div>
+                    
                     {/* Button Section */}
                     <div className='flex flex-col justify-between items-start w-full '>
 

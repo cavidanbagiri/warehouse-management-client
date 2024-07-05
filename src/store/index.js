@@ -6,7 +6,7 @@ import commonSlice from './common-store';
 import messageBoxSlice from './message_box-store';
 import adminSlice from './admin-store';
 import warehouseSlice from './warehouse-store';
-import stockSlice from "./stock-store.jsx";
+import stockSlice from "./stock-store.js";
 
 
 

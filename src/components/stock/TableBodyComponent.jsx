@@ -1,13 +1,9 @@
 
 import { useSelector, useDispatch } from 'react-redux';
 
-
 import TableRowComponent from './TableRowComponent'
 
 import {selectRow, unselectRow} from '../../store/stock-store';
-import true_icon from '../../assets/true-icon.png';
-import false_icon from '../../assets/false-icon.png';
-import WarehouseService from "../../services/warehouse-service.js";
 
 function TableBodyComponent() {
 

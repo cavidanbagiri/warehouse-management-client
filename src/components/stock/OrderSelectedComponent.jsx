@@ -7,11 +7,11 @@ import { BsArrowReturnLeft } from "react-icons/bs";
 import { IoIosInformationCircleOutline } from "react-icons/io";
 
 import '../../css/dropdown.css';
-import WarehouseService from '../../services/warehouse-service';
+
 import {
     setOrderSelectionReturnToggleTrue,
     setOrderSelectionUpdateToggleTrue
-} from '../../store/stock-store.jsx';
+} from '../../store/stock-store.js';
 import StockService from "../../services/stock-service.js";
 
 function OrderSelectedComponent(props) {

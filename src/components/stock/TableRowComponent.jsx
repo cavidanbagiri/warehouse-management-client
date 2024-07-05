@@ -10,11 +10,12 @@ function TableRowComponent(props) {
 
     const dispatch = useDispatch();
 
-    const selected_items = useSelector(state => state.warehouseSlice.selected_items);
+    const selected_items = useSelector(state => state.stockSlice.selected_items);
 
     const [checked, setChecked] = useState(false);
 
     useEffect(() => {
+        console.log('use effect is work');
         if(selected_items.length === 0){
             setChecked(false);
         }

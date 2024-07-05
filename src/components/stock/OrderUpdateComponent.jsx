@@ -6,8 +6,10 @@ import {
     setOrderSelectionUpdateToggleFalse,
     setOrderUpdateMessageBoxTrue,
     setOrderUpdateErrorMessage,
-} from '../../store/stock-store.jsx';
+} from '../../store/stock-store.js';
+
 import StockService from "../../services/stock-service.js";
+
 import CustomLoadingButton from "../common/CustomLoadingButton.jsx";
 
 function OrderUpdateComponent() {
@@ -52,8 +54,6 @@ function OrderUpdateComponent() {
     },[po_data]);
 
     return (
-
-
 
         <div className='flex flex-row justify-between z-10 fixed top-0 right-0 w-full h-full bg-black bg-opacity-30'>
             <div className='w-1/2' ></div>

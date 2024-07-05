@@ -7,7 +7,7 @@ import {
     setOrderReturnErrorMessage,
     setOrderSelectionReturnToggleFalse,
     setOrderReturnColorCond,
-} from '../../store/stock-store.jsx';
+} from '../../store/stock-store.js';
 import StockService from "../../services/stock-service.js";
 
 import CustomLoadingButton from "../common/CustomLoadingButton.jsx";

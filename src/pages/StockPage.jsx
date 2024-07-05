@@ -1,25 +1,37 @@
 
-import  {useEffect, useState} from 'react'
+import { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from "react-redux";
+
 import TableHeaderComponent from "../components/stock/TableHeaderComponent.jsx";
 import TableBodyComponent from "../components/stock/TableBodyComponent.jsx";
-import {IoFilterOutline} from "react-icons/io5";
 import TableColumnFilterComponent from "../components/stock/TableColumnFilterComponent.jsx";
-import {useDispatch, useSelector} from "react-redux";
-import StockService from "../services/stock-service.js";
 import FilterComponent from "../components/stock/FilterComponent.jsx";
 import OrderSelectedComponent from "../components/stock/OrderSelectedComponent.jsx";
 import MessageBox from "../layouts/MessageBox.jsx";
 import OrderUpdateComponent from "../components/stock/OrderUpdateComponent.jsx";
-import {setOrderUpdateMessageBoxFalse, setOrderReturnMessageBoxFalse, clearSelected} from "../store/stock-store.jsx";
 import OrderReturnComponent from "../components/stock/OrderReturnComponent.jsx";
 import MaterialTypeInform from "../components/warehouse/MaterialTypeInformComponent.jsx";
-import WarehouseService from "../services/warehouse-service.js";
+import OrderInformationComponent from '../components/stock/OrderInformationComponent';
+
+import { IoFilterOutline } from "react-icons/io5";
+
+import StockService from "../services/stock-service.js";
+
+import {
+    setOrderUpdateMessageBoxFalse,
+    setOrderReturnMessageBoxFalse,
+    setOrderSelectionUpdateToggleTrue,
+    setOrderSelectionInformationToggleTrue,
+    clearSelected,
+} from "../store/stock-store.js";
 
 const StockPage = () => {
 
     const dispatch = useDispatch();
 
     const selected_items = useSelector((state) => state.stockSlice.selected_items);
+
+    const order_information_toggle = useSelector((state) => state.stockSlice.order_information_toggle);
 
     const order_update = useSelector((state) => state.stockSlice.order_update);
 
@@ -56,11 +68,15 @@ const StockPage = () => {
         let data = {
             type: type,
         }
-        // dispatch(WarehouseService.filterWarehouseData(data));
+        dispatch(StockService.filterStockData(data));
+    }
+
+    const clearFilter = () => {
+        dispatch(StockService.getcStocks());
     }
 
     useEffect(() => {
-        return()=>{
+        return () => {
             dispatch(clearSelected());
         }
     }, [dispatch]);
@@ -100,35 +116,42 @@ const StockPage = () => {
 
             {/* Show Message Box */}
             {
-                show_message_box && <MessageBox message={show_message_box_message} color={'bg-red-500'}/>
+                show_message_box && <MessageBox message={show_message_box_message} color={'bg-red-500'} />
             }
 
 
             {/* Order Update */}
             {
-                order_update.order_update_toggle && <OrderUpdateComponent/>
+                order_update.order_update_toggle && <OrderUpdateComponent />
             }
             {
                 order_update.order_update_message_box &&
-                <MessageBox message={order_update.order_update_error_message} color={'bg-green-500'}/>
+                <MessageBox message={order_update.order_update_error_message} color={'bg-green-500'} />
             }
 
 
             {/* Order Return */}
             {
-                order_return.order_return_toggle && <OrderReturnComponent/>
+                order_return.order_return_toggle && <OrderReturnComponent />
             }
             {
                 order_return.order_return_message_box && <MessageBox message={order_return.order_return_error_message}
-                                                                     color={order_return.order_return_color_cond}/>
+                    color={order_return.order_return_color_cond} />
             }
+
+
+            {/* order Information */}
+            {
+                order_information_toggle && <OrderInformationComponent />
+            }
+
 
             {/* Page Title */}
             <div className='flex flex-col p-2 w-full'>
                 <div className='flex flex-row w-full justify-between items-center bg-gray-50 rounded-lg px-4 mt-4 mb-3'>
-                    <span style={{fontWeight: 500, fontFamily: 'IBM Plex Sans'}}
-                          className='py-4 px-2 rounded-lg text-3xl text-start '>Stocked Material</span>
-                    <div className='text-sm' style={{fontWeight: 500}}>
+                    <span style={{ fontWeight: 500, fontFamily: 'IBM Plex Sans' }}
+                        className='py-4 px-2 rounded-lg text-3xl text-start '>Stocked Material</span>
+                    <div className='text-sm' style={{ fontWeight: 500 }}>
                         <button className='bg-orange-500 text-white px-5 py-3 rounded-lg'>
                             Go To Warehouse
                         </button>
@@ -136,57 +159,135 @@ const StockPage = () => {
                 </div>
             </div>
 
-            {/* Material Type Section */}
-            <div className={'flex  flex-col w-full px-3'}>
+            {/* Material Type and Button Section */}
+            <div className='flex flex-col justify-start px-3 w-full'>
 
-                <span style={{fontWeight: 500, fontFamily: 'IBM Plex Sans'}} className='px-2 text-2xl text-start  '>Material Type Information</span>
-                <div className='flex items-start w-full px-3 mt-4 '>
-                    {
-                        type_count.map((item, index) => (
-                            item.type === 'Consumable' ?
-                                <MaterialTypeInform color={'border-red-500'} key={index + 1} item={item}
-                                                    getTypeFilter={getTypeFilter}/>
-                                : item.type === 'Project' ?
-                                    <MaterialTypeInform color={'border-green-500'} key={index + 1} item={item}
-                                                        getTypeFilter={getTypeFilter}/>
-                                    : item.type === 'Fixture' ?
-                                        <MaterialTypeInform color={'border-blue-500'} key={index + 1} item={item}
-                                                            getTypeFilter={getTypeFilter}/>
-                                        : item.type === 'Safety' ?
-                                            <MaterialTypeInform color={'border-pink-500'} key={index + 1} item={item}
-                                                                getTypeFilter={getTypeFilter}/>
-                                            : item.type === 'Administrative' ?
-                                                <MaterialTypeInform color={'border-sky-500'} key={index + 1} item={item}
-                                                                    getTypeFilter={getTypeFilter}/>
-                                                : <MaterialTypeInform key={index + 1} color={'border-orange-500'} item={item}
-                                                                      getTypeFilter={getTypeFilter}/>
-                        ))
-                    }
-                </div>
-            </div>
+                {/* Title Section */}
 
-            {/* Table Column Filter */}
-            <div className='flex justify-end items-center relative text-xs w-full px-4 my-4' style={{fontWeight: 600}}>
+                <span style={{ fontWeight: 500, fontFamily: 'IBM Plex Sans' }} className='px-2 text-2xl text-start  '>Material Type Information</span>
+
+                <div className={'flex  w-full  '}>
+
+                    {/* Material Type Section */}
+                    <div className='flex items-start w-full px-3 mt-4 '>
+                        {
+                            type_count.map((item, index) => (
+                                item.type === 'Consumable' ?
+                                    <MaterialTypeInform color={'border-red-500'} key={index + 1} item={item}
+                                        getTypeFilter={getTypeFilter} />
+                                    : item.type === 'Project' ?
+                                        <MaterialTypeInform color={'border-green-500'} key={index + 1} item={item}
+                                            getTypeFilter={getTypeFilter} />
+                                        : item.type === 'Fixture' ?
+                                            <MaterialTypeInform color={'border-blue-500'} key={index + 1} item={item}
+                                                getTypeFilter={getTypeFilter} />
+                                            : item.type === 'Safety' ?
+                                                <MaterialTypeInform color={'border-pink-500'} key={index + 1} item={item}
+                                                    getTypeFilter={getTypeFilter} />
+                                                : item.type === 'Administrative' ?
+                                                    <MaterialTypeInform color={'border-sky-500'} key={index + 1} item={item}
+                                                        getTypeFilter={getTypeFilter} />
+                                                    : <MaterialTypeInform key={index + 1} color={'border-orange-500'} item={item}
+                                                        getTypeFilter={getTypeFilter} />
+                            ))
+                        }
+                    </div>
+
+                    {/* Button Section */}
+                    <div className='flex flex-col justify-between items-start w-full '>
+
+                        {/* Working Buttons Section */}
+                        <div className='flex justify-end text-xs w-full' style={{ fontWeight: 600 }}>
+
+                            {/* Provide Area */}
+                            <button onClick={() => {
+                                // if (selected_items.length === 0) {
+                                //     showMessageBoxMessageHandle('addstock', 'Please, Choose at least one row to adding stock');
+                                // }
+                                // else {
+                                //     dispatch(addStockToggleTrue());
+                                //     dispatch(WarehouseService.fetchSelectedItemsById(selected_items));
+                                // }
+                            }}
+                                className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400  hover:bg-orange-400 hover:text-white duration-200' >Provide Area</button>
+
+                            {/* Update Row  */}
+                            <button onClick={() => {
+                                if (selected_items.length > 1) {
+                                    showMessageBoxMessageHandle('update', 'Cant update two or more column same time');
+                                }
+                                else if (selected_items.length === 0) {
+                                    showMessageBoxMessageHandle('update', 'Please choose at least one column');
+                                }
+                                else {
+                                    dispatch(setOrderSelectionUpdateToggleTrue());
+                                    dispatch(StockService.getById(selected_items[0]));
+                                }
+                            }}
+                                className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400 hover:bg-orange-400 hover:text-white duration-200' >Update Row</button>
+
+                            {/* Delete Row */}
+                            <button onClick={() => {
+                                showMessageBoxMessageHandle('delete', 'Dont have authorization for deleting');
+                            }}
+                                className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400 hover:bg-orange-400 hover:text-white duration-200' >Delete Row</button>
+
+                            {/* Get Information about row */}
+                            <button onClick={() => {
+                                if (selected_items.length > 1) {
+                                    showMessageBoxMessageHandle('inform', 'Cant get inform two or more column same time');
+                                }
+                                else if (selected_items.length === 0) {
+                                    showMessageBoxMessageHandle('inform', 'Please Choose at least one row');
+                                }
+                                else {
+                                    dispatch(setOrderSelectionInformationToggleTrue());
+                                    dispatch(StockService.getById(selected_items[0]));
+                                }
+                            }}
+                                className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400 hover:bg-orange-400 hover:text-white duration-200' >Get Information</button>
+                            
+                            {/* Clear Filter */}
+                            <button onClick={() => {
+                                dispatch(clearFilter);
+                            }} className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400 hover:bg-orange-400 hover:text-white duration-200' >Clear Filter</button>
+
+                            {/* Clear Selected  */}
+                            <button onClick={() => {
+                                dispatch(clearSelected());
+                            }} className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400 hover:bg-orange-400 hover:text-white duration-200' >Reset Select</button>
+
+                        </div>
+
+                        {/* Table Column Name Section */}
+                        {/* Table Column Filter */}
+                        <div className='flex justify-end items-center relative text-xs w-full px-4 my-4' style={{ fontWeight: 600 }}>
                             <span onClick={() => {
                                 show_table_column_component ? setShowTableColumnCompoenent(false) : setShowTableColumnCompoenent(true);
                             }}
-                                  className='text-sm font-medium text-gray-700 ml-2 hover:cursor-pointer'>Table Columns Filter</span>
-                <span onClick={() => {
-                    show_table_column_component ? setShowTableColumnCompoenent(false) : setShowTableColumnCompoenent(true);
-                }}
-                      className='pl-2'><IoFilterOutline className='text-base hover:cursor-pointer'/></span>
-                {
-                    show_table_column_component && <TableColumnFilterComponent/>
-                }
+                                className='text-sm font-medium text-gray-700 ml-2 hover:cursor-pointer'>Table Columns Filter</span>
+                            <span onClick={() => {
+                                show_table_column_component ? setShowTableColumnCompoenent(false) : setShowTableColumnCompoenent(true);
+                            }}
+                                className='pl-2'><IoFilterOutline className='text-base hover:cursor-pointer' /></span>
+                            {
+                                show_table_column_component && <TableColumnFilterComponent />
+                            }
+                        </div>
+
+                    </div>
+
+                </div>
             </div>
 
-            <FilterComponent/>
+
+            <FilterComponent />
 
 
             {/* Table Section */}
             <table className='w-full'>
-                <TableHeaderComponent/>
-                <TableBodyComponent/>
+                <TableHeaderComponent />
+                <TableBodyComponent />
             </table>
 
 
