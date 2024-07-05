@@ -16,7 +16,7 @@ const initialState = {
         document: false,
         material_name: true,
         type: true,
-        qty: false,
+        qty: true,
         stock: true,
         serial_number: true,
         material_id: true,
@@ -74,6 +74,7 @@ export const stockSlice = createSlice({
         setOrderReturnColorCond: (state, action) => {state.order_return.order_return_color_cond = action.payload.color;},
 
     },
+
     extraReducers:(builder)=>{
 
         builder.addCase(StockService.getcStocks.fulfilled, (state, action)=>{
@@ -111,11 +112,13 @@ export const stockSlice = createSlice({
                 state.order_return.order_return_message_box = true;
                 state.order_return.order_return_error_message = 'Successfully Returned';
                 state.order_return.order_return_pending = false
+                state.order_return.order_return_color_cond = 'bg-green-500'
             }
             else if(action.payload.status === 500){
                 state.order_return.order_return_message_box = true;
                 state.order_return.order_return_error_message = action.payload.data;
                 state.order_return.order_return_pending = false
+                state.order_return.order_return_color_cond = 'bg-red-500'
             }
             else{
                 console.log('Internal Server Error');

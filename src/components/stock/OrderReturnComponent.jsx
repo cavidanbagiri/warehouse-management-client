@@ -3,9 +3,6 @@ import  { useEffect, useState } from 'react'
 import { IoMdClose } from "react-icons/io";
 import { useDispatch, useSelector } from 'react-redux';
 import {
-    setOrderSelectionUpdateToggleFalse,
-    setOrderUpdateMessageBoxTrue,
-    setOrderUpdateErrorMessage,
     setOrderReturnMessageBoxTrue,
     setOrderReturnErrorMessage,
     setOrderSelectionReturnToggleFalse,
@@ -42,13 +39,6 @@ function OrderUpdateComponent() {
         }
         if(cond){
             dispatch(StockService.returnToWarehouse(updated_data));
-            dispatch(setOrderReturnColorCond({color:'bg-green-500'}));
-            dispatch(setOrderUpdateErrorMessage({ message: 'Data Successfully Updated' }));
-        }
-        else{
-            dispatch(setOrderReturnMessageBoxTrue());
-            dispatch(setOrderReturnColorCond({color:'bg-red-500'}));
-            dispatch(setOrderReturnErrorMessage({ message: 'Entering Amount greater than stock' }));
         }
 
     }
@@ -73,6 +63,7 @@ function OrderUpdateComponent() {
         }
 
     },[po_data]);
+
 
     return (
 
@@ -127,7 +118,14 @@ function OrderUpdateComponent() {
                             <input type="number" value={return_amount}
                                    className={'border p-2'}
                                    onChange={(e) => {
-                                setReturnAmount(e.target.value);
+                                    if(e.target.value <= stock){
+                                       setReturnAmount(e.target.value);
+                                    }
+                                    else {
+                                        dispatch(setOrderReturnMessageBoxTrue());
+                                        dispatch(setOrderReturnColorCond({color:'bg-red-500'}));
+                                        dispatch(setOrderReturnErrorMessage({ message: 'Entering Amount greater than stock' }));
+                                    }
                             }}/>
                         </div>
                     </div>
