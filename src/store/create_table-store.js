@@ -4,15 +4,21 @@ import CreateTableService from "../services/create_table-service";
 
 
 const initialState = {
+
     table: [],
     table_check: [{}],
+
     show_load: false,
     show_message: false,
+    show_message_text: '',
+    show_message_color: 'bg-green-500',
+
     type_data: {
         Project: 0,
         Fixture: 0,
         Consumable: 0
     }
+
 }
 
 export const createTableSlice = createSlice({
@@ -29,7 +35,7 @@ export const createTableSlice = createSlice({
         addRow: (state, actions) => {
             if (state.table.length === 0) {
                 state.table.push(actions.payload.row);
-                state.type_data.Consumable +=1;
+                state.type_data.Consumable += 1;
             }
             else {
                 let cond = true;
@@ -41,7 +47,7 @@ export const createTableSlice = createSlice({
                 }
                 if (cond) {
                     state.table.push(actions.payload.row);
-                    state.type_data.Consumable +=1;
+                    state.type_data.Consumable += 1;
                 }
             }
         },
@@ -55,19 +61,19 @@ export const createTableSlice = createSlice({
             let updated_row = state.table.find((row) => row.ss === actions.payload.ss);
             updated_row[actions.payload.name] = actions.payload.value;
 
-            if(actions.payload.name === 'type'){
+            if (actions.payload.name === 'type') {
                 state.type_data.Consumable = 0;
                 state.type_data.Project = 0;
                 state.type_data.Fixture = 0;
-                for(let i of state.table){
-                    if(i.type === 'Consumable'){
-                        state.type_data.Consumable +=1;
+                for (let i of state.table) {
+                    if (i.type === 'Consumable') {
+                        state.type_data.Consumable += 1;
                     }
-                    if(i.type === 'Project'){
-                        state.type_data.Project +=1;
+                    if (i.type === 'Project') {
+                        state.type_data.Project += 1;
                     }
-                    if(i.type === 'Fixture'){
-                        state.type_data.Fixture +=1;
+                    if (i.type === 'Fixture') {
+                        state.type_data.Fixture += 1;
                     }
                 }
             }
@@ -87,10 +93,20 @@ export const createTableSlice = createSlice({
             state.show_load = true;
         })
         builder.addCase(CreateTableService.receiveWarehouse.fulfilled, (state, action) => {
-            state.table = [];
-            state.table_check = [];
-            state.show_load = false;
-            state.show_message = true;
+            if (action.payload.status === 201) {
+                state.table = [];
+                state.table_check = [];
+                state.show_load = false;
+                state.show_message = true;
+                state.show_message_text = 'Material Received Successfully';
+                state.show_message_color = 'bg-green-500';
+            }
+            else {
+                state.show_message_color = 'bg-red-500',
+                    state.show_load = false;
+                state.show_message = true;
+                state.show_message_text = 'Material can\'t created, send report to admin';
+            }
         })
     }
 });

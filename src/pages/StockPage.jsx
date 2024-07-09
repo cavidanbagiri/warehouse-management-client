@@ -10,6 +10,7 @@ import OrderSelectedComponent from "../components/stock/OrderSelectedComponent.j
 import MessageBox from "../layouts/MessageBox.jsx";
 import OrderUpdateComponent from "../components/stock/OrderUpdateComponent.jsx";
 import OrderReturnComponent from "../components/stock/OrderReturnComponent.jsx";
+import OrderProvideComponent from "../components/stock/OrderProvideComponent.jsx";
 import MaterialTypeInform from "../components/warehouse/MaterialTypeInformComponent.jsx";
 import OrderInformationComponent from '../components/stock/OrderInformationComponent';
 
@@ -22,6 +23,7 @@ import {
     setOrderReturnMessageBoxFalse,
     setOrderSelectionUpdateToggleTrue,
     setOrderSelectionInformationToggleTrue,
+    setOrderSelectionReturnToggleTrue,
     clearSelected,
 } from "../store/stock-store.js";
 
@@ -34,6 +36,8 @@ const StockPage = () => {
     const order_information_toggle = useSelector((state) => state.stockSlice.order_information_toggle);
 
     const order_update = useSelector((state) => state.stockSlice.order_update);
+
+    const order_provide = useSelector((state) => state.stockSlice.order_provide);
 
     const type_count = useSelector((state) => state.commonSlice.type_count);
 
@@ -58,7 +62,11 @@ const StockPage = () => {
             setShowMessageBox(true);
             setShowMessageBoxMessage(value)
         }
-        else if (key === 'returnstock') {
+        else if (key === 'return') {
+            setShowMessageBox(true);
+            setShowMessageBoxMessage(value)
+        }
+        else if (key === 'provide') {
             setShowMessageBox(true);
             setShowMessageBoxMessage(value)
         }
@@ -140,6 +148,16 @@ const StockPage = () => {
             }
 
 
+            {/* Order Provide */}
+            {
+                order_provide.order_provide_toggle && <OrderProvideComponent />
+            }
+            {
+                // order_return.order_return_message_box && <MessageBox message={order_return.order_return_error_message}
+                //     color={order_return.order_return_color_cond} />
+            }
+
+
             {/* order Information */}
             {
                 order_information_toggle && <OrderInformationComponent />
@@ -201,15 +219,31 @@ const StockPage = () => {
 
                             {/* Provide Area */}
                             <button onClick={() => {
-                                // if (selected_items.length === 0) {
-                                //     showMessageBoxMessageHandle('addstock', 'Please, Choose at least one row to adding stock');
-                                // }
-                                // else {
-                                //     dispatch(addStockToggleTrue());
-                                //     dispatch(WarehouseService.fetchSelectedItemsById(selected_items));
-                                // }
+                                if (selected_items.length === 0) {
+                                    showMessageBoxMessageHandle('provide', 'Please choose at least one column for provide to warehouse');
+                                }
+                                else {
+                                    dispatch(setOrderSelectionReturnToggleTrue());
+                                    dispatch(StockService.getById(selected_items[0]));
+                                }
                             }}
-                                className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400  hover:bg-orange-400 hover:text-white duration-200' >Provide Area</button>
+                                className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400  hover:bg-orange-400 hover:text-white duration-200' >Provide</button>
+
+                            {/* Return Row  */}
+                            <button onClick={() => {
+                                if (selected_items.length > 1) {
+                                    showMessageBoxMessageHandle('return', 'Cant return two or more column same time');
+                                }
+                                else if (selected_items.length === 0) {
+                                    showMessageBoxMessageHandle('return', 'Please choose at least one column for returning to warehouse');
+                                }
+                                else {
+                                    dispatch(setOrderSelectionReturnToggleTrue());
+                                    dispatch(StockService.getById(selected_items[0]));
+                                }
+                            }}
+                                className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400 hover:bg-orange-400 hover:text-white duration-200' >Return</button>
+
 
                             {/* Update Row  */}
                             <button onClick={() => {
@@ -224,13 +258,13 @@ const StockPage = () => {
                                     dispatch(StockService.getById(selected_items[0]));
                                 }
                             }}
-                                className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400 hover:bg-orange-400 hover:text-white duration-200' >Update Row</button>
+                                className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400 hover:bg-orange-400 hover:text-white duration-200' >Update</button>
 
                             {/* Delete Row */}
                             <button onClick={() => {
                                 showMessageBoxMessageHandle('delete', 'Dont have authorization for deleting');
                             }}
-                                className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400 hover:bg-orange-400 hover:text-white duration-200' >Delete Row</button>
+                                className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400 hover:bg-orange-400 hover:text-white duration-200' >Delete</button>
 
                             {/* Get Information about row */}
                             <button onClick={() => {
@@ -246,7 +280,7 @@ const StockPage = () => {
                                 }
                             }}
                                 className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400 hover:bg-orange-400 hover:text-white duration-200' >Get Information</button>
-                            
+
                             {/* Clear Filter */}
                             <button onClick={() => {
                                 dispatch(clearFilter);
@@ -259,7 +293,6 @@ const StockPage = () => {
 
                         </div>
 
-                        {/* Table Column Name Section */}
                         {/* Table Column Filter */}
                         <div className='flex justify-end items-center relative text-xs w-full px-4 my-4' style={{ fontWeight: 600 }}>
                             <span onClick={() => {

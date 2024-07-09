@@ -1,5 +1,5 @@
 
-import  { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { IoMdClose } from "react-icons/io";
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -34,10 +34,10 @@ function OrderUpdateComponent() {
             return_amount: return_amount,
         };
         let cond = true;
-        if(return_amount > po_data.stock){
+        if (return_amount > po_data.stock) {
             cond = false;
         }
-        if(cond){
+        if (cond) {
             dispatch(StockService.returnToWarehouse(updated_data));
         }
 
@@ -58,11 +58,11 @@ function OrderUpdateComponent() {
             setSerialNumber(po_data.serial_number);
             setMaterialId(po_data.material_id);
         }
-        else{
+        else {
             console.log('else work')
         }
 
-    },[po_data]);
+    }, [po_data]);
 
 
     return (
@@ -116,17 +116,22 @@ function OrderUpdateComponent() {
                         <span className='w-1/3'>Return Amount </span>
                         <div className='relative'>
                             <input type="number" value={return_amount}
-                                   className={'border p-2'}
-                                   onChange={(e) => {
-                                    if(e.target.value <= stock){
-                                       setReturnAmount(e.target.value);
+                                className={'border p-2'}
+                                onChange={(e) => {
+                                    if (e.target.value <= stock && e.target.value >= 0) {
+                                        setReturnAmount(e.target.value);
+                                    }
+                                    else if (e.target.value < 0) {
+                                        dispatch(setOrderReturnMessageBoxTrue());
+                                        dispatch(setOrderReturnColorCond({ color: 'bg-red-500' }));
+                                        dispatch(setOrderReturnErrorMessage({ message: 'Entering Amount greater than stock' }));
                                     }
                                     else {
                                         dispatch(setOrderReturnMessageBoxTrue());
-                                        dispatch(setOrderReturnColorCond({color:'bg-red-500'}));
+                                        dispatch(setOrderReturnColorCond({ color: 'bg-red-500' }));
                                         dispatch(setOrderReturnErrorMessage({ message: 'Entering Amount greater than stock' }));
                                     }
-                            }}/>
+                                }} />
                         </div>
                     </div>
 
@@ -162,12 +167,12 @@ function OrderUpdateComponent() {
                     {/* Button Field */}
                     {
                         !order_return.order_return_pending ?
-                    <div className='flex justify-end mt-10'>
-                            <button onClick={postFunc}
+                            <div className='flex justify-end mt-10'>
+                                <button onClick={postFunc}
                                     className='px-6 py-3 bg-green-500 rounded-lg text-white'>Post</button>
-                    </div>
-                        :
-                            <CustomLoadingButton/>
+                            </div>
+                            :
+                            <CustomLoadingButton />
                     }
                 </div>
             </div>

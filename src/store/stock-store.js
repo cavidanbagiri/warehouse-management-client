@@ -31,6 +31,10 @@ const initialState = {
 
     order_information_toggle: false,
 
+    order_provide: {
+        order_provide_toggle: false,
+    },
+
     order_update: {
         order_update_toggle: false,
         order_update_message_box: false,
@@ -71,7 +75,7 @@ export const stockSlice = createSlice({
         setOrderUpdateMessageBoxFalse: (state) => {state.order_update.order_update_message_box = false;},
         setOrderUpdateMessageBoxTrue: (state) => {state.order_update.order_update_message_box = true;},
         setOrderUpdateErrorMessage: (state, action) => {state.order_update.order_update_error_message = action.payload.message;},
-
+        
         // Order Return To Warehouse Functions
         setOrderSelectionReturnToggleTrue: (state) => {state.order_return.order_return_toggle = true;},
         setOrderSelectionReturnToggleFalse: (state) => {state.order_return.order_return_toggle = false;},
@@ -79,7 +83,10 @@ export const stockSlice = createSlice({
         setOrderReturnMessageBoxTrue: (state) => {state.order_return.order_return_message_box = true;},
         setOrderReturnErrorMessage: (state, action) => {state.order_return.order_return_error_message = action.payload.message;},
         setOrderReturnColorCond: (state, action) => {state.order_return.order_return_color_cond = action.payload.color;},
-
+        
+        setOrderSelectionProvideToggleTrue: (state) => {state.order_provide.order_provide_toggle = true;},
+        setOrderSelectionProvideToggleFalse: (state) => {state.order_provide.order_provide_toggle = false;},
+    
     },
 
     extraReducers:(builder)=>{
@@ -142,7 +149,8 @@ export const {
     selectRow, unselectRow, clearSelected,
     setOrderSelectionInformationToggleTrue, setOrderSelectionInformationToggleFalse, 
     setOrderSelectionUpdateToggleTrue, setOrderSelectionUpdateToggleFalse, setOrderUpdateMessageBoxTrue,setOrderUpdateMessageBoxFalse, setOrderUpdateErrorMessage,
-    setOrderSelectionReturnToggleTrue, setOrderSelectionReturnToggleFalse, setOrderReturnMessageBoxTrue,setOrderReturnMessageBoxFalse, setOrderReturnErrorMessage, setOrderReturnColorCond
+    setOrderSelectionReturnToggleTrue, setOrderSelectionReturnToggleFalse, setOrderReturnMessageBoxTrue,setOrderReturnMessageBoxFalse, setOrderReturnErrorMessage, setOrderReturnColorCond,
+    setOrderSelectionProvideToggleTrue, setOrderSelectionProvideToggleFalse,
 } = stockSlice.actions;
 
 

@@ -28,6 +28,8 @@ function CreateMaterialPage() {
   const show_message_box = useSelector((state) => state.messageBoxSlice.toggle_message);
   const show_load = useSelector((state) => state.createTableSlice.show_load);
   const show_message = useSelector((state) => state.createTableSlice.show_message);
+  const show_message_text = useSelector((state) => state.createTableSlice.show_message_text);
+  const show_message_color = useSelector((state) => state.createTableSlice.show_message_color);
   const type_data = useSelector((state) => state.createTableSlice.type_data);
   const [total_price, setTotalPrice] = useState(0.00);
   const [add_company, setAddCompany] = useState(false);
@@ -199,7 +201,7 @@ function CreateMaterialPage() {
       }
 
       {
-        show_message && <MessageBox message={'Material Received In Warehouse'} color={'bg-green-500'} />
+        show_message && <MessageBox message={show_message_text} color={show_message_color} />
       }
 
       {

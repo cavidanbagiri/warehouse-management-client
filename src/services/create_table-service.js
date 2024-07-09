@@ -14,7 +14,7 @@ class CreateTableService {
             .then((response) => {
                 data.status = response.status    
             }).catch((err) => {
-                console.log('fetch companies Error happen : ', err);
+                data.status = 500
             });
             return data;
         }
