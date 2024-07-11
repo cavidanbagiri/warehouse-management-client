@@ -24,6 +24,7 @@ import {
     setOrderSelectionUpdateToggleTrue,
     setOrderSelectionInformationToggleTrue,
     setOrderSelectionReturnToggleTrue,
+    setOrderSelectionProvideToggleTrue,
     clearSelected,
 } from "../store/stock-store.js";
 
@@ -223,8 +224,8 @@ const StockPage = () => {
                                     showMessageBoxMessageHandle('provide', 'Please choose at least one column for provide to warehouse');
                                 }
                                 else {
-                                    dispatch(setOrderSelectionReturnToggleTrue());
-                                    dispatch(StockService.getById(selected_items[0]));
+                                    dispatch(setOrderSelectionProvideToggleTrue());
+                                    dispatch(StockService.getDataByIds(selected_items));
                                 }
                             }}
                                 className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400  hover:bg-orange-400 hover:text-white duration-200' >Provide</button>

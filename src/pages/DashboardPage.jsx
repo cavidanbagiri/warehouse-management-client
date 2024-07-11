@@ -1,8 +1,9 @@
 
-import React from 'react'
+import React, { useEffect } from 'react'
 
 
 import { useSelector, useDispatch } from 'react-redux';
+import CommonService from '../services/common.services';
 
 const DashboardPage = () => {
 

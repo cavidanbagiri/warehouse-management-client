@@ -38,8 +38,8 @@ function CreateMaterialPage() {
   const [message, setMessage] = useState('');
   const [isCompanyDropDown, setIsCompanyDropDown] = useState(false);
   const [isUserDropDown, setIsUserDropDown] = useState(false);
-  const [ company_refresh_message, setCompanyRefreshMessage ] = useState(false);
-  const [ ordered_refresh_message, setOrderedRefreshMessage ] = useState(false);
+  const [company_refresh_message, setCompanyRefreshMessage ] = useState(false);
+  const [ordered_refresh_message, setOrderedRefreshMessage ] = useState(false);
   const [company, setCompany] = useState({
     companyId: '',
     company_name: ''

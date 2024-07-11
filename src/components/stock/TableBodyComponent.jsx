@@ -15,6 +15,7 @@ function TableBodyComponent() {
 
 
     const handleChange = (event) => {
+        console.log('val is : ',event.target.value);
         event.target.checked ?
             dispatch(selectRow(event.target.value)) :
             dispatch(unselectRow(event.target.value))

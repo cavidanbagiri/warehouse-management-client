@@ -3,9 +3,9 @@ import React, { useEffect } from 'react'
 
 function DropDownComponent(props) {
 
-    useEffect(()=>{
+    // useEffect(()=>{
 
-    })
+    // })
 
     return (
         <div style={{ fontFamily: 'Saira Condensed' }} className='absolute top-15 z-10 rounded-xl flex flex-col items-start bg-white border shadow-2xl max-h-96 overflow-hidden overflow-y-auto w-96'>

@@ -83,7 +83,6 @@ export const adminSlice = createSlice({
             }
         })
         builder.addCase(AdminService.fetchGroups.fulfilled, (state, action) => {
-            console.log('action payload is : ', action.payload);
             if (action.payload !== null) {
                 state.groups = action.payload;
             }

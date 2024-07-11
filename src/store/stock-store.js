@@ -33,6 +33,12 @@ const initialState = {
 
     order_provide: {
         order_provide_toggle: false,
+        order_provide_data: [],
+        order_provide_entering_data: [],
+        order_provide_message_box: false,
+        order_provide_error_message: '',
+        order_provide_pending: false,
+        order_provide_color_cond: 'bg-green-500',
     },
 
     order_update: {
@@ -84,8 +90,43 @@ export const stockSlice = createSlice({
         setOrderReturnErrorMessage: (state, action) => {state.order_return.order_return_error_message = action.payload.message;},
         setOrderReturnColorCond: (state, action) => {state.order_return.order_return_color_cond = action.payload.color;},
         
+        // Order Provide Section
         setOrderSelectionProvideToggleTrue: (state) => {state.order_provide.order_provide_toggle = true;},
         setOrderSelectionProvideToggleFalse: (state) => {state.order_provide.order_provide_toggle = false;},
+        setOrderProvideMessageBoxFalse: (state) => {state.order_provide.order_provide_message_box = false;},
+        setOrderProvideMessageBoxTrue: (state) => {state.order_provide.order_provide_message_box = true;},
+        setOrderProvideErrorMessage: (state, action) => {state.order_provide.order_provide_error_message = action.payload.message;},
+
+        updateRow: (state, actions) => {
+            let updated_row = state.order_provide.order_provide_entering_data.find((row) => row.ss === actions.payload.ss);
+            updated_row[actions.payload.name] = actions.payload.value;
+
+            if (actions.payload.second_name) {
+                updated_row[actions.payload.second_name] = actions.payload.second_val;
+            }
+        },
+
+        addRow: (state, actions) => {
+            if (state.order_provide.order_provide_entering_data.length === 0) {
+                state.order_provide.order_provide_entering_data.push(actions.payload.row);
+            }
+            else {
+                let cond = true;
+                for (let i of state.order_provide.order_provide_entering_data) {
+                    if (i.ss === actions.payload.row.ss) {
+                        cond = false;
+                        break;
+                    }
+                }
+                if (cond) {
+                    state.order_provide.order_provide_entering_data.push(actions.payload.row);
+                }
+            }
+        },
+
+        delRow: (state) => {
+            state.order_provide.order_provide_entering_data.pop();
+        },
     
     },
 
@@ -101,11 +142,33 @@ export const stockSlice = createSlice({
                 state.filter_stock_data = action.payload;
             }
         })
+
         builder.addCase(StockService.getById.fulfilled, (state, action)=>{
             if(action.payload!==null){
-
                 state.po_data = action.payload;
-                // console.log('second coming data : ', state.po_data);
+            }
+        })
+
+        // Get all datas for providing to area
+        builder.addCase(StockService.getDataByIds.fulfilled, (state, action)=>{
+            if(action.payload!==null){
+                state.order_provide.order_provide_data = action.payload;
+            }else{
+                state.order_provide.order_provide_data = [];
+            }
+        })
+
+        // Provide Stock Section
+        builder.addCase(StockService.provideStock.fulfilled, (state, action)=>{
+            if(action.payload.status === 201){
+                state.order_provide.order_provide_message_box = true;
+                state.order_provide.order_provide_error_message = 'Successfully Provided';
+                state.order_provide.order_provide_color_cond = 'bg-green-500';
+            }
+            else{
+                state.order_provide.order_provide_message_box = true;
+                state.order_provide.order_provide_error_message = action.payload.error;
+                state.order_provide.order_provide_color_cond = 'bg-red-500';
             }
         })
 
@@ -137,7 +200,6 @@ export const stockSlice = createSlice({
             else{
                 console.log('Internal Server Error');
             }
-            console.log('payload is L ',action.payload)
         })
 
     }
@@ -150,7 +212,8 @@ export const {
     setOrderSelectionInformationToggleTrue, setOrderSelectionInformationToggleFalse, 
     setOrderSelectionUpdateToggleTrue, setOrderSelectionUpdateToggleFalse, setOrderUpdateMessageBoxTrue,setOrderUpdateMessageBoxFalse, setOrderUpdateErrorMessage,
     setOrderSelectionReturnToggleTrue, setOrderSelectionReturnToggleFalse, setOrderReturnMessageBoxTrue,setOrderReturnMessageBoxFalse, setOrderReturnErrorMessage, setOrderReturnColorCond,
-    setOrderSelectionProvideToggleTrue, setOrderSelectionProvideToggleFalse,
+    setOrderSelectionProvideToggleTrue, setOrderSelectionProvideToggleFalse, setOrderProvideMessageBoxTrue,setOrderProvideMessageBoxFalse, setOrderProvideErrorMessage,
+    updateRow, addRow, delRow
 } = stockSlice.actions;
 
 

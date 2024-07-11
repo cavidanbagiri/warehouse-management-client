@@ -27,6 +27,7 @@ function App() {
       dispatch(CommonService.fetchProjects());
       dispatch(CommonService.fetchUsers());
       dispatch(CommonService.getTypeCount());
+      dispatch(CommonService.fetchGroups());
     }
   });
 

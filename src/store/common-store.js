@@ -12,7 +12,9 @@ const initialState = {
     users: [],
     filter_users: [],
     // get Type COunt
-    type_count: []
+    type_count: [],
+    // get Groups
+    groups: [],
 }
 
 export const commonSlice = createSlice({
@@ -53,6 +55,11 @@ export const commonSlice = createSlice({
         builder.addCase(CommonService.getTypeCount.fulfilled, (state, action)=>{
             if(action.payload!==null){
                 state.type_count = action.payload;
+            }
+        })
+        builder.addCase(CommonService.fetchGroups.fulfilled, (state, action)=>{
+            if(action.payload!==null){
+                state.groups = action.payload;
             }
         })
     }

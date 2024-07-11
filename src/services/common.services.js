@@ -60,6 +60,23 @@ class CommonService {
         }
     )
 
+    static fetchGroups = createAsyncThunk(
+        'fetchgroups/',
+        async() => {
+            let data = {};
+            await $api.get('/groups')
+            .then((response) => {
+                data = response.data;
+                console.log('groups is : ', data);
+            }).catch((err) => {
+                data = null;
+                console.log('fetch groups Error happen : ', err);
+            });
+            return data;
+        }
+    )
+
+
 }
 
 export default CommonService;

@@ -15,7 +15,6 @@ function TableRowComponent(props) {
     const [checked, setChecked] = useState(false);
 
     useEffect(() => {
-        console.log('use effect is work');
         if(selected_items.length === 0){
             setChecked(false);
         }
