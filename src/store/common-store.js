@@ -15,6 +15,7 @@ const initialState = {
     type_count: [],
     // get Groups
     groups: [],
+    filtered_groups: []
 }
 
 export const commonSlice = createSlice({
@@ -32,6 +33,12 @@ export const commonSlice = createSlice({
                 return el.username.includes(action.payload);
             })
             state.filter_users = dummy;
+        },
+        filterGroup (state, action) {
+            let dummy = state.groups.filter((el)=>{
+                return el.group_name.includes(action.payload);
+            })
+            state.filtered_groups = dummy;
         }
     },
     extraReducers: (builder) => {
@@ -60,12 +67,13 @@ export const commonSlice = createSlice({
         builder.addCase(CommonService.fetchGroups.fulfilled, (state, action)=>{
             if(action.payload!==null){
                 state.groups = action.payload;
+                state.filtered_groups = action.payload;
             }
         })
     }
 })
 
-export const { filterCompany, filterOrdered} = commonSlice.actions;
+export const { filterCompany, filterOrdered, filterGroup } = commonSlice.actions;
 
 
 export default commonSlice.reducer;

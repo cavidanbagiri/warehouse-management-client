@@ -61,6 +61,11 @@ function OrderProvideTableHeaderComponent() {
                         Set Material Id
                     </th>
                 }
+                { /* Material ID */
+                    <th scope="col" className="px-6 py-1 text-center border font-medium min-w-32">
+                        Provide Type
+                    </th>
+                }
 
             </tr>
         </thead>

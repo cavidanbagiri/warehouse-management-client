@@ -10,6 +10,8 @@ function FilterComponent() {
 
     const dispatch = useDispatch();
 
+    const user = useSelector((state) => state.userSlice.user);
+
     const filtered_companies = useSelector((state) => state.commonSlice.filtered_companies);
     const filter_users = useSelector((state) => state.commonSlice.filter_users);
 
@@ -61,6 +63,7 @@ function FilterComponent() {
             material_name: material_name.toString(),
             createdAt: createdAt.toString(),
             po: po,
+            projectId: user.projectId
         };
         dispatch(WarehouseService.filterWarehouseData(data));
     }

@@ -7,9 +7,11 @@ import CommonService from '../services/common.services';
 
 const DashboardPage = () => {
 
+  const user = useSelector(state => state.userSlice.user);
+
   return (
     <div style={{ fontFamily: "Saira Condensed", fontSize: '24px' }} className=' w-screen h-screen' >
-      Welcome Back Jack
+      Welcome Back {user.email} {user.projectId}
       <br />
     </div>
   )

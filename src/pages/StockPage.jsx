@@ -13,6 +13,7 @@ import OrderReturnComponent from "../components/stock/OrderReturnComponent.jsx";
 import OrderProvideComponent from "../components/stock/OrderProvideComponent.jsx";
 import MaterialTypeInform from "../components/warehouse/MaterialTypeInformComponent.jsx";
 import OrderInformationComponent from '../components/stock/OrderInformationComponent';
+import ZeroFilteredComponent from '../components/warehouse/ZeroFilteredComponent.jsx';
 
 import { IoFilterOutline } from "react-icons/io5";
 
@@ -32,7 +33,11 @@ const StockPage = () => {
 
     const dispatch = useDispatch();
 
+    const user = useSelector((state) => state.userSlice.user);
+
     const selected_items = useSelector((state) => state.stockSlice.selected_items);
+
+    const filter_stock_data = useSelector((state) => state.stockSlice.filter_stock_data);
 
     const order_information_toggle = useSelector((state) => state.stockSlice.order_information_toggle);
 
@@ -81,7 +86,7 @@ const StockPage = () => {
     }
 
     const clearFilter = () => {
-        dispatch(StockService.getcStocks());
+        dispatch(StockService.getcStocks(user.projectId));
     }
 
     useEffect(() => {
@@ -91,7 +96,7 @@ const StockPage = () => {
     }, [dispatch]);
 
     useEffect(() => {
-        dispatch(StockService.getcStocks());
+        dispatch(StockService.getcStocks(user.projectId));
     }, [dispatch]);
 
     useEffect(() => {
@@ -323,7 +328,11 @@ const StockPage = () => {
                 <TableHeaderComponent />
                 <TableBodyComponent />
             </table>
-
+                        
+            {
+                filter_stock_data.length === 0 && <ZeroFilteredComponent resetFunc={clearFilter} />
+            }
+            
 
             {/* Row Selected Section */}
             {

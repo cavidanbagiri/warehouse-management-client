@@ -8,9 +8,11 @@ import OrderProvideTableHeaderComponent from './OrderProvideTableHeaderComponent
 import OrderProvideTableRowComponent from './OrderProvideTableRowComponent';
 import MessageBox from "../../layouts/MessageBox";
 import CustomLoadingButton from '../common/CustomLoadingButton'
+import DropDownComponent from "../common/DropdownComponent";
 
 import StockService from "../../services/stock-service";
-import DropDownComponent from "../common/DropdownComponent";
+
+import { filterGroup } from "../../store/common-store";
 
 function OrderInformationComponent() {
 
@@ -18,7 +20,7 @@ function OrderInformationComponent() {
 
   const selected_items = useSelector(state => state.stockSlice.selected_items);
   const order_provide = useSelector(state => state.stockSlice.order_provide);
-  const groups = useSelector(state => state.commonSlice.groups);
+  const filtered_groups = useSelector(state => state.commonSlice.filtered_groups);
   
 
   const [username, setUsername] = useState('');
@@ -29,15 +31,6 @@ function OrderInformationComponent() {
     group_id: '',
   });
 
-  const submitFunc = () => {
-    const sending_data = {};
-    sending_data.data = order_provide.order_provide_entering_data;
-    sending_data.username = username;
-    sending_data.card_number = card_number;
-    sending_data.groupId = group.group_id;
-    dispatch(StockService.provideStock(sending_data));
-  }
-
   const listenFunc = (value, second_val) => {
     setGroup((each) => ({
       ...each,
@@ -45,6 +38,23 @@ function OrderInformationComponent() {
       group_name: second_val
     }));
     setGroupDropdown(false)
+  }
+
+  const filterChange = (event, comp) => {
+    console.log('comp is : ', comp);
+    if (comp === 'group_name') {
+      dispatch(filterGroup(event.target.value));
+    }
+  }
+
+  const submitFunc = () => {
+    const sending_data = {};
+    sending_data.data = order_provide.order_provide_entering_data;
+    sending_data.username = username;
+    sending_data.card_number = card_number;
+    sending_data.groupId = group.group_id;
+    console.log('object is : ', sending_data);
+    dispatch(StockService.provideStock(sending_data));
   }
 
   useEffect(() => {
@@ -109,7 +119,13 @@ function OrderInformationComponent() {
               {
                group_dropdown 
                ?  
-               <DropDownComponent data={groups} text_name={'group_name'} input_name={'Group Name'} listenFunc={listenFunc} />
+               <DropDownComponent 
+               data={filtered_groups} 
+               text_name={'group_name'} 
+               input_name={'Group Name'} 
+               listenFunc={listenFunc} 
+               filterChange={filterChange}
+               />
                 :
                 <button onClick={() => {
                   if(group_dropdown){

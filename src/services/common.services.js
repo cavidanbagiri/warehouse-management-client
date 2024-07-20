@@ -48,9 +48,9 @@ class CommonService {
 
     static getTypeCount = createAsyncThunk(
         '/typecount',
-        async() => {
+        async(projectId) => {
             let data = {};
-            await $api.get('/warehouse/typecount')
+            await $api.get(`/warehouse/typecount/${projectId}`)
             .then((response)=>{
                 data = response.data
             }).catch((err)=>{

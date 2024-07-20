@@ -43,16 +43,11 @@ function AddStockComponent() {
         }
         if (cond) {
             dispatch(WarehouseService.receiveToStock(fetch_selected_items));
-            // dispatch(setAddStockMessageBoxTrue());
-            // dispatch(setAddStockMessageBoxMessage('Material successfully added to stock'));
-            // dispatch(setAddStockColorCond({color:'bg-green-500'}));
         }
     }
 
 
     return (
-
-        // <>
 
         <div className='flex flex-row justify-between z-10 fixed top-0 right-0 w-full h-full bg-black bg-opacity-30 '>
             <div className='w-1/2' ></div>
@@ -91,7 +86,6 @@ function AddStockComponent() {
                 </div>
             </div>
         </div>
-        // </>
     )
 }
 

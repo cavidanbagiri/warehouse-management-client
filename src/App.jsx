@@ -16,6 +16,7 @@ function App() {
   const dispatch = useDispatch();
 
   const is_auth = useSelector((state)=>state.userSlice.is_auth);
+  const user = useSelector((state)=>state.userSlice.user);
 
   useEffect(()=>{
     if(is_auth === false){
@@ -26,7 +27,7 @@ function App() {
       dispatch(CommonService.fetchCompanies());
       dispatch(CommonService.fetchProjects());
       dispatch(CommonService.fetchUsers());
-      dispatch(CommonService.getTypeCount());
+      dispatch(CommonService.getTypeCount(user.projectId));
       dispatch(CommonService.fetchGroups());
     }
   });

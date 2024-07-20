@@ -1,11 +1,12 @@
 
 import React from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import WarehouseService from '../../services/warehouse-service';
 
 
-
 function ZeroFilteredComponent(props) {
+
+    const user = useSelector((state) => state.userSlice.user);
 
     const dispatch = useDispatch();
 
@@ -16,7 +17,7 @@ function ZeroFilteredComponent(props) {
             </span>
             <button className='border p-3 my-5 rounded-lg bg-gray-50 hover:bg-gray-100 duration-200'
                 onClick={() => {
-                    dispatch(WarehouseService.fetchWarehouseData());
+                    dispatch(WarehouseService.fetchWarehouseData(user.projectId));
                     props.resetFunc();
                 }}
             >

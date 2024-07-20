@@ -5,10 +5,10 @@ import $api from "../http/index.js";
 class StockService {
 
     static getcStocks = createAsyncThunk(
-        '/api/stock/getStocks',
-        async () => {
+        '/stock/fetch/projectid',
+        async (projectId) => {
             let data = {};
-            await $api.get('/stock')
+            await $api.get(`/stock/fetch/${projectId}`)
                 .then((response) => {
                     data = response.data;
                 })

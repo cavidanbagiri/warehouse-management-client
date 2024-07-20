@@ -108,7 +108,7 @@ function OrderUpdateComponent() {
         }
         if (cond) {
             dispatch(WarehouseService.updatePO(updated_data))
-            dispatch(setOrderUpdateErrorMessage({ message: 'Data Successfully Updated' }))
+            // dispatch(setOrderUpdateErrorMessage({ message: 'Data Successfully Updated' }))
         }
 
     }

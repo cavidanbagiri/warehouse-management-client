@@ -1,17 +1,18 @@
 
     import { useEffect, useState } from 'react'
-    import { useDispatch } from 'react-redux';
+    import { useDispatch, useSelector } from 'react-redux';
 
     import { addRow, updateRow } from '../../store/create_table-store';
 
     function TableRowComponent(props) {
 
         const dispatch = useDispatch();
+        const user = useSelector(state => state.userSlice.user);
 
         const [row, setRow] = useState({
             ss: props.index,
             date: '13-05-2024',
-            projectId: 2,
+            projectId: user.projectId,
             project_name: 'Moscow SRU',
             companyId: '',
             company_name: '',

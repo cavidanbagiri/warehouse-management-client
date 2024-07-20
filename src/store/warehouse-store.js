@@ -114,14 +114,20 @@ export const warehouseSlice = createSlice({
 
         // -------------------------------------------------------------- Update Data Section
         builder.addCase(WarehouseService.updatePO.pending, (state)=>{
-            // state.order_update_message_box = true;
             state.order_update.order_update_pending = true;
         })
         builder.addCase(WarehouseService.updatePO.fulfilled, (state, action)=>{
-            if(action.payload!==null){
+            if(action.payload.status === 201){
                 state.order_update.order_update_pending = false;
                 state.order_update.order_update_message_box = true;
-                console.log(action.payload);
+                state.order_update.order_update_error_message = 'Data Successfully Updated';
+                state.order_update.order_update_color_cond = 'bg-green-500';
+            }
+            else if(action.payload.status === 500){
+                state.order_update.order_update_pending = false;
+                state.order_update.order_update_message_box = true;
+                state.order_update.order_update_error_message = action.payload.data;
+                state.order_update.order_update_color_cond = 'bg-red-500';
             }
         })
         builder.addCase(WarehouseService.updateCertOrPassportById.fulfilled, (state, action)=>{

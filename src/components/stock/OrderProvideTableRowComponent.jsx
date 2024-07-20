@@ -13,6 +13,7 @@ function OrderProvideTableHeaderComponent(props) {
         amount: props.item.stock,
         serial_number: props.item.serial_number,
         material_id: props.item.material_id,
+        providerType: 'Consumption'
     });
 
     useEffect(() => {
@@ -104,6 +105,33 @@ function OrderProvideTableHeaderComponent(props) {
                     </th>
                 }
 
+                { /* proivder type */
+                    <th scope="col" className="p-1 text-center border font-medium min-w-32">
+                        
+                        <select onChange={(event) => {
+                                setRow((each) => ({
+                                    ...each,
+                                    providerType: event.target.value
+                                }))
+                                dispatch(updateRow({ ss: row.ss, name: 'providerType', value: event.target.value }));
+                            }} 
+                        type="text" value={row.providerType} className="border bg-gray-100 p-2 w-full rounded-md outline-none">
+                            <option value="Consumption">Consumption</option>
+                            <option value="Debit">Debit</option>
+                        </select>
+
+                    </th>
+                    // <th scope="col" className="p-1 text-center border font-medium min-w-32">
+                    //     <input onChange={(event) => {
+                    //             setRow((each) => ({
+                    //                 ...each,
+                    //                 provider_type: event.target.value
+                    //             }))
+                    //             dispatch(updateRow({ ss: row.ss, name: 'provider_type', value: event.target.value }));
+                    //         }} 
+                    //     type="text" value={row.provider_type} className="border bg-gray-100 p-2 w-full rounded-md outline-none" placeholder="Material ID" />
+                    // </th>
+                }
         
             </tr>
         </thead>

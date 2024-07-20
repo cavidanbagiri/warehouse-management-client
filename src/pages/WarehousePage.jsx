@@ -6,7 +6,6 @@ import WarehouseService from '../services/warehouse-service';
 import TableHeaderComponent from '../components/warehouse/TableHeaderComponent'
 import TableBodyComponent from '../components/warehouse/TableBodyComponent'
 import OrderSelectedComponent from '../components/warehouse/OrderSelectedComponent';
-import DropDownComponent from '../components/common/DropdownComponent';
 import ZeroFilteredComponent from '../components/warehouse/ZeroFilteredComponent';
 import MaterialTypeInform from '../components/warehouse/MaterialTypeInformComponent';
 import MessageBox from '../layouts/MessageBox';
@@ -27,20 +26,18 @@ import {
     addStockToggleTrue,
     setAddStockMessageBoxFalse,
     clearSelected, 
-    setOrderUpdateMessageBoxTrue,
 } from "../store/warehouse-store.js";
 
 function WarehousePage() {
 
     const dispatch = useDispatch();
 
+    const user = useSelector((state) => state.userSlice.user);
     const type_count = useSelector((state) => state.commonSlice.type_count);
     const filtered_warehouse_data = useSelector((state) => state.warehouseSlice.filtered_warehouse_data);
     const selected_items = useSelector((state) => state.warehouseSlice.selected_items);
     const order_information_toggle = useSelector((state) => state.warehouseSlice.order_information_toggle);
-
     const order_update = useSelector((state) => state.warehouseSlice.order_update);
-
     const addstock = useSelector((state) => state.warehouseSlice.addstock);
 
 
@@ -51,11 +48,12 @@ function WarehousePage() {
 
 
     const clearFilter = () => {
+        const projectId = user.projectId;
+        dispatch(WarehouseService.fetchWarehouseData(projectId));
         // setDocumentNum('');
         // setMaterialName('');
         // setSelectedDate('');
         // setPO('');
-        dispatch(WarehouseService.fetchWarehouseData());
     }
 
     const getTypeFilter = (type) => {
@@ -113,7 +111,8 @@ function WarehousePage() {
 
     // Fetch Warehouse Data
     useEffect(() => {
-        dispatch(WarehouseService.fetchWarehouseData());
+        const projectId = user.projectId;
+        dispatch(WarehouseService.fetchWarehouseData(projectId));
     }, [dispatch])
 
     return (
@@ -171,6 +170,7 @@ function WarehousePage() {
                     {/* Material Type Section */}
                     <div className='flex items-start w-full '>
                         {
+                            type_count.length > 0 &&
                             type_count.map((item, index) => (
                                 item.type === 'Consumable' ? <MaterialTypeInform color={'border-red-500'} key={index + 1} item={item} getTypeFilter={getTypeFilter} />
                                     : item.type === 'Project' ? <MaterialTypeInform color={'border-green-500'} key={index + 1} item={item} getTypeFilter={getTypeFilter} />
@@ -214,6 +214,7 @@ function WarehousePage() {
                                 showMessageBoxMessageHandle('delete', 'Dont have authorization for deleting');
                             }}
                                 className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400 hover:bg-orange-400 hover:text-white duration-200' >Delete Row</button>
+                            
                             <button onClick={()=>{
                                 if(selected_items.length > 1){
                                     showMessageBoxMessageHandle('inform', 'Cant get inform two or more column same time');

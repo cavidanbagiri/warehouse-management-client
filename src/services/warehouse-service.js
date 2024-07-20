@@ -6,9 +6,9 @@ class WarehouseService {
 
     static fetchWarehouseData = createAsyncThunk(
         '/warehouse/',
-        async() => {
+        async(projectId) => {
             let data = {};
-            await $api.get('/warehouse/')
+            await $api.get(`/warehouse/fetch/${projectId}`)
             .then((response) => {
                 data = response.data;
             }).catch((err) => {
@@ -17,6 +17,26 @@ class WarehouseService {
             return data;
         }
     );
+
+    static filterWarehouseData = createAsyncThunk(
+        '/warehouse/filter',
+        async(filter_query) => {
+            let data = {};
+            let query = '?';
+            for(let [key, value] of Object.entries(filter_query)){
+                if(value!==''){
+                    query+=`${key}=${value}&`;
+                }
+            }
+            await $api.get(`/warehouse/filter/${query}`)
+            .then((response) => {
+                data = response.data;
+            }).catch((err) => {
+                console.log('fetch warehouse data Error happen : ', err);
+            });
+            return data;
+        }
+    )
 
     static getPOById = createAsyncThunk(
         '/warehouse/po/:id',
@@ -39,10 +59,13 @@ class WarehouseService {
             let data = {};
             await $api.post(`/warehouse/update/${updated_data.id}`, updated_data).
             then((response)=>{
-                data = response.data;
+                data.data = response.data;
+                data.status = 201;
                 console.log('update respond data is : ', data);
             })
             .catch((err)=>{
+                data.status = 500;
+                data.data = err.response.data;
                 console.log('Get Row Id Error : ', err);
             })
             return data;
@@ -63,29 +86,10 @@ class WarehouseService {
         }
     )
 
-    static filterWarehouseData = createAsyncThunk(
-        '/warehouse/filter',
-        async(filter_query) => {
-            let data = {};
-            let query = '?';
-            for(let [key, value] of Object.entries(filter_query)){
-                if(value!==''){
-                    query+=`${key}=${value}&`;
-                }
-            }
-            await $api.get(`/warehouse/filter/${query}`)
-            .then((response) => {
-                data = response.data;
-            }).catch((err) => {
-                console.log('fetch warehouse data Error happen : ', err);
-            });
-            return data;
-        }
-    )
-
     static fetchSelectedItemsById = createAsyncThunk(
         '/warehouse/fetselecteditems',
         async(selected_ids) => {
+            console.log('fetch selected ids : ', selected_ids);
             let data = {};
             await $api.post(`/warehouse/fetchselecteditems/`, selected_ids)
             .then((response) => {
