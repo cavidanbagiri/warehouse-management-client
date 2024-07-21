@@ -22,7 +22,7 @@ function Navbar() {
     const [warehouseIsShown, setWarehouseIsShown] = useState(false);
     // const [userIsShown, setUserIsShown] = useState(false);
     const [logoutIsShown, setLogoutIsShown] = useState(false);
-
+    const [areaIsShown, setAreaIsShown] = useState(false);
     return (
         <div className='relative '>
 
@@ -49,9 +49,12 @@ function Navbar() {
                                 <NavbarItemComponent isShown={warehouseIsShown} setIsShown={setWarehouseIsShown} iconName={'fa-chart-area'} iconSize={'text-xl'} iconValue={'Warehouse'} />
                             </Link>
 
-                            {/* Stock Page */}
                             <Link to="/stock">
                                 <NavbarItemComponent isShown={stockIsShown} setIsShown={setStockIsShown} iconName={'fa-warehouse'} iconSize={'text-xl'} iconValue={'Stock'} />
+                            </Link>
+
+                            <Link to="/area">
+                                <NavbarItemComponent isShown={areaIsShown} setIsShown={setAreaIsShown} iconName={'fa-area'} iconSize={'text-xl'} iconValue={'Area'} />
                             </Link>
 
                         </div>

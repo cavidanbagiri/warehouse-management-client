@@ -5,6 +5,9 @@ import { CiSquarePlus } from "react-icons/ci";
 import { CiUser } from "react-icons/ci";
 import { PiStackThin } from "react-icons/pi";
 import { CiLogout } from "react-icons/ci";
+import { PiFactoryThin } from "react-icons/pi";
+
+
 
 function NavbarItemComponent(props) {
     return (
@@ -16,6 +19,7 @@ function NavbarItemComponent(props) {
                 {props.iconValue === 'Stock' && <PiStackThin  className='text-black my-3 text-3xl' /> }
                 {props.iconValue === 'Create' && <CiSquarePlus  className='text-black my-3 text-3xl' /> }
                 {props.iconValue === 'Warehouse' && <PiWarehouseThin className='text-black my-3 text-3xl' /> }
+                {props.iconValue === 'Area' && <PiFactoryThin className='text-black my-3 text-3xl' /> }
                 {props.iconValue === 'Profile' && <CiUser  className='text-black my-3 text-3xl' /> }
                 {props.iconValue === 'Logout' && <CiLogout  className='text-black my-3 text-3xl' /> }
             </span>

@@ -19,10 +19,7 @@ function AddStockEachComponent(props) {
 
     useEffect(()=>{
         if(amount < 0){
-            console.log('-->>',props.item.leftover)
             setAmount(props.item.leftover)
-            console.log('-->>>',amount)
-            
         }
         else{
             let data = {

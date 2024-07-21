@@ -132,17 +132,21 @@ export const stockSlice = createSlice({
 
     extraReducers:(builder)=>{
 
+        // Get all stocks
         builder.addCase(StockService.getcStocks.fulfilled, (state, action)=>{
             if(action.payload!==null){
                 state.filter_stock_data = action.payload;
             }
         })
+
+        // Filter stocks
         builder.addCase(StockService.filterStockData.fulfilled, (state, action)=>{
             if(action.payload!==null){
                 state.filter_stock_data = action.payload;
             }
         })
 
+        // Get Stock By Id
         builder.addCase(StockService.getById.fulfilled, (state, action)=>{
             if(action.payload!==null){
                 state.po_data = action.payload;

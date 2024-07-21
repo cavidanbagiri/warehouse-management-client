@@ -2,14 +2,14 @@
 import { useSelector, useDispatch } from 'react-redux';
 
 import Switch from '@mui/material/Switch';
-import {setStockColumnFilter} from "../../store/stock-store.js";
+import {setAreaColumnFilter} from "../../store/area-store.js";
 
 
 function TableColumnFilterComponent() {
 
     const dispatch = useDispatch();
 
-    const stock_column_filter = useSelector(state => state.stockSlice.stock_column_filter);
+    const area_column_filter = useSelector(state => state.areaSlice.area_column_filter);
 
     return (
        <div
@@ -18,12 +18,12 @@ function TableColumnFilterComponent() {
            <ul style={{fontFamily: 'IBM Plex Sans'}}
                className='text-black font-medium'>
                {
-                   Object.entries(stock_column_filter).map(([key, value], index) => (
+                   Object.entries(area_column_filter).map(([key, value], index) => (
                         <li className='hover:cursor-pointer my-1 text-[15px]' key={index}>
                             <Switch color='warning'
                                 checked={value}
                                 onChange={(event)=>{
-                                    dispatch(setStockColumnFilter({key: key, value: event.target.checked}));
+                                    dispatch(setAreaColumnFilter({key: key, value: event.target.checked}));
                                 }}
                                 inputProps={{ 'aria-label': 'controlled' }}
                             />

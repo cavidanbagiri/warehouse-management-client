@@ -7,7 +7,7 @@ import messageBoxSlice from './message_box-store';
 import adminSlice from './admin-store';
 import warehouseSlice from './warehouse-store';
 import stockSlice from "./stock-store.js";
-
+import areaSlice from './area-store.js';
 
 
 export const store = configureStore({
@@ -18,7 +18,8 @@ export const store = configureStore({
     messageBoxSlice,
     adminSlice,
     warehouseSlice,
-    stockSlice
+    stockSlice,
+    areaSlice
   },
   // middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
 })
