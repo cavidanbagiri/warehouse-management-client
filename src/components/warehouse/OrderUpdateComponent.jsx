@@ -27,11 +27,11 @@ function OrderUpdateComponent() {
     const order_update = useSelector((state) => state.warehouseSlice.order_update);
 
     const filtered_companies = useSelector((state) => state.commonSlice.filtered_companies);
-    const filter_users = useSelector((state) => state.commonSlice.filter_users);
+    const filter_ordereds = useSelector((state) => state.commonSlice.filter_ordereds);
 
 
     const [isCompanyDropDown, setIsCompanyDropDown] = useState(false);
-    const [isUserDropDown, setIsUserDropDown] = useState(false);
+    const [isOrderedDropDown, setIsOrderedDropDown] = useState(false);
     const [documentnum, setDocumentNum] = useState('');
     const [material_type, setMaterialType] = useState('');
     const [material_name, setMaterialName] = useState('');
@@ -64,7 +64,7 @@ function OrderUpdateComponent() {
             orderedId: val,
             ordered_name: second_val
         }))
-        setIsUserDropDown(!isUserDropDown);
+        setIsOrderedDropDown(!isOrderedDropDown);
     }
     const filterChange = (event, comp) => {
         if (comp === 'username') {
@@ -128,11 +128,11 @@ function OrderUpdateComponent() {
             setUnit(po_data.unit);
             setPrice(po_data.price);
         }
-        if (po_data?.UserModel?.user_id) {
+        if (po_data?.OrderedModel?.ordered_id) {
             setOrdered((each) => ({
                 ...each,
-                orderedId: po_data?.UserModel?.user_id,
-                ordered_name: po_data?.UserModel?.firstName.charAt(0).toUpperCase() + po_data?.UserModel?.firstName.slice(1) + ' ' + po_data?.UserModel?.lastName.charAt(0).toUpperCase() + po_data?.UserModel?.lastName.slice(1)
+                orderedId: po_data?.OrderedModel?.ordered_id,
+                ordered_name: po_data?.OrderedModel?.firstName.charAt(0).toUpperCase() + po_data?.OrderedModel?.firstName.slice(1) + ' ' + po_data?.OrderedModel?.lastName.charAt(0).toUpperCase() + po_data?.OrderedModel?.lastName.slice(1)
             }))
         }
     }, [po_data]);
@@ -181,13 +181,13 @@ function OrderUpdateComponent() {
                         <span className='w-1/3'>Ordered Name </span>
                         <div className='relative'>
                             <button className='text-xs bg-white border border-gray-300 w-64 rounded-lg  p-2  text-ellipsis overflow-hidden text-nowrap outline-none' onClick={() => {
-                                setIsUserDropDown(!isUserDropDown)
+                                setIsOrderedDropDown(!isOrderedDropDown)
                             }}>
                                 {ordered.orderedId === '' ? 'Orderer' : ordered.ordered_name}
                             </button>
                             {
-                                isUserDropDown && <DropDownComponent
-                                    data={filter_users}
+                                isOrderedDropDown && <DropDownComponent
+                                    data={filter_ordereds}
                                     text_name={'username'}
                                     input_name={'Orderer...'}
                                     listenFunc={listenUser}

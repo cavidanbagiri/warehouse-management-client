@@ -2,19 +2,22 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 
+
 import AdminService from '../../services/admin-service';
-import { setCreateCompanyMessageFalse, setCreateCompanyAvailableFalse, setCreateCompanyCondFalse } from '../../store/admin-store';
+import {
+    setCreateCompanyStatusInitial,
+    setCreateCompanyStatusError,
+    setCreateCompanyMessage
+} from '../../store/admin-store';
+
 
 import LoadingButton from '@mui/lab/LoadingButton';
 
 function AddCompanyComponent() {
 
     const dispatch = useDispatch();
-    const create_company_message = useSelector((state) => state.adminSlice.create_company_message);
-    const create_company_cond = useSelector((state) => state.adminSlice.create_company_cond);
-    const create_company_available = useSelector((state) => state.adminSlice.create_company_available);
+    const company = useSelector((state) => state.adminSlice.company);
     
-    const [err_msg, setErrMsg] = useState(false);
 
     let [company_data, setCompanyData] = useState({
         company_name: '',
@@ -24,63 +27,42 @@ function AddCompanyComponent() {
     });
 
     function createNewCompany() {
-        if (company_data.company_name.trim() !== '') {
-            dispatch(AdminService.createCompany(company_data));
+        if (company_data.company_name.trim() === '') {
+            dispatch(setCreateCompanyStatusError());
+            dispatch(setCreateCompanyMessage('Company Name Required'));
         }
         else {
-            setErrMsg(true);
+            console.log('company data is : ', company_data);
+            dispatch(AdminService.createCompany(company_data));
         }
     }
 
+    // Control after creating new ordered conditions and messages
     useEffect(() => {
-        setTimeout(() => {
-            if (create_company_message) {
-                dispatch(setCreateCompanyMessageFalse());
-                dispatch(setCreateCompanyCondFalse());
-            }
-        }, 2000)
-    }, [create_company_message, create_company_cond]);
+        if (company.status != -1) {
+            setTimeout(() => {
+                dispatch(setCreateCompanyStatusInitial());
+                setCompanyData((each) => ({
+                    ...each,
+                    company_name: '',
+                    email: '',
+                    phone: '',
+                    country: '',
+                }));
+            }, 2000)
+        }
+    }, [company.status]);
 
-    useEffect(() => {
-        setTimeout(() => {
-            if (create_company_available) {
-                dispatch(setCreateCompanyAvailableFalse());
-                dispatch(setCreateCompanyCondFalse());
-            }
-        }, 2000)
-    }, [create_company_available, create_company_cond]);
-    
-    useEffect(() => {
-        if (create_company_cond) {
-            setCompanyData((each) => ({
-                ...each,
-                company_name: '',
-                email: '',
-                phone: '',
-                country: '',
-            }));
-        };
-    },);
-
-    useEffect(()=>{
-        setTimeout(()=>{
-            setErrMsg(false);
-        },2000)
-    },[err_msg])
 
     return (
         <div className='flex flex-col'>
 
-            {
-                create_company_message && <span className='text-green-500 w-full text-end'>New Company Successfully Created</span>
+        {
+                company.status === 1 && <span className={`flex justify-end bg-green-300 w-full text-end text-green-500 font-bold p-1`}>{company.message}</span>
             }
 
             {
-                err_msg && <span className='text-red-500 w-full text-end'>Company Name Cant Be Empty</span>
-            }
-
-            {
-                create_company_available && <span className='text-red-500 w-full text-end'>Company Already Available</span>
+                company.status === 0 && <span className={`flex justify-end bg-red-300 w-full text-end text-red-500  font-bold p-1`}>{company.message}</span>
             }
 
 
@@ -135,7 +117,7 @@ function AddCompanyComponent() {
             </div>
             <div className='opacity-70'>
                 {
-                    !create_company_cond ?
+                    !company.pending ?
                         <button onClick={createNewCompany} className='bg-orange-300 text-gray-800 hover:bg-orange-400 duration-200  w-full py-4 rounded-lg my-4 text-lg'>
                             Confirm
                         </button>

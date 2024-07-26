@@ -23,7 +23,7 @@ function CreateMaterialPage() {
   const dispatch = useDispatch();
 
   const filtered_companies = useSelector((state) => state.commonSlice.filtered_companies);
-  const filter_users = useSelector((state) => state.commonSlice.filter_users);
+  const filter_ordereds = useSelector((state) => state.commonSlice.filter_ordereds);
   const table = useSelector((state) => state.createTableSlice.table);
   const show_message_box = useSelector((state) => state.messageBoxSlice.toggle_message);
   const show_load = useSelector((state) => state.createTableSlice.show_load);
@@ -149,7 +149,7 @@ function CreateMaterialPage() {
     setCompanyRefreshMessage(true);
   }
   const refreshOrdereds = () => {
-    dispatch(CommonService.fetchUsers());
+    dispatch(CommonService.fetchOrdereds());
     setOrderedRefreshMessage(true)
   }
 
@@ -387,7 +387,7 @@ function CreateMaterialPage() {
               </button>
               {
                 isUserDropDown && <DropDownComponent
-                  data={filter_users}
+                  data={filter_ordereds}
                   text_name={'username'}
                   input_name={'Orderer...'}
                   listenFunc={listenUser} 

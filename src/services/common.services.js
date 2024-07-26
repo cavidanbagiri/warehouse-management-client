@@ -32,11 +32,11 @@ class CommonService {
         }
     );
 
-    static fetchUsers = createAsyncThunk(
+    static fetchOrdereds = createAsyncThunk(
         'fetchusers/',
         async() => {
             let data = {};
-            await $api.get('/users')
+            await $api.get('/ordereds')
             .then((response) => {
                 data = response.data;
             }).catch((err) => {
@@ -67,7 +67,6 @@ class CommonService {
             await $api.get('/groups')
             .then((response) => {
                 data = response.data;
-                console.log('groups is : ', data);
             }).catch((err) => {
                 data = null;
                 console.log('fetch groups Error happen : ', err);

@@ -49,6 +49,7 @@ class WarehouseService {
             .catch((err)=>{
                 console.log('Get Row Id Error : ', err);
             })
+            console.log('object data is : ', data);
             return data;
         }
     )

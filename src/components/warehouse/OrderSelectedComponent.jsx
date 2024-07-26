@@ -45,6 +45,7 @@ function OrderSelectedComponent(props) {
                         <IoIosInformationCircleOutline className='text-2xl text-gray-800' />
                         <span className="text-xs w-20 text-center">Get Inform</span>
                     </div>
+                    
                     <div 
                     onClick={()=>{
                         if(selected_items.length > 1){
@@ -59,6 +60,7 @@ function OrderSelectedComponent(props) {
                         <CiEdit className='text-2xl text-gray-800' />
                         <span className="text-xs w-20 text-center">Update Row</span>
                     </div>
+
                     <div
                     onClick={()=>{
                         props.showMessaggeBoxMessageHandle('delete', 'Dont have authorization for deleting');

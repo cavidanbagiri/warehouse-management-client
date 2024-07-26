@@ -20,7 +20,6 @@ export const userSlice = createSlice({
     initialState,
     reducers: {
         setUserStatus: (state) => {
-            console.log(localStorage.getItem('status_code'));
             state.user_status = localStorage.getItem('status_code');
         }
     },
@@ -39,13 +38,11 @@ export const userSlice = createSlice({
                 state.is_login_error = false;
             }
             else {
-                console.log('else work')
                 state.is_login_error = true;
             }
         })
         builder.addCase(UserService.refreshTokens.fulfilled, (state, action) => {
             if (action.payload != null) {
-                console.log('object : ', action.payload);
                 localStorage.setItem('token', action.payload.access);
                 state.user = action.payload.user;
                 state.user.projectId = action.payload.user.projectId

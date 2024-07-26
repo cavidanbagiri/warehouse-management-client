@@ -158,10 +158,10 @@ function FilterComponent() {
 
                 {/* Material name */}
                 <div className='mr-3'>
-                    <p className='text-xs text-gray-400 pl-1'>Order Num</p>
+                    <p className='text-xs text-gray-400 pl-1'>PO Num</p>
                     <input value={po}
                            className='placeholder-black text-xs bg-white border border-gray-300 rounded-lg w-24 p-2 outline-none text-center hover:border-orange-300 '
-                           type="text" placeholder='Order Num' onChange={(e) => {
+                           type="text" placeholder='PO Num' onChange={(e) => {
                         setPO(e.target.value);
                     }}/>
                 </div>

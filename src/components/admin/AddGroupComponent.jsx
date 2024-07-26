@@ -3,7 +3,10 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 
 import AdminService from '../../services/admin-service';
-import { setCreateGroupMessageFalse } from '../../store/admin-store';
+import { setCreateGroupStatusInitial,
+    setCreateGroupStatusError,
+    setCreateGroupMessage
+ } from '../../store/admin-store';
 
 import LoadingButton from '@mui/lab/LoadingButton';
 
@@ -11,18 +14,17 @@ function AddOrderedComponent() {
 
 
     const dispatch = useDispatch();
-    const create_group_message = useSelector((state) => state.adminSlice.create_group_message);
-    const create_group_cond = useSelector((state) => state.adminSlice.create_group_cond);
-    const [err_msg, setErrMsg] = useState(false);
 
-    let groups = useSelector((state) => state.adminSlice.groups);
+    const group = useSelector((state) => state.adminSlice.group);
+
     let [group_data, setGroupData] = useState({
         group_name: '',
     });
 
     function createNewGroup() {
         if (group_data.group_name.trim() === '') {
-            setErrMsg(true);
+            dispatch(setCreateGroupStatusError());
+            dispatch(setCreateGroupMessage('Group Name Required'));
         }
         else {
             dispatch(AdminService.createGroup(group_data));
@@ -36,37 +38,27 @@ function AddOrderedComponent() {
 
     // Control after creating new ordered conditions and messages
     useEffect(() => {
-        setTimeout(() => {
-            if (create_group_cond) {
-                dispatch(setCreateGroupMessageFalse());
-            }
-        }, 2000)
-    }, [create_group_message, create_group_cond]);
-
-    useEffect(() => {
-        if (create_group_cond) {
-            setGroupData((each) => ({
-                ...each,
-                group_name: '',
-            }));
-        };
-    });
-
-    useEffect(() => {
-        setTimeout(() => {
-            setErrMsg(false);
-        }, 2000)
-    }, [err_msg])
+        if (group.status != -1) {
+            setTimeout(() => {
+                console.log('here work')
+                dispatch(setCreateGroupStatusInitial());
+                setGroupData((each) => ({
+                    ...each,
+                    group_name: '',
+                }));
+            }, 2000)
+        }
+    }, [group.status]);
 
     return (
         <div className=''>
 
             {
-                create_group_message && <span className='text-green-500 w-full text-end'>New Group Successfully Created</span>
+                group.status === 1 && <span className={`flex justify-end bg-green-300 w-full text-end text-green-500 font-bold p-1`}>{group.message}</span>
             }
 
             {
-                err_msg && <span className='text-red-500 w-full text-end'>Group name cant be empty</span>
+                group.status === 0 && <span className={`flex justify-end bg-red-300 w-full text-end text-red-500  font-bold p-1`}>{group.message}</span>
             }
 
             <div className='flex flex-col justify-between text-sm my-3'>
@@ -94,14 +86,15 @@ function AddOrderedComponent() {
                             }))
                         }}
                     >
-                        {groups.map((item) => (
+                        {group.groups.map((item) => (
                             <option key={item.id} value={item.id} >{item.group_name}</option>
                         ))}
                     </select>
                 </div>
+
                 <div className='opacity-70'>
                     {
-                        !create_group_cond ?
+                        !group.pending ?
                             <button onClick={createNewGroup} className='bg-orange-300 text-gray-800 hover:bg-orange-400 duration-200  w-full py-4 rounded-lg my-4 text-lg'>
                                 Confirm
                             </button>
@@ -112,6 +105,7 @@ function AddOrderedComponent() {
                     }
 
                 </div>
+                
             </div>
         </div>
     )

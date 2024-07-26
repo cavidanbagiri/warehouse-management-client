@@ -3,15 +3,45 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import AdminService from "../services/admin-service";
 
 const initialState = {
-    create_company_message: false,
-    create_company_cond: false,
-    create_company_available: false,
-    create_ordered_message: false,
-    create_ordered_cond: false,
-    create_ordered_available: false,
-    create_group_message: false,
-    create_group_cond: false,
-    groups: [],
+
+    ordered:{
+        ordereds: [],
+        message: '',
+        pending: false,
+        status: -1,
+    },
+
+    company:{
+        companies: [],
+        message: '',
+        pending: false,
+        status: -1,
+    },
+    
+    group:{
+        groups: [],
+        message: '',
+        pending: false,
+        status: -1,
+    },
+
+    project:{
+        projects: [],
+        message: '',
+        pending: false,
+        status: -1,
+    },
+
+    user:{
+        users: [],
+        message: '',
+        pending: false,
+        status: -1,
+    },
+    
+    
+    user_status: []
+
 }
 
 export const adminSlice = createSlice({
@@ -19,86 +49,231 @@ export const adminSlice = createSlice({
     name: 'adminSlice',
     initialState,
     reducers: {
-        setCreateCompanyMessageFalse(state) {
-            state.create_company_message = false;
+       
+
+        // User
+        setCreateOrderedStatusInitial(state) {
+            state.ordered.status = -1;
         },
-        setCreateCompanyCondFalse(state) {
-            state.create_company_cond = false;
+        setCreateOrderedStatusError(state) {
+            state.ordered.status = 0;
         },
-        setCreateCompanyAvailableFalse(state) {
-            state.create_company_available = false;
+        setCreateOrderedMessage(state, action) {
+            state.ordered.message = action.payload;
         },
-        setCreateOrderedMessageFalse(state) {
-            state.create_ordered_message = false;
+
+
+        // User
+        setCreateUserStatusInitial(state) {
+            state.user.status = -1;
         },
-        setCreateOrderedCondFalse(state) {
-            state.create_ordered_cond = false;
+        setCreateUserStatusError(state) {
+            state.user.status = 0;
         },
-        setCreateOrderedAvailableFalse(state) {
-            state.create_ordered_available = false;
+        setCreateUserMessage(state, action) {
+            state.user.message = action.payload;
         },
-        setCreateGroupMessageFalse(state) {
-            state.create_group_message = false;
+
+
+        // Group
+        setCreateGroupStatusInitial(state) {
+            state.group.status = -1;
         },
-        setCreateGroupCondFalse(state) {
-            state.create_group_cond = false;
+        setCreateGroupStatusError(state) {
+            state.group.status = 0;
+        },
+        setCreateGroupMessage(state, action) {
+            state.group.message = action.payload;
+        },
+
+
+        // Project
+        setCreateProjectStatusInitial(state) {
+            state.project.status = -1;
+        },
+        setCreateProjectStatusError(state) {
+            state.project.status = 0;
+        },
+        setCreateProjectMessage(state, action) {
+            state.project.message = action.payload;
+        },
+
+
+        // Company
+        setCreateCompanyStatusInitial(state) {
+            state.company.status = -1;
+        },
+        setCreateCompanyStatusError(state) {
+            state.company.status = 0;
+        },
+        setCreateCompanyMessage(state, action) {
+            state.company.message = action.payload;
         }
+        
 
     },
     extraReducers: (builder) => {
-        builder.addCase(AdminService.createCompany.pending, (state, action) => {
-            state.create_company_cond = true;
-        })
-        builder.addCase(AdminService.createCompany.fulfilled, (state, action) => {
-            
-            if (action.payload.Error) {
-                state.create_company_available = true;
-                state.create_company_cond = false;
-            }
-            if (action.payload.id) {
-                state.create_company_message = true;
-                state.create_company_cond = false;
-            }
-        })
-        builder.addCase(AdminService.createOrdered.pending, (state, action) => {
-            state.create_ordered_cond = true;
-        })
+
+
+        // Create Ordered
+        builder.addCase(AdminService.createOrdered.pending, (state, action) => {state.ordered.pending = true;})
         builder.addCase(AdminService.createOrdered.fulfilled, (state, action) => {
-            if(action.payload.Error){
-                state.create_ordered_available = true;
-                state.create_ordered_cond = false;
+            state.ordered.pending = false;
+            if (action.payload.status === 201) {
+                state.ordered.status = 1;
+                state.ordered.message = 'New Ordered Created Successfully';
             }
-            if (action.payload.id) {
-                state.create_ordered_message = true;
-                state.create_ordered_cond = false;
+            else if (action.payload.status === 500) {
+                state.ordered.status = 0;
+                state.ordered.message = 'Ordered Already Exists';
+            }
+            else {
+                state.ordered.status = 0;
+                state.ordered.message = 'Ordered Creation Failed';
             }
         })
-        builder.addCase(AdminService.createGroup.pending, (state, action) => {
-            state.create_group_cond = true;
+        builder.addCase(AdminService.fetchOrdereds.fulfilled, (state, action) => {
+            if (action.payload.status === 200) {
+                state.ordered.ordereds = action.payload.data;
+            }
         })
+
+        
+
+        // Create User
+        builder.addCase(AdminService.createUser.pending, (state, action) => {state.user.pending = true;})
+        builder.addCase(AdminService.createUser.fulfilled, (state, action) => {
+            state.user.pending = false;
+            if (action.payload.status === 201) {
+                state.user.status = 1;
+                state.user.message = 'New User Created Successfully';
+            }
+            else if (action.payload.status === 400) {
+                state.user.status = 0;
+                state.user.message = 'User Already Exists';
+            }
+            else {
+                state.user.status = 0;
+                state.user.message = 'User Creation Failed';
+            }
+        })
+        builder.addCase(AdminService.fetchUsers.fulfilled, (state, action) => {
+            if (action.payload.status === 200) {
+                state.user.users = action.payload.data;
+            }
+        })
+
+
+
+        // Create Company
+        builder.addCase(AdminService.createCompany.pending, (state, action) => {state.company.pending = true;})
+        builder.addCase(AdminService.createCompany.fulfilled, (state, action) => {
+            state.company.pending = false;
+            if (action.payload.status === 201) {
+                state.company.status = 1;
+                state.company.message = 'New Company Created Successfully';
+            }
+            else if (action.payload.status === 500) {
+                state.company.status = 0;
+                state.company.message = 'Company Already Exists';
+            }
+            else {
+                state.company.status = 0;
+                state.company.message = 'Company Creation Failed';
+            }
+        })
+        builder.addCase(AdminService.fetchCompanies.fulfilled, (state, action) => {
+            if (action.payload.status === 200) {
+                state.company.companies = action.payload.data;
+            }
+        })
+
+
+
+        // Create Group
+        builder.addCase(AdminService.createGroup.pending, (state, action) => {state.group.pending = true;})
         builder.addCase(AdminService.createGroup.fulfilled, (state, action) => {
-            if (action.payload !== null) {
-                state.create_group_message = true;
-                state.create_group_cond = false;
+            state.group.pending = false;
+            state.create_group_message_cond = true;
+            if (action.payload.status === 201) {
+                state.group.status = 1;
+                state.group.message = 'New Group Created Successfully';
+            }
+            else if (action.payload.status === 500) {
+                state.group.status = 0;
+                state.group.message = 'Group Already Exists';
+            }
+            else {
+                state.group.status = 0;
+                state.group.message = 'Group Creation Failed';
             }
         })
         builder.addCase(AdminService.fetchGroups.fulfilled, (state, action) => {
-            if (action.payload !== null) {
-                state.groups = action.payload;
+            if (action.payload.status === 200) {
+                state.group.groups = action.payload.data;
             }
         })
+        
+
+
+        // Create Project
+        builder.addCase(AdminService.createProject.pending, (state, action) => {state.project.pending = true;})
+        builder.addCase(AdminService.createProject.fulfilled, (state, action) => {
+            state.project.pending = false;
+            if (action.payload.status === 201) {
+                state.project.status = 1;
+                state.project.message = 'New Project Created Successfully';
+            }
+            else if (action.payload.status === 500) {
+                state.project.status = 0;
+                state.project.message = 'Project Already Exists';
+            }
+            else {
+                state.project.status = 0;
+                state.project.message = 'Projject Creation Failed';
+            }
+        })
+        builder.addCase(AdminService.fetchProjects.fulfilled, (state, action) => {
+            if (action.payload.status === 200) {
+                state.project.projects = action.payload.data;
+            }
+        })
+
+
+        // Fetch User Status 
+        builder.addCase(AdminService.fetchUserStatus.fulfilled, (state, action) => {
+            if (action.payload !== null) {
+                state.user_status = action.payload;
+            }
+        })
+
     }
 
 })
 
 export const { setCreateCompanyMessageFalse,
-    setCreateCompanyCondFalse,
-    setCreateCompanyAvailableFalse,
-    setCreateOrderedMessageFalse,
-    setCreateOrderedCondFalse,
-    setCreateOrderedAvailableFalse,
-    setCreateGroupCondFalse,
-    setCreateGroupMessageFalse
+
+    setCreateOrderedStatusInitial,
+    setCreateOrderedStatusError,
+    setCreateOrderedMessage,
+
+
+    setCreateUserStatusInitial,
+    setCreateUserStatusError,
+    setCreateUserMessage,
+
+    setCreateGroupStatusInitial,
+    setCreateGroupStatusError,
+    setCreateGroupMessage,
+
+    setCreateProjectStatusInitial,
+    setCreateProjectStatusError,
+    setCreateProjectMessage,
+
+    setCreateCompanyStatusInitial,
+    setCreateCompanyStatusError,
+    setCreateCompanyMessage,
+
 } = adminSlice.actions;
 
 export default adminSlice.reducer;

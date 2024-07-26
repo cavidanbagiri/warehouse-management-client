@@ -10,6 +10,7 @@ import Navbar from "../layouts/Navbar.jsx";
 import CreateMaterialPage from "../pages/CreateMaterialPage.jsx";
 import WarehousePage from "../pages/WarehousePage.jsx";
 import AreaPage from "../pages/AreaPage.jsx";
+import AdminPage from "../pages/AdminPage.jsx";
 
 
 const router = createBrowserRouter([
@@ -40,6 +41,10 @@ const router = createBrowserRouter([
             {
                 path: "/area",
                 element: <AreaPage/>
+            },
+            {
+                path: "/admin",
+                element: <AdminPage/>
             }
         ]
     },

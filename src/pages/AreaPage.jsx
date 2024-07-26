@@ -6,7 +6,7 @@ import TableBodyComponent from '../components/area/TableBodyComponent.jsx'
 import TableColumnFilterComponent from '../components/area/TableColumnFilterComponent.jsx'
 import PageTitleComponent from '../components/area/PageTitleComponent.jsx'
 import FilterComponent from '../components/area/FilterComponent.jsx'
-
+import ZeroFilteredComponent from '../components/warehouse/ZeroFilteredComponent.jsx'
 
 import AreaService from '../services/area-service'
 
@@ -18,7 +18,14 @@ function AreaPage() {
 
     const user = useSelector(state => state.userSlice.user);
 
+    const filtered_area_data = useSelector((state) => state.areaSlice.filtered_area_data);
+
     const [show_table_column_component, setShowTableColumnCompoenent] = useState(false);
+
+    const clearFilter = () => {
+        // const projectId = user.projectId;
+        // dispatch(WarehouseService.fetchWarehouseData(projectId));
+    }
 
     useEffect(() => {
         dispatch(AreaService.fetchAreas(user.projectId));
@@ -48,13 +55,17 @@ function AreaPage() {
 
 
             <FilterComponent />
-
+            
 
             {/* Table Section */}
             <table className='w-full'>
                 <TableHeaderComponent />
                 <TableBodyComponent />
             </table>
+            
+            {
+                !filtered_area_data.length && <ZeroFilteredComponent resetFunc={clearFilter} />
+            }
 
         </div>
     )

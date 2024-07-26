@@ -158,6 +158,7 @@ export const warehouseSlice = createSlice({
             else{
                 state.addstock.addstock_message_box = true;
                 state.addstock.addstock_pending = false;
+                state.addstock.addstock_color_cond = 'bg-red-500';
                 state.addstock.addstock_error_message = 'Entering amount greater than leftover.';
             }
         })

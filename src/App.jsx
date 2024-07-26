@@ -26,7 +26,7 @@ function App() {
       dispatch(setUserStatus());
       dispatch(CommonService.fetchCompanies());
       dispatch(CommonService.fetchProjects());
-      dispatch(CommonService.fetchUsers());
+      dispatch(CommonService.fetchOrdereds());
       dispatch(CommonService.getTypeCount(user.projectId));
       dispatch(CommonService.fetchGroups());
     }

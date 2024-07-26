@@ -57,6 +57,10 @@ function Navbar() {
                                 <NavbarItemComponent isShown={areaIsShown} setIsShown={setAreaIsShown} iconName={'fa-area'} iconSize={'text-xl'} iconValue={'Area'} />
                             </Link>
 
+                            {/* <Link to="/admin">
+                                <NavbarItemComponent isShown={areaIsShown} setIsShown={setAreaIsShown} iconName={'fa-area'} iconSize={'text-xl'} iconValue={'Area'} />
+                            </Link> */}
+
                         </div>
                         <div onClick={()=>{
                             dispatch(UserService.userLogout());

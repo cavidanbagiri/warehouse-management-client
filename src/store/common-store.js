@@ -9,8 +9,8 @@ const initialState = {
     // get Projects
     projects: [],
     // get Users
-    users: [],
-    filter_users: [],
+    ordereds: [],
+    filter_ordereds: [],
     // get Type COunt
     type_count: [],
     // get Groups
@@ -29,10 +29,10 @@ export const commonSlice = createSlice({
             state.filtered_companies = dummy;
         },
         filterOrdered (state, action) {
-            let dummy = state.users.filter((el)=>{
+            let dummy = state.ordereds.filter((el)=>{
                 return el.username.includes(action.payload);
             })
-            state.filter_users = dummy;
+            state.filter_ordereds = dummy;
         },
         filterGroup (state, action) {
             let dummy = state.groups.filter((el)=>{
@@ -53,10 +53,10 @@ export const commonSlice = createSlice({
                 state.projects = action.payload;
             }
         }),
-        builder.addCase(CommonService.fetchUsers.fulfilled, (state, action)=>{
+        builder.addCase(CommonService.fetchOrdereds.fulfilled, (state, action)=>{
             if(action.payload!==null){
-                state.users = action.payload;
-                state.filter_users = action.payload;
+                state.ordereds = action.payload;
+                state.filter_ordereds = action.payload;
             }
         }),
         builder.addCase(CommonService.getTypeCount.fulfilled, (state, action)=>{
