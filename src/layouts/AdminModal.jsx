@@ -3,6 +3,7 @@ import { IoCloseSharp } from "react-icons/io5";
 import AddCompanyComponent from '../components/admin/AddCompanyComponent';
 import AddOrderedComponent from '../components/admin/AddOrderedComponent';
 import AddGroupComponent from '../components/admin/AddGroupComponent';
+import AddMaterialCodeComponent from '../components/admin/AddMaterialCodeComponent';
 
 
 function AdminModal(props) {
@@ -16,9 +17,8 @@ function AdminModal(props) {
                     }} />
                 </div>
                 {
-                    props.show_component === 'company' ? <AddCompanyComponent/> : props.show_component === 'group' ?  <AddGroupComponent/> : <AddOrderedComponent/>
+                    props.show_component === 'company' ? <AddCompanyComponent/> : props.show_component === 'group' ?  <AddGroupComponent/> : props.show_component === 'material_code' ? <AddMaterialCodeComponent/> : <AddOrderedComponent/>
                 }
-                {/* <AddCompanyComponent/> */}
             </div>
         </div>
     )

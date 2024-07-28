@@ -61,9 +61,21 @@ function TableRowComponent(props) {
                 </td>
             }
             {
+                props.warehouse_column_filter.material_code &&
+                <td className='text-center px-1'>
+                    {props.item.material_code}
+                </td>
+            }
+            {
+                props.warehouse_column_filter.material_description &&
+                <td className='text-center px-1'>
+                    {props.item.material_description}
+                </td>
+            }
+            {
                 props.warehouse_column_filter.material_name &&
                 <td className='text-start px-1'>
-                    {props.item.material_name}
+                    {props.item.material_name} {props.item.material_name} {props.item.material_name} {props.item.material_name}
                 </td>
             }
             {

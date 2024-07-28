@@ -189,6 +189,58 @@ class AdminService {
         }
     )
 
+    static createMaterialCode = createAsyncThunk(
+        '/creatematerialcode',
+        async(group_data) => {
+            let data = {};
+            await $api.post('/admin/creatematerialcode', group_data)
+            .then((response)=>{
+                data.status = response.status
+                data.data = response.data
+            })
+            .catch((err)=>{
+                data.status = err.response.status;
+                data.data = err.response.data;
+            })
+            return data;
+        }
+    )
+
+    static fetchMaterialCodes = createAsyncThunk(
+        '/materialcodes',
+        async()=>{
+            let data = {};
+            await $api.get('/admin/materialcodes')
+            .then((response)=>{
+                data.status = response.status
+                data.data = response.data;
+            })
+            .catch((err)=>{
+                console.log('fetch groups error : ', err);
+            })
+            console.log('coming data', data.data);
+            return data;
+        }
+    )
+
+    static filterMaterialCodes = createAsyncThunk(
+        '/filtermaterialcodes',
+        async(filtered_query)=>{
+            let query = '?value='+filtered_query;
+            let data = {};
+            await $api.get(`/admin/filtermaterialcodes/${query}`)
+            .then((response)=>{
+                data.status = response.status
+                data.data = response.data;
+            })
+            .catch((err)=>{
+                console.log('fetch groups error : ', err);
+            })
+            console.log('coming data', data.data);
+            return data;
+        }
+    )
+
 }
 
 export default AdminService;

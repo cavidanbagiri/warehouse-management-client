@@ -1,159 +1,204 @@
 
-    import { useEffect, useState } from 'react'
-    import { useDispatch, useSelector } from 'react-redux';
+import { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
 
-    import { addRow, updateRow } from '../../store/create_table-store';
+import MaterialCodeDropdownComponent from '../common/MaterialCodeDropdownComponent'
 
-    function TableRowComponent(props) {
+import { addRow, updateRow } from '../../store/create_table-store';
+import AdminService from '../../services/admin-service';
 
-        const dispatch = useDispatch();
-        const user = useSelector(state => state.userSlice.user);
+function TableRowComponent(props) {
 
-        const [row, setRow] = useState({
-            ss: props.index,
-            date: '13-05-2024',
-            projectId: user.projectId,
-            project_name: 'Moscow SRU',
-            companyId: '',
-            company_name: '',
-            document: '',
-            material_name: '',
-            type: 'Consumable',
-            qty: 0,
-            unit: 'Pcs',
-            price: 0,
-            total: 0,
-            currency: 'Rub',
-            orderedId: '',
-            ordered_name: '',
-            po: '',
-            certificate: false,
-            passport: false
-        });
+    const dispatch = useDispatch();
+    const user = useSelector(state => state.userSlice.user);
+    const [show_material_code, setShowMaterialCode] = useState(false);
 
-        useEffect(() => {
-            dispatch(addRow({ row: row }));
-        })
+    const [row, setRow] = useState({
+        ss: props.index,
+        date: '13-05-2024',
+        projectId: user.projectId,
+        companyId: '',
+        company_name: '',
+        document: '',
+        material_code_id: '',
+        material_code: '',
+        description: '',
+        material_name: '',
+        type: 'Consumable',
+        qty: 0,
+        unit: 'Pcs',
+        price: 0,
+        total: 0,
+        currency: 'Rub',
+        orderedId: '',
+        ordered_name: '',
+        po: '',
+        certificate: false,
+        passport: false
+    });
 
-        return (
-            <tr className=' relative border-b'>
-                <td className='py-4'>
-                    {row.ss}
-                </td>
-                <td>
-                    {row.project_name}
-                </td>
-
-
-                <td>
-                    <input className=" outline-none  w-full h-full p-2 " type="text" placeholder="Material Name..."
-                        onChange={
-                            (event) => {
-                                setRow((each) => ({
-                                    ...each,
-                                    material_name: event.target.value
-                                }))
-                                dispatch(updateRow({ ss: row.ss, name: 'material_name', value: event.target.value }))
-                            }} />
-                </td>
-                <td>
-                    <select defaultValue={'Consumable'}
-                        className=' p-2 outline-none text-gray-500 appearance-none hover:cursor-pointer'
-                        onChange={(event) => {
-                            setRow((each) => ({
-                                ...each,
-                                type: event.target.value
-                            }))
-                            dispatch(updateRow({ ss: row.ss, name: 'type', value: event.target.value }))
-                        }}>
-                        <option value="Consumable">Consumable</option>
-                        <option value="Project">Project</option>
-                        <option value="Fixture">Fixture</option>
-                        <option value="Safety">Safety</option>
-                        <option value="Hand Tools">Hand Tools</option>
-                        <option value="Administrative">Administrative</option>
-                    </select>
-                </td>
-                <td>
-                    <input className="outline-none w-full h-full p-2 text-center" type="number" placeholder="Amount..."
-                        onChange={
-                            (event) => {
-                                setRow((each) => ({
-                                    ...each,
-                                    qty: event.target.value,
-                                    total: row.price * event.target.value
-                                }))
-                                dispatch(updateRow({ ss: row.ss, name: 'qty', value: event.target.value }))
-                            }} />
-                </td>
-                <td className=''>
-                    <select value={row.unit} className='  p-2 outline-none appearance-none' onChange={(event) => {
-                        setRow((each) => ({
-                            ...each,
-                            unit: event.target.value
-                        }))
-                        dispatch(updateRow({ ss: row.ss, name: 'unit', value: event.target.value }))
-                    }}>
-                        <option value="pcs">Pcs</option>
-                        <option value="ton">Ton</option>
-                        <option value="kg">Kg</option>
-                        <option value="lt">Lt</option>
-                        <option value="mt">Mt</option>
-                        <option value="mt2">Mt2</option>
-                        <option value="mt3">Mt3</option>
-                    </select>
-                </td>
-                <td>
-                    <input className="outline-none w-full h-full p-2 text-center" type="number" placeholder="Price..."
-                        onChange={
-                            (event) => {
-                                setRow((each) => ({
-                                    ...each,
-                                    price: event.target.value,
-                                    total: row.qty * event.target.value
-                                }))
-                                dispatch(updateRow({ ss: row.ss, name: 'price', value: event.target.value }))
-                            }} />
-                </td>
-
-                <td>
-                    <span>{row.total.toFixed(2)}</span>
-                </td>
-
-                <td>
-                    <input className="outline-none w-full h-full p-2 text-center" type="text" placeholder="PO No..."
-                        onChange={
-                            (event) => {
-                                setRow((each) => ({
-                                    ...each,
-                                    po: event.target.value
-                                }))
-                                dispatch(updateRow({ ss: row.ss, name: 'po', value: event.target.value }))
-                            }} />
-                </td>
-
-                <td>
-                    <input value={row.certificate} type="checkbox" onChange={(event) => {
-                        setRow((each) => ({
-                            ...each,
-                            certificate: event.target.checked
-                        }))
-                        dispatch(updateRow({ ss: row.ss, name: 'certificate', value: event.target.checked }))
-                    }} />
-                </td>
-
-                <td>
-                    <input value={row.passport} type="checkbox" onChange={(event) => {
-                        setRow((each) => ({
-                            ...each,
-                            passport: event.target.checked
-                        }))
-                        dispatch(updateRow({ ss: row.ss, name: 'passport', value: event.target.checked }))
-                    }} />
-                </td>
-
-            </tr>
-        )
+    const filterChange = (event) => {
+        dispatch(AdminService.filterMaterialCodes(event.target.value));
     }
 
-    export default TableRowComponent
+    const listenFunc = (id, code, name) => {
+        setRow((each) => ({
+            ...each,
+            description: name,
+        }))
+        setRow((each) => ({
+            ...each,
+            material_code: code,
+        }))
+        setRow((each) => ({
+            ...each,
+            material_code_id: id,
+        }))
+        dispatch(updateRow({ ss: row.ss, name: 'description', value: name }))
+        dispatch(updateRow({ ss: row.ss, name: 'material_code', value: code }))
+        dispatch(updateRow({ ss: row.ss, name: 'material_code_id', value: id }))
+        setShowMaterialCode(false);
+    }
+
+    useEffect(() => {
+        dispatch(addRow({ row: row }));
+
+    })
+
+    return (
+        <tr className=' relative border-b'>
+            <td className='py-4'>
+                {row.ss}
+            </td>
+            <td className='py-1 relative'>
+                {
+                    row.material_code === '' ?
+                        <button onClick={() => setShowMaterialCode(!show_material_code)}
+                            className='bg-gray-100 p-3 rounded-lg hover:cursor-pointer hover:bg-gray-200'>
+                            Select Material Code
+                        </button>
+                        :
+                        row.material_code
+                }
+                {
+                    show_material_code &&
+                    <MaterialCodeDropdownComponent data={props.data} filterChange={filterChange} listenFunc={listenFunc}
+                    />
+                }
+            </td>
+            <td>
+                {row.description}
+            </td>
+
+            <td>
+                <input className=" outline-none  w-full h-full p-2 " type="text" placeholder="Material Name..."
+                    onChange={
+                        (event) => {
+                            setRow((each) => ({
+                                ...each,
+                                material_name: event.target.value
+                            }))
+                            dispatch(updateRow({ ss: row.ss, name: 'material_name', value: event.target.value }))
+                        }} />
+            </td>
+            <td>
+                <select defaultValue={'Consumable'}
+                    className=' p-2 outline-none text-gray-500 appearance-none hover:cursor-pointer'
+                    onChange={(event) => {
+                        setRow((each) => ({
+                            ...each,
+                            type: event.target.value
+                        }))
+                        dispatch(updateRow({ ss: row.ss, name: 'type', value: event.target.value }))
+                    }}>
+                    <option value="Consumable">Consumable</option>
+                    <option value="Project">Project</option>
+                    <option value="Fixture">Fixture</option>
+                    <option value="Safety">Safety</option>
+                    <option value="Hand Tools">Hand Tools</option>
+                    <option value="Administrative">Administrative</option>
+                </select>
+            </td>
+            <td>
+                <input className="outline-none w-full h-full p-2 text-center" type="number" placeholder="Amount..."
+                    onChange={
+                        (event) => {
+                            setRow((each) => ({
+                                ...each,
+                                qty: event.target.value,
+                                total: row.price * event.target.value
+                            }))
+                            dispatch(updateRow({ ss: row.ss, name: 'qty', value: event.target.value }))
+                        }} />
+            </td>
+            <td className=''>
+                <select value={row.unit} className='  p-2 outline-none appearance-none' onChange={(event) => {
+                    setRow((each) => ({
+                        ...each,
+                        unit: event.target.value
+                    }))
+                    dispatch(updateRow({ ss: row.ss, name: 'unit', value: event.target.value }))
+                }}>
+                    <option value="pcs">Pcs</option>
+                    <option value="ton">Ton</option>
+                    <option value="kg">Kg</option>
+                    <option value="lt">Lt</option>
+                    <option value="mt">Mt</option>
+                    <option value="mt2">Mt2</option>
+                    <option value="mt3">Mt3</option>
+                </select>
+            </td>
+            <td>
+                <input className="outline-none w-full h-full p-2 text-center" type="number" placeholder="Price..."
+                    onChange={
+                        (event) => {
+                            setRow((each) => ({
+                                ...each,
+                                price: event.target.value,
+                                total: row.qty * event.target.value
+                            }))
+                            dispatch(updateRow({ ss: row.ss, name: 'price', value: event.target.value }))
+                        }} />
+            </td>
+
+            <td>
+                <span>{row.total.toFixed(2)}</span>
+            </td>
+
+            <td>
+                <input className="outline-none w-full h-full p-2 text-center" type="text" placeholder="PO number..."
+                    onChange={
+                        (event) => {
+                            setRow((each) => ({
+                                ...each,
+                                po: event.target.value
+                            }))
+                            dispatch(updateRow({ ss: row.ss, name: 'po', value: event.target.value }))
+                        }} />
+            </td>
+
+            <td>
+                <input value={row.certificate} type="checkbox" onChange={(event) => {
+                    setRow((each) => ({
+                        ...each,
+                        certificate: event.target.checked
+                    }))
+                    dispatch(updateRow({ ss: row.ss, name: 'certificate', value: event.target.checked }))
+                }} />
+            </td>
+
+            <td>
+                <input value={row.passport} type="checkbox" onChange={(event) => {
+                    setRow((each) => ({
+                        ...each,
+                        passport: event.target.checked
+                    }))
+                    dispatch(updateRow({ ss: row.ss, name: 'passport', value: event.target.checked }))
+                }} />
+            </td>
+
+        </tr>
+    )
+}
+
+export default TableRowComponent

@@ -42,6 +42,22 @@ function CreateTableNavbarHeaderComponent() {
                   </div>
                 </th>
             }
+            { /* Material code */
+                warehouse_column_filter.material_code &&
+                <th scope="col" className="px-6 py-1 text-center border font-medium ">
+                  <div className="">
+                    Code
+                  </div>
+                </th>
+            }
+            { /* Material description */
+                warehouse_column_filter.material_description &&
+                <th scope="col" className="px-6 py-1 text-center border  min-w-24 font-medium ">
+                  <div className="">
+                    Description
+                  </div>
+                </th>
+            }
             { /* Material name */
                 warehouse_column_filter.material_name &&
                 <th scope="col" className="px-6 py-1 text-center border  min-w-60 font-medium ">
@@ -60,19 +76,19 @@ function CreateTableNavbarHeaderComponent() {
             }
             { /* Qty */
               warehouse_column_filter.qty &&
-              <th scope="col" className="px-6 py-1 text-center border w-28 font-medium ">
+              <th scope="col" className="px-6 py-1 text-center border  font-medium ">
                 Qty
               </th>
             }
             { /* Qty */
                 warehouse_column_filter.leftover &&
-                <th scope="col" className="px-6 py-1 text-center border w-28 font-medium ">
+                <th scope="col" className="px-6 py-1 text-center border font-medium ">
                   Leftover
                 </th>
             }
             { /* Unit */
                 warehouse_column_filter.unit &&
-                <th scope="col" className="px-6 py-1 text-center border w-28 font-medium ">
+                <th scope="col" className="px-6 py-1 text-center border  font-medium ">
                   Unit
                 </th>
             }
@@ -100,22 +116,22 @@ function CreateTableNavbarHeaderComponent() {
             }
             { /* PO */
                 warehouse_column_filter.po &&
-                <th scope="col" className="px-6 py-1 text-center border font-medium w-28">
+                <th scope="col" className="px-6 py-1 text-center border font-medium">
                   PO
                 </th>
             }
 
             { /* Certificate */
                 warehouse_column_filter.certificate &&
-                <th scope="col" className="px-6 py-1 text-center border font-medium w-28">
-                  Certificate
+                <th scope="col" className="px-6 py-1 text-center border font-medium ">
+                  Cert
                 </th>
             }
 
             { /* Passport */
-                warehouse_column_filter.certificate &&
-                <th scope="col" className="px-6 py-1 text-center border font-medium w-28">
-                  Passport
+                warehouse_column_filter.passport &&
+                <th scope="col" className="px-6 py-1 text-center border font-medium ">
+                  Pass
                 </th>
             }
 

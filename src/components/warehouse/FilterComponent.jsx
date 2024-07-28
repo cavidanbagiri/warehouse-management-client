@@ -2,9 +2,12 @@ import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 
 import {filterCompany, filterOrdered} from "../../store/common-store.js";
+
+import AdminService from "../../services/admin-service.js";
+
 import DropDownComponent from "../common/DropdownComponent.jsx";
-import StockService from "../../services/stock-service.js";
 import WarehouseService from "../../services/warehouse-service.js";
+import MaterialCodeDropDownComponent from "../common/MaterialCodeDropdownComponent.jsx";
 
 function FilterComponent() {
 
@@ -14,8 +17,12 @@ function FilterComponent() {
 
     const filtered_companies = useSelector((state) => state.commonSlice.filtered_companies);
     const filter_users = useSelector((state) => state.commonSlice.filter_users);
+    const material_code = useSelector((state) => state.commonSlice.material_code);
 
     // Filter Section Hooks
+    const [show_material_code, setShowMaterialCode] = useState(false);
+    const [material_code_id, setMaterialCodeId] = useState('');
+    const [material_code_description, setMaterialCodeDescription] = useState('');
     const [isCompanyDropDown, setIsCompanyDropDown] = useState(false);
     const [isUserDropDown, setIsUserDropDown] = useState(false);
     const [documentnum, setDocumentNum] = useState('');
@@ -55,6 +62,16 @@ function FilterComponent() {
             dispatch(filterCompany(event.target.value));
         }
     }
+
+    const filterMaterialCode = (event) => {
+        dispatch(AdminService.filterMaterialCodes(event.target.value));
+    }
+    const listenMaterialCode = (id, code, name) => {
+        setMaterialCodeId(id);
+        setMaterialCodeDescription(name);
+        setShowMaterialCode(false);
+    }
+
     const searchFunc = () => {
         let data = {
             companyId: company.companyId,
@@ -63,7 +80,8 @@ function FilterComponent() {
             material_name: material_name.toString(),
             createdAt: createdAt.toString(),
             po: po,
-            projectId: user.projectId
+            projectId: user.projectId,
+            materialCodeId: material_code_id
         };
         dispatch(WarehouseService.filterWarehouseData(data));
     }
@@ -156,7 +174,7 @@ function FilterComponent() {
                     }}/>
                 </div>
 
-                {/* Material name */}
+                {/* PO Number */}
                 <div className='mr-3'>
                     <p className='text-xs text-gray-400 pl-1'>PO Num</p>
                     <input value={po}
@@ -166,9 +184,30 @@ function FilterComponent() {
                     }}/>
                 </div>
 
+                {/* Material Code Side */}
+                <div className='mr-3 relative'>
+                    <p className='text-xs text-gray-400 pl-1'>Material Code</p>
+                    <button onClick={()=>{
+                        setShowMaterialCode(!show_material_code)
+                        console.log('clicked and result is :', show_material_code);
+                    }}
+                    className='text-xs text-gray-600 bg-gray-200 border border-gray-300 rounded-lg p-2 w-36 text-ellipsis overflow-hidden text-nowrap outline-none hover:border-orange-300 '>
+                        {
+                            material_code_description === '' ? 'Material Code' : material_code_description
+                        }
+                    </button>
+                    { show_material_code &&
+                    <MaterialCodeDropDownComponent
+                        data={material_code.material_codes}
+                        filterChange={filterMaterialCode}
+                        listenFunc={listenMaterialCode}
+                    />
+                }
+                </div>
+
             </div>
 
-            <div className=''>
+            <div className='relative'>
                 <p className='text-xs text-gray-400 pl-1'>Search</p>
                 <button
                     className='text-sm bg-green-500  border border-gray-300 rounded-lg p-2 w-24 text-ellipsis overflow-hidden text-nowrap outline-none text-white hover:bg-white hover:text-green-500 duration-200'

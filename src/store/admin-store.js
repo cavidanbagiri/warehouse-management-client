@@ -38,6 +38,14 @@ const initialState = {
         pending: false,
         status: -1,
     },
+
+    material_code:{
+        material_codes: [],
+        message: '',
+        pending: false,
+        status: -1,
+        created_data: null,
+    },
     
     
     user_status: []
@@ -51,7 +59,7 @@ export const adminSlice = createSlice({
     reducers: {
        
 
-        // User
+        // Ordered
         setCreateOrderedStatusInitial(state) {
             state.ordered.status = -1;
         },
@@ -108,7 +116,19 @@ export const adminSlice = createSlice({
         },
         setCreateCompanyMessage(state, action) {
             state.company.message = action.payload;
-        }
+        },
+
+
+        // Material Code
+        setCreateMaterialCodeStatusInitial(state) {
+            state.material_code.status = -1;
+        },
+        setCreateMaterialCodeStatusError(state) {
+            state.material_code.status = 0;
+        },
+        setCreateMaterialCodeMessage(state, action) {
+            state.material_code.message = action.payload;
+        },
         
 
     },
@@ -138,7 +158,6 @@ export const adminSlice = createSlice({
             }
         })
 
-        
 
         // Create User
         builder.addCase(AdminService.createUser.pending, (state, action) => {state.user.pending = true;})
@@ -162,7 +181,6 @@ export const adminSlice = createSlice({
                 state.user.users = action.payload.data;
             }
         })
-
 
 
         // Create Company
@@ -189,7 +207,6 @@ export const adminSlice = createSlice({
         })
 
 
-
         // Create Group
         builder.addCase(AdminService.createGroup.pending, (state, action) => {state.group.pending = true;})
         builder.addCase(AdminService.createGroup.fulfilled, (state, action) => {
@@ -214,7 +231,6 @@ export const adminSlice = createSlice({
             }
         })
         
-
 
         // Create Project
         builder.addCase(AdminService.createProject.pending, (state, action) => {state.project.pending = true;})
@@ -247,6 +263,33 @@ export const adminSlice = createSlice({
             }
         })
 
+
+
+        // Create Material
+        builder.addCase(AdminService.createMaterialCode.pending, (state, action) => {state.material_code.pending = true;})
+        builder.addCase(AdminService.createMaterialCode.fulfilled, (state, action) => {
+            state.material_code.pending = false;
+            if (action.payload.status === 201) {
+                state.material_code.status = 1;
+                state.material_code.message = 'New Material Code Created Successfully';
+                state.material_code.created_data = action.payload.data
+            }
+            else if (action.payload.status === 400) {
+                state.material_code.status = 0;
+                state.material_code.message = 'Material Code is Already Exists';
+            }
+            else {
+                state.material_code.status = 0;
+                state.material_code.message = 'Material Code Creation Failed';
+            }
+        })
+        builder.addCase(AdminService.fetchMaterialCodes.fulfilled, (state, action) => {
+            if (action.payload.status === 200) {
+                console.log('this is work');
+                state.material_code.material_codes = action.payload.data;
+            }
+        })
+
     }
 
 })
@@ -273,6 +316,10 @@ export const { setCreateCompanyMessageFalse,
     setCreateCompanyStatusInitial,
     setCreateCompanyStatusError,
     setCreateCompanyMessage,
+    
+    setCreateMaterialCodeStatusInitial,
+    setCreateMaterialCodeStatusError,
+    setCreateMaterialCodeMessage,
 
 } = adminSlice.actions;
 

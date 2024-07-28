@@ -17,6 +17,8 @@ const initialState = {
         date: true,
         company: true,
         document: true,
+        material_code: false,
+        material_description: false,
         material_name: true,
         type: true,
         qty: true,

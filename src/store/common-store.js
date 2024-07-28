@@ -1,6 +1,7 @@
 
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import CommonService from "../services/common.services";
+import AdminService from "../services/admin-service";
 
 const initialState = {
     // get Company names
@@ -15,7 +16,11 @@ const initialState = {
     type_count: [],
     // get Groups
     groups: [],
-    filtered_groups: []
+    filtered_groups: [],
+
+    material_code:{
+        material_codes: [],
+    },
 }
 
 export const commonSlice = createSlice({
@@ -68,6 +73,16 @@ export const commonSlice = createSlice({
             if(action.payload!==null){
                 state.groups = action.payload;
                 state.filtered_groups = action.payload;
+            }
+        })
+        builder.addCase(AdminService.fetchMaterialCodes.fulfilled, (state, action) => {
+            if (action.payload.status === 200) {
+                state.material_code.material_codes = action.payload.data;
+            }
+        })
+        builder.addCase(AdminService.filterMaterialCodes.fulfilled, (state, action) => {
+            if (action.payload.status === 200) {
+                state.material_code.material_codes = action.payload.data;
             }
         })
     }

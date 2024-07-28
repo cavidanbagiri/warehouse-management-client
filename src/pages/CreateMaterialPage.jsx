@@ -35,6 +35,7 @@ function CreateMaterialPage() {
   const [add_company, setAddCompany] = useState(false);
   const [add_ordered, setAddOrdered] = useState(false);
   const [add_group, setAddGroup] = useState(false);
+  const [add_material_code, setAddMaterialCode] = useState(false);
   const [message, setMessage] = useState('');
   const [isCompanyDropDown, setIsCompanyDropDown] = useState(false);
   const [isUserDropDown, setIsUserDropDown] = useState(false);
@@ -64,6 +65,10 @@ function CreateMaterialPage() {
     if (add_company === true) { setAddCompany(false) }
     if (add_ordered === true) { setAddOrdered(false) }
     if (add_group === true) { setAddGroup(false) }
+    if (add_material_code === true) { setAddMaterialCode(false) }
+  }
+  function addMaterialCode() {
+    setAddMaterialCode(true);
   }
   function addRows() {
     dispatch(addTableCheck());
@@ -108,7 +113,7 @@ function CreateMaterialPage() {
         default_data: default_data,
         table_data: table
       }
-      // console.log(common_data);
+      console.log(common_data);
       dispatch(CreateTableService.receiveWarehouse(common_data));
     }
     else {
@@ -217,6 +222,10 @@ function CreateMaterialPage() {
       }
 
       {
+        add_material_code && <AdminModal title={'Add Material Code'} closeModal={closeModal} show_component={'material_code'} />
+      }
+
+      {
         company_refresh_message && <MessageBox message={'Companies Refreshed'} color={'bg-green-500'} />
       }
 
@@ -252,6 +261,9 @@ function CreateMaterialPage() {
             <button onClick={addGroup} className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:bg-orange-400 hover:text-white duration-200' >Add Group</button>
             <button onClick={addRows} className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:bg-orange-400 hover:text-white duration-200' >Add Row</button>
             <button onClick={delRows} className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:bg-orange-400 hover:text-white duration-200' >Delete Row</button>
+            
+            <button onClick={addMaterialCode} className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:bg-orange-400 hover:text-white duration-200' >Add Material Code</button>
+            
             <button onClick={postFunc} className='py-2 px-5 border rounded-md border-gray-400 bg-white text-green-500 mx-2 hover:bg-green-500 hover:text-white duration-200' >Insert From Excel </button>
           </div>
         </div>
