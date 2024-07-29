@@ -5,7 +5,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import MaterialCodeDropdownComponent from '../common/MaterialCodeDropdownComponent'
 
 import { addRow, updateRow } from '../../store/create_table-store';
+
 import AdminService from '../../services/admin-service';
+
+import {UNIT_VALUES} from '../../constants/values';
 
 function TableRowComponent(props) {
 
@@ -139,13 +142,7 @@ function TableRowComponent(props) {
                     }))
                     dispatch(updateRow({ ss: row.ss, name: 'unit', value: event.target.value }))
                 }}>
-                    <option value="pcs">Pcs</option>
-                    <option value="ton">Ton</option>
-                    <option value="kg">Kg</option>
-                    <option value="lt">Lt</option>
-                    <option value="mt">Mt</option>
-                    <option value="mt2">Mt2</option>
-                    <option value="mt3">Mt3</option>
+                    {UNIT_VALUES.map((unit) => <option key={unit} value={unit}>{unit}</option>)}
                 </select>
             </td>
             <td>

@@ -7,7 +7,6 @@ import CustomLoadingButton from "../common/CustomLoadingButton.jsx";
 
 import WarehouseService from '../../services/warehouse-service';
 
-import { filterOrdered, filterCompany } from '../../store/common-store';
 import {
     setOrderSelectionUpdateToggleFalse,
     setOrderUpdateMessageBoxTrue,
@@ -26,8 +25,8 @@ function OrderUpdateComponent() {
 
     const order_update = useSelector((state) => state.warehouseSlice.order_update);
 
-    const filtered_companies = useSelector((state) => state.commonSlice.filtered_companies);
-    const filter_ordereds = useSelector((state) => state.commonSlice.filter_ordereds);
+    const companies = useSelector((state) => state.commonSlice.companies);
+    const ordereds = useSelector((state) => state.commonSlice.ordereds);
 
 
     const [isCompanyDropDown, setIsCompanyDropDown] = useState(false);
@@ -166,7 +165,7 @@ function OrderUpdateComponent() {
                             </button>
                             {
                                 isCompanyDropDown && <DropDownComponent
-                                    data={filtered_companies}
+                                    data={companies}
                                     text_name={'company_name'}
                                     input_name={'Company...'}
                                     listenFunc={listenCompany}
@@ -187,7 +186,7 @@ function OrderUpdateComponent() {
                             </button>
                             {
                                 isOrderedDropDown && <DropDownComponent
-                                    data={filter_ordereds}
+                                    data={ordereds}
                                     text_name={'username'}
                                     input_name={'Orderer...'}
                                     listenFunc={listenUser}

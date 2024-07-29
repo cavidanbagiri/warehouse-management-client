@@ -18,6 +18,20 @@ class CommonService {
         }
     );
 
+    static filterCompanies = createAsyncThunk(
+        'filtercompanies/',
+        async(values) => {
+            let data = {};
+            await $api.get('/filtercompanies/?company_name='+values)
+            .then((response) => {
+                data = response.data;
+            }).catch((err) => {
+                console.log('fetch companies Error happen : ', err);
+            });
+            return data;
+        }
+    );
+
     static fetchProjects = createAsyncThunk(
         'fetchprojects/',
         async() => {
@@ -37,6 +51,20 @@ class CommonService {
         async() => {
             let data = {};
             await $api.get('/ordereds')
+            .then((response) => {
+                data = response.data;
+            }).catch((err) => {
+                console.log('fetch users Error happen : ', err);
+            });
+            return data;
+        }
+    );
+
+    static filterOrdereds = createAsyncThunk(
+        'filterordereds/',
+        async(value) => {
+            let data = {};
+            await $api.get(`/filterordereds/?ordered=${value}`)
             .then((response) => {
                 data = response.data;
             }).catch((err) => {

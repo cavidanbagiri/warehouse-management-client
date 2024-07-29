@@ -18,7 +18,6 @@ import PageTitleComponent from '../components/warehouse/PageTitleComponent.jsx';
 
 import { IoFilterOutline } from "react-icons/io5";
 
-import { filterCompany, filterOrdered } from '../store/common-store';
 
 import {
     setOrderSelectionInformationToggleTrue,

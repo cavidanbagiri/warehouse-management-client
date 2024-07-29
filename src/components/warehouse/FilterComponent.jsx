@@ -1,13 +1,12 @@
 import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 
-import {filterCompany, filterOrdered} from "../../store/common-store.js";
-
-import AdminService from "../../services/admin-service.js";
-
 import DropDownComponent from "../common/DropdownComponent.jsx";
 import WarehouseService from "../../services/warehouse-service.js";
 import MaterialCodeDropDownComponent from "../common/MaterialCodeDropdownComponent.jsx";
+
+import AdminService from "../../services/admin-service.js";
+import CommonService from "../../services/common.services";
 
 function FilterComponent() {
 
@@ -15,8 +14,8 @@ function FilterComponent() {
 
     const user = useSelector((state) => state.userSlice.user);
 
-    const filtered_companies = useSelector((state) => state.commonSlice.filtered_companies);
-    const filter_ordereds = useSelector((state) => state.commonSlice.filter_ordereds);
+    const companies = useSelector((state) => state.commonSlice.companies);
+    const ordereds = useSelector((state) => state.commonSlice.ordereds);
     const material_code = useSelector((state) => state.commonSlice.material_code);
 
     // Filter Section Hooks
@@ -58,10 +57,10 @@ function FilterComponent() {
     }
     const filterChange = (event, comp) => {
         if (comp === 'username') {
-            dispatch(filterOrdered(event.target.value));
+            dispatch(CommonService.filterOrdereds(event.target.value));
         }
         else if (comp === 'company_name') {
-            dispatch(filterCompany(event.target.value));
+            dispatch(CommonService.filterCompanies(event.target.value));
         }
     }
 
@@ -126,7 +125,7 @@ function FilterComponent() {
                     </button>
                     {
                         isCompanyDropDown && <DropDownComponent
-                            data={filtered_companies}
+                            data={companies}
                             text_name={'company_name'}
                             input_name={'Company...'}
                             listenFunc={listenCompany}
@@ -147,7 +146,7 @@ function FilterComponent() {
                     </button>
                     {
                         isUserDropDown && <DropDownComponent
-                            data={filter_ordereds}
+                            data={ordereds}
                             text_name={'username'}
                             input_name={'Orderer...'}
                             listenFunc={listenUser}

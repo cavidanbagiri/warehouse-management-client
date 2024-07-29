@@ -17,6 +17,7 @@ const initialState = {
         order_update_message_box: false,
         order_update_error_message: '',
         order_update_pending: false,
+        order_update_color_cond: 'bg-green-500',
     },
 
     order_return: {
@@ -113,6 +114,7 @@ export const areaSlice = createSlice({
                 state.order_update.order_update_message_box = true;
                 state.order_update.order_update_error_message = 'Successfully Update';
                 state.order_update.order_update_pending = false;
+                state.order_update.order_update_color_cond = 'bg-green-500'
             }
         })
 

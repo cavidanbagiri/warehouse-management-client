@@ -103,7 +103,7 @@ export const createTableSlice = createSlice({
             }
             else {
                 state.show_message_color = 'bg-red-500',
-                    state.show_load = false;
+                state.show_load = false;
                 state.show_message = true;
                 state.show_message_text = 'Material can\'t created, send report to admin';
             }

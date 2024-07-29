@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { addTableCheck, delRow, setShowMessageFalse } from '../store/create_table-store';
 import { setShowErrorTrue, setShowErrorFalse } from '../store/message_box-store';
-import { filterCompany, filterOrdered } from '../store/common-store';
+
 
 import CreateTableService from '../services/create_table-service';
 import CommonService from '../services/common.services';
@@ -16,14 +16,17 @@ import MessageBox from '../layouts/MessageBox.jsx';
 import AdminModal from '../layouts/AdminModal';
 
 import LoadingButton from '@mui/lab/LoadingButton';
+
+import {CURRENCIES} from '../constants/values';
+
 import { LuRefreshCw } from "react-icons/lu";
 
 function CreateMaterialPage() {
 
   const dispatch = useDispatch();
 
-  const filtered_companies = useSelector((state) => state.commonSlice.filtered_companies);
-  const filter_ordereds = useSelector((state) => state.commonSlice.filter_ordereds);
+  const companies = useSelector((state) => state.commonSlice.companies);
+  const ordereds = useSelector((state) => state.commonSlice.ordereds);
   const table = useSelector((state) => state.createTableSlice.table);
   const show_message_box = useSelector((state) => state.messageBoxSlice.toggle_message);
   const show_load = useSelector((state) => state.createTableSlice.show_load);
@@ -31,6 +34,7 @@ function CreateMaterialPage() {
   const show_message_text = useSelector((state) => state.createTableSlice.show_message_text);
   const show_message_color = useSelector((state) => state.createTableSlice.show_message_color);
   const type_data = useSelector((state) => state.createTableSlice.type_data);
+
   const [total_price, setTotalPrice] = useState(0.00);
   const [add_company, setAddCompany] = useState(false);
   const [add_ordered, setAddOrdered] = useState(false);
@@ -41,6 +45,11 @@ function CreateMaterialPage() {
   const [isUserDropDown, setIsUserDropDown] = useState(false);
   const [company_refresh_message, setCompanyRefreshMessage ] = useState(false);
   const [ordered_refresh_message, setOrderedRefreshMessage ] = useState(false);
+  const [doc_num, setDocNum] = useState('');
+  const [currency, setCurrency] = useState('rub');
+
+
+
   const [company, setCompany] = useState({
     companyId: '',
     company_name: ''
@@ -49,30 +58,12 @@ function CreateMaterialPage() {
     orderedId: '',
     ordered_name: '',
   })
-  const [doc_num, setDocNum] = useState('');
-  const [currency, setCurrency] = useState('rub');
 
-  function addCompany() {
-    setAddCompany(true);
-  }
-  function addOrdered() {
-    setAddOrdered(true);
-  }
-  function addGroup() {
-    setAddGroup(true);
-  }
-  function closeModal() {
-    if (add_company === true) { setAddCompany(false) }
-    if (add_ordered === true) { setAddOrdered(false) }
-    if (add_group === true) { setAddGroup(false) }
-    if (add_material_code === true) { setAddMaterialCode(false) }
-  }
-  function addMaterialCode() {
-    setAddMaterialCode(true);
-  }
-  function addRows() {
-    dispatch(addTableCheck());
-  }
+  function addCompany() {setAddCompany(true);}
+  function addOrdered() {setAddOrdered(true);}
+  function addGroup() {setAddGroup(true);}
+  function addMaterialCode() {setAddMaterialCode(true);}
+  function addRows() {dispatch(addTableCheck());}
   function delRows() {
     if (table.length > 1) {
       dispatch(delRow());
@@ -85,6 +76,14 @@ function CreateMaterialPage() {
       }, 2000)
     }
   }
+
+  function closeModal() {
+    if (add_company === true) { setAddCompany(false) }
+    if (add_ordered === true) { setAddOrdered(false) }
+    if (add_group === true) { setAddGroup(false) }
+    if (add_material_code === true) { setAddMaterialCode(false) }
+  }
+
   function postFunc() {
     let cond = true;
     if (company.company_name === '') {
@@ -95,16 +94,27 @@ function CreateMaterialPage() {
       setMessage(`Ordered name must be selected`);
       cond = false;
     }
-    for (let i of table) {
-      if (i.material_name === "") {
-        setMessage(`In ${i.ss} row, Material name must be selected`);
-        cond = false;
-        break;
-      }
-      else if (i.qty <= 0) {
-        setMessage(`In ${i.ss} row, Quantity is not valid`);
-        cond = false;
-        break;
+    if(table.length === 0){
+      setMessage('Table is empty');
+      cond = false;
+    }
+    else{
+      for (let i of table) {
+        if (i.material_name === "") {
+          setMessage(`In ${i.ss} row, Material name must be selected`);
+          cond = false;
+          break;
+        }
+        else if (i.qty <= 0) {
+          setMessage(`In ${i.ss} row, Quantity is not valid`);
+          cond = false;
+          break;
+        }
+        else if (i.material_code_id === ''){
+          setMessage(`In ${i.ss} row, Material Code doesnt entered`);
+          cond = false;
+          break;
+        }
       }
     }
     if (cond) {
@@ -113,10 +123,11 @@ function CreateMaterialPage() {
         default_data: default_data,
         table_data: table
       }
-      console.log(common_data);
       dispatch(CreateTableService.receiveWarehouse(common_data));
+
     }
     else {
+      console.log('else work');
       dispatch(setShowErrorTrue());
       setTimeout(() => {
         dispatch(setShowErrorFalse());
@@ -137,16 +148,14 @@ function CreateMaterialPage() {
       orderedId: val,
       ordered_name: second_val
     }))
-    //dispatch(updateRow({ ss: row.ss, name: 'orderedId', value: val, second_name: 'ordered_name', second_val: second_val }));
     setIsUserDropDown(!isUserDropDown);
   }
   const filterChange = (event, comp) => {
     if(comp === 'username'){
-      dispatch(filterOrdered(event.target.value));
+      dispatch(CommonService.filterOrdereds(event.target.value));
     }
     else if(comp === 'company_name'){
-      console.log('filter for company_name ',event.target.value);
-      dispatch(filterCompany(event.target.value));
+      dispatch(CommonService.filterCompanies(event.target.value));
     }
   }
   const refreshCompany = () => {
@@ -156,6 +165,13 @@ function CreateMaterialPage() {
   const refreshOrdereds = () => {
     dispatch(CommonService.fetchOrdereds());
     setOrderedRefreshMessage(true)
+  }
+
+  function handleEscape(e){
+    if(e.key === 'Escape'){
+      setIsCompanyDropDown(false);
+      setIsUserDropDown(false)
+    }
   }
 
   useEffect(() => {
@@ -185,17 +201,7 @@ function CreateMaterialPage() {
     }
   },[company_refresh_message, ordered_refresh_message])
 
-  useEffect(()=>{
-    document.addEventListener('keydown', handleEscape, true);
-    // document.addEventListener
-  },[])
-
-  function handleEscape(e){
-    if(e.key === 'Escape'){
-      setIsCompanyDropDown(false);
-      setIsUserDropDown(false)
-    }
-  }
+  useEffect(()=>{document.addEventListener('keydown', handleEscape, true); },[])
 
   return (
 
@@ -314,11 +320,13 @@ function CreateMaterialPage() {
                   defaultValue={'rub'} name="" id="" onChange={(e) => {
                 setCurrency(e.target.value);
               }}>
-                <option value='rub'>Rub</option>
-                <option value='usd'>USD</option>
-                <option value='tly'>TLY</option>
-                <option value='azn'>AZN</option>
-                <option value='euro'>EURO</option>
+                
+                {
+                  CURRENCIES.map((each, index) => (
+                    <option key={index} value={each}>{each}</option>
+                  ))
+                }
+
               </select>
             </div>
           </div>
@@ -380,7 +388,7 @@ function CreateMaterialPage() {
               </button>
               {
                 isCompanyDropDown && <DropDownComponent
-                  data={filtered_companies}
+                  data={companies}
                   text_name={'company_name'}
                   input_name={'Company...'}
                   listenFunc={listenCompany} 
@@ -399,7 +407,7 @@ function CreateMaterialPage() {
               </button>
               {
                 isUserDropDown && <DropDownComponent
-                  data={filter_ordereds}
+                  data={ordereds}
                   text_name={'username'}
                   input_name={'Orderer...'}
                   listenFunc={listenUser} 
