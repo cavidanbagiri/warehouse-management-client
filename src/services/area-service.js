@@ -12,7 +12,6 @@ class AreaService {
                 .then((response) => {
                     data.status = response.status;
                     data.data = response.data;
-                    console.log('coing data is : ', data);
                 })
                 .catch((err) => {
                     console.log('fetch areas Error happen : ', err);
@@ -37,6 +36,58 @@ class AreaService {
                 }).catch((err) => {
                     console.log('fetch warehouse data Error happen : ', err);
                 });
+            return data;
+        }
+    )
+
+    static getById = createAsyncThunk(
+        '/area/:id',
+        async (id) => {
+            let data = {};
+            await $api.get(`/area/${id}`).
+                then((response) => {
+                    data.status = response.status;
+                    data.data = response.data;
+                })
+                .catch((err) => {
+                    data.status = err.response.status;
+                    data.data = err.response.data;
+                })
+                console.log('getById data : ',data);
+            return data;
+        }
+    )
+
+    static updateArea = createAsyncThunk(
+        '/area/update',
+        async (updated_data) => {
+            let data = {};
+            await $api.post(`/area/update`, updated_data).
+                then((response) => {
+                    console.log('coming response : ', response);
+                    data.status = response.status;
+                })
+                .catch((err) => {
+                    data.status = 404;
+                })
+            return data;
+        }
+    )
+
+    static returnToStock = createAsyncThunk(
+        '/area/return',
+        async (return_data) => {
+            let data = {};
+            await $api.post(`/area/return`, return_data).
+                then((response) => {
+                    data.status = response.status;
+                    data.data = response.data;
+                })
+                .catch((err) => {
+                    data.status = err.response.status;
+                    data.data = err.response.data;
+                })
+            console.log('return data is : ', data);
             return data;
         }
     )

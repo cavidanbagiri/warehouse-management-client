@@ -26,7 +26,22 @@ function CreateTableNavbarHeaderComponent() {
             </div>
           </th>
         }
-
+          { /* Material code */
+                area_column_filter.material_code &&
+                <th scope="col" className="px-6 py-1 text-center border font-medium ">
+                  <div className="">
+                    Code
+                  </div>
+                </th>
+            }
+            { /* Material description */
+                area_column_filter.material_description &&
+                <th scope="col" className="px-6 py-1 text-center border  min-w-24 font-medium ">
+                  <div className="">
+                    Description
+                  </div>
+                </th>
+            }
         { /* Material Name */
           area_column_filter.material_name &&
           <th scope="col" className="px-6 py-1 text-center border min-w-60 font-medium">

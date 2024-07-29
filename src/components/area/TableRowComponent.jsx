@@ -10,15 +10,15 @@ function TableRowComponent(props) {
 
     const dispatch = useDispatch();
 
-    // const selected_items = useSelector(state => state.stockSlice.selected_items);
+    const selected_items = useSelector(state => state.areaSlice.selected_items);
 
     const [checked, setChecked] = useState(false);
 
-    // useEffect(() => {
-    //     if(selected_items.length === 0){
-    //         setChecked(false);
-    //     }
-    // }, [selected_items]);
+    useEffect(() => {
+        if(selected_items.length === 0){
+            setChecked(false);
+        }
+    }, [selected_items]);
 
     return (
         <tr
@@ -32,6 +32,7 @@ function TableRowComponent(props) {
             <td className='py-1'>
                 <Checkbox value={props.item.id} color="warning" size="small" onChange={props.handleChange}
                     onClick={(event) => {
+                        console.log('props item id', props.item);
                         event.target.checked ? setChecked(true) : setChecked(false);
                     }}
                     checked={checked} />
@@ -39,6 +40,18 @@ function TableRowComponent(props) {
             {props.area_column_filter.deliver_date &&
                 <td className={` text-center `} >
                     {moment(props.item.deliver_date).format("YYYY.MM.DD")}
+                </td>
+            }
+            {
+                props.area_column_filter.material_code &&
+                <td className='text-center px-1'>
+                    {props.item.material_code}
+                </td>
+            }
+            {
+                props.area_column_filter.material_description &&
+                <td className='text-center px-1'>
+                    {props.item.material_description}
                 </td>
             }
             {

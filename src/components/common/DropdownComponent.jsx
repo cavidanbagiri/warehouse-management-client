@@ -17,7 +17,7 @@ function DropDownComponent(props) {
                             onClick={(val) => {
                                 props.listenFunc(val.target.id, val.target.innerText);
                             }} key={item.id} id={item.id} >
-                            {item[props.text_name].charAt(0).toUpperCase()+item[props.text_name].slice(1)}
+                            {item[props.text_name]}
                         </li>
                     ))}
                 </ul>

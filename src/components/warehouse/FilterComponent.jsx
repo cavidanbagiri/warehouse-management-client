@@ -16,19 +16,21 @@ function FilterComponent() {
     const user = useSelector((state) => state.userSlice.user);
 
     const filtered_companies = useSelector((state) => state.commonSlice.filtered_companies);
-    const filter_users = useSelector((state) => state.commonSlice.filter_users);
+    const filter_ordereds = useSelector((state) => state.commonSlice.filter_ordereds);
     const material_code = useSelector((state) => state.commonSlice.material_code);
 
     // Filter Section Hooks
     const [show_material_code, setShowMaterialCode] = useState(false);
     const [material_code_id, setMaterialCodeId] = useState('');
     const [material_code_description, setMaterialCodeDescription] = useState('');
+    
     const [isCompanyDropDown, setIsCompanyDropDown] = useState(false);
     const [isUserDropDown, setIsUserDropDown] = useState(false);
     const [documentnum, setDocumentNum] = useState('');
     const [material_name, setMaterialName] = useState('');
     const [po, setPO] = useState('');
     const [createdAt, setSelectedDate] = useState('');
+
     const [company, setCompany] = useState({
         companyId: '',
         company_name: ''
@@ -145,7 +147,7 @@ function FilterComponent() {
                     </button>
                     {
                         isUserDropDown && <DropDownComponent
-                            data={filter_users}
+                            data={filter_ordereds}
                             text_name={'username'}
                             input_name={'Orderer...'}
                             listenFunc={listenUser}

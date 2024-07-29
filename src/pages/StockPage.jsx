@@ -23,6 +23,7 @@ import StockService from "../services/stock-service.js";
 import {
     setOrderUpdateMessageBoxFalse,
     setOrderReturnMessageBoxFalse,
+    
     setOrderSelectionUpdateToggleTrue,
     setOrderSelectionInformationToggleTrue,
     setOrderSelectionReturnToggleTrue,
@@ -181,6 +182,7 @@ const StockPage = () => {
 
                 <span style={{ fontWeight: 500, fontFamily: 'IBM Plex Sans' }} className='px-2 text-2xl text-start  '>Material Type Information</span>
 
+                {/* Material Type and Button Section */}
                 <div className={'flex  w-full  '}>
 
                     {/* Material Type Section */}
@@ -308,6 +310,7 @@ const StockPage = () => {
                     </div>
 
                 </div>
+
             </div>
 
 

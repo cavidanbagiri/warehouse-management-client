@@ -122,7 +122,7 @@ function TableRowComponent(props) {
             {
                 props.warehouse_column_filter.ordered &&
                 <td className='pl-1 text-center'>
-                    {props.item.firstName.charAt(0).toUpperCase() + props.item.firstName.slice(1)} {props.item.lastName.charAt(0).toUpperCase() + props.item.lastName.slice(1)}
+                    {props.item.username}
                 </td>
             }
             {

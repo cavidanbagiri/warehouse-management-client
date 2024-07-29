@@ -53,6 +53,18 @@ function TableRowComponent(props) {
                 </td>
             }
             {
+                props.stock_column_filter.material_code &&
+                <td className='text-center px-1'>
+                    {props.item.material_code}
+                </td>
+            }
+            {
+                props.stock_column_filter.material_description &&
+                <td className='text-center px-1'>
+                    {props.item.material_description}
+                </td>
+            }
+            {
                 props.stock_column_filter.material_name &&
                 <td className='text-start px-1'>
                     {props.item.material_name}
@@ -114,7 +126,7 @@ function TableRowComponent(props) {
             {
                 props.stock_column_filter.ordered &&
                 <td className='pl-1 text-center'>
-                    {props.item.firstName.charAt(0).toUpperCase() + props.item.firstName.slice(1)} {props.item.lastName.charAt(0).toUpperCase() + props.item.lastName.slice(1)}
+                    {props.item.username}
                 </td>
             }
             {
