@@ -4,50 +4,50 @@ import AdminService from "../services/admin-service";
 
 const initialState = {
 
-    ordered:{
+    ordered: {
         ordereds: [],
         message: '',
         pending: false,
         status: -1,
     },
 
-    company:{
+    company: {
         companies: [],
         message: '',
         pending: false,
         status: -1,
     },
-    
-    group:{
+
+    group: {
         groups: [],
         message: '',
         pending: false,
         status: -1,
     },
 
-    project:{
+    project: {
         projects: [],
         message: '',
         pending: false,
         status: -1,
     },
 
-    user:{
+    user: {
         users: [],
         message: '',
         pending: false,
         status: -1,
     },
 
-    material_code:{
+    material_code: {
         material_codes: [],
         message: '',
         pending: false,
         status: -1,
         created_data: null,
     },
-    
-    
+
+
     user_status: []
 
 }
@@ -57,7 +57,7 @@ export const adminSlice = createSlice({
     name: 'adminSlice',
     initialState,
     reducers: {
-       
+
 
         // Ordered
         setCreateOrderedStatusInitial(state) {
@@ -129,14 +129,14 @@ export const adminSlice = createSlice({
         setCreateMaterialCodeMessage(state, action) {
             state.material_code.message = action.payload;
         },
-        
+
 
     },
     extraReducers: (builder) => {
 
 
         // Create Ordered
-        builder.addCase(AdminService.createOrdered.pending, (state, action) => {state.ordered.pending = true;})
+        builder.addCase(AdminService.createOrdered.pending, (state, action) => { state.ordered.pending = true; })
         builder.addCase(AdminService.createOrdered.fulfilled, (state, action) => {
             state.ordered.pending = false;
             if (action.payload.status === 201) {
@@ -160,7 +160,7 @@ export const adminSlice = createSlice({
 
 
         // Create User
-        builder.addCase(AdminService.createUser.pending, (state, action) => {state.user.pending = true;})
+        builder.addCase(AdminService.createUser.pending, (state, action) => { state.user.pending = true; })
         builder.addCase(AdminService.createUser.fulfilled, (state, action) => {
             state.user.pending = false;
             if (action.payload.status === 201) {
@@ -169,7 +169,7 @@ export const adminSlice = createSlice({
             }
             else if (action.payload.status === 400) {
                 state.user.status = 0;
-                state.user.message = 'User Already Exists';
+                state.user.message = action.payload.data;
             }
             else {
                 state.user.status = 0;
@@ -184,7 +184,7 @@ export const adminSlice = createSlice({
 
 
         // Create Company
-        builder.addCase(AdminService.createCompany.pending, (state, action) => {state.company.pending = true;})
+        builder.addCase(AdminService.createCompany.pending, (state, action) => { state.company.pending = true; })
         builder.addCase(AdminService.createCompany.fulfilled, (state, action) => {
             state.company.pending = false;
             if (action.payload.status === 201) {
@@ -208,7 +208,7 @@ export const adminSlice = createSlice({
 
 
         // Create Group
-        builder.addCase(AdminService.createGroup.pending, (state, action) => {state.group.pending = true;})
+        builder.addCase(AdminService.createGroup.pending, (state, action) => { state.group.pending = true; })
         builder.addCase(AdminService.createGroup.fulfilled, (state, action) => {
             state.group.pending = false;
             state.create_group_message_cond = true;
@@ -230,10 +230,10 @@ export const adminSlice = createSlice({
                 state.group.groups = action.payload.data;
             }
         })
-        
+
 
         // Create Project
-        builder.addCase(AdminService.createProject.pending, (state, action) => {state.project.pending = true;})
+        builder.addCase(AdminService.createProject.pending, (state, action) => { state.project.pending = true; })
         builder.addCase(AdminService.createProject.fulfilled, (state, action) => {
             state.project.pending = false;
             if (action.payload.status === 201) {
@@ -242,11 +242,11 @@ export const adminSlice = createSlice({
             }
             else if (action.payload.status === 500) {
                 state.project.status = 0;
-                state.project.message = 'Project Already Exists';
+                state.project.message = action.payload.data;
             }
             else {
                 state.project.status = 0;
-                state.project.message = 'Projject Creation Failed';
+                state.project.message = action.payload.data;
             }
         })
         builder.addCase(AdminService.fetchProjects.fulfilled, (state, action) => {
@@ -266,7 +266,7 @@ export const adminSlice = createSlice({
 
 
         // Create Material
-        builder.addCase(AdminService.createMaterialCode.pending, (state, action) => {state.material_code.pending = true;})
+        builder.addCase(AdminService.createMaterialCode.pending, (state, action) => { state.material_code.pending = true; })
         builder.addCase(AdminService.createMaterialCode.fulfilled, (state, action) => {
             state.material_code.pending = false;
             if (action.payload.status === 201) {
@@ -274,9 +274,9 @@ export const adminSlice = createSlice({
                 state.material_code.message = 'New Material Code Created Successfully';
                 state.material_code.created_data = action.payload.data
             }
-            else if (action.payload.status === 400) {
+            else if (action.payload.status === 500) {
                 state.material_code.status = 0;
-                state.material_code.message = 'Material Code is Already Exists';
+                state.material_code.message = action.payload.data;
             }
             else {
                 state.material_code.status = 0;
@@ -316,7 +316,7 @@ export const { setCreateCompanyMessageFalse,
     setCreateCompanyStatusInitial,
     setCreateCompanyStatusError,
     setCreateCompanyMessage,
-    
+
     setCreateMaterialCodeStatusInitial,
     setCreateMaterialCodeStatusError,
     setCreateMaterialCodeMessage,

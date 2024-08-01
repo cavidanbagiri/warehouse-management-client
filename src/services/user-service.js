@@ -25,6 +25,7 @@ class UserService {
                 .then((response) => {
                     data = response.data;
                 })
+                console.log('refresh data : ', data);
             return data;
         }
     )

@@ -30,7 +30,7 @@ function App() {
       dispatch(CommonService.getTypeCount(user.projectId));
       dispatch(CommonService.fetchGroups());
     }
-  });
+  },);
 
   return (
     <>

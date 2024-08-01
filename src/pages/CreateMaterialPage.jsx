@@ -25,6 +25,9 @@ function CreateMaterialPage() {
 
   const dispatch = useDispatch();
 
+  // const user_status = useSelector((state) => state.userSlice.user_status);
+  const user = useSelector((state) => state.userSlice.user);
+
   const companies = useSelector((state) => state.commonSlice.companies);
   const ordereds = useSelector((state) => state.commonSlice.ordereds);
   const table = useSelector((state) => state.createTableSlice.table);
@@ -59,10 +62,52 @@ function CreateMaterialPage() {
     ordered_name: '',
   })
 
-  function addCompany() {setAddCompany(true);}
-  function addOrdered() {setAddOrdered(true);}
-  function addGroup() {setAddGroup(true);}
-  function addMaterialCode() {setAddMaterialCode(true);}
+  function addCompany() {
+    console.log('object');
+    if(user.is_admin || user.user_status == 10000)
+      setAddCompany(true);
+    else{
+      setMessage('You dont have permissions for this operation');
+      dispatch(setShowErrorTrue());
+      setTimeout(() => {
+        dispatch(setShowErrorFalse());
+      }, 2000)
+    }
+  }
+  function addOrdered() {
+    if(user.is_admin || user.user_status == 10000)
+      setAddOrdered(true);
+    else{
+      setMessage('You dont have permissions for this operation');
+      dispatch(setShowErrorTrue());
+      setTimeout(() => {
+        dispatch(setShowErrorFalse());
+      }, 2000)
+    }
+  }
+  function addGroup() {
+    if(user.is_admin || user.user_status == 10000)
+      setAddGroup(true);
+    else{
+      setMessage('You dont have permissions for this operation');
+      dispatch(setShowErrorTrue());
+      setTimeout(() => {
+        dispatch(setShowErrorFalse());
+      }, 2000)
+    }
+  }
+  function addMaterialCode() {
+    if(user.is_admin || user.user_status == 10000)
+      setAddMaterialCode(true);
+    else{
+      setMessage('You dont have permissions for this operation');
+      dispatch(setShowErrorTrue());
+      setTimeout(() => {
+        dispatch(setShowErrorFalse());
+      }, 2000)
+    }
+  }
+
   function addRows() {dispatch(addTableCheck());}
   function delRows() {
     if (table.length > 1) {
@@ -215,19 +260,20 @@ function CreateMaterialPage() {
         show_message && <MessageBox message={show_message_text} color={show_message_color} />
       }
 
-      {
+      
+      { // Checked
         add_company && <AdminModal title={'Add Company'} closeModal={closeModal} show_component={'company'} />
       }
 
-      {
+      { // Checked
         add_ordered && <AdminModal title={'Add Ordered'} closeModal={closeModal} show_component={'ordered'} />
       }
 
-      {
+      { // Checked
         add_group && <AdminModal title={'Add Group'} closeModal={closeModal} show_component={'group'} />
       }
 
-      {
+      { // Checked
         add_material_code && <AdminModal title={'Add Material Code'} closeModal={closeModal} show_component={'material_code'} />
       }
 
@@ -262,13 +308,14 @@ function CreateMaterialPage() {
         <div className='flex flex-row justify-between items-center px-4'>
           <span style={{ fontWeight: 500 }} className='py-2 px-1 rounded-lg text-2xl text-start my-2'>Work With Tables</span>
           <div className='text-xs' style={{ fontWeight: 500 }}>
+            
             <button onClick={addCompany} className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:bg-orange-400 hover:text-white duration-200' >Add Company</button>
             <button onClick={addOrdered} className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:bg-orange-400 hover:text-white duration-200' >Add Ordered</button>
             <button onClick={addGroup} className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:bg-orange-400 hover:text-white duration-200' >Add Group</button>
+            <button onClick={addMaterialCode} className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:bg-orange-400 hover:text-white duration-200' >Add Material Code</button>
+            
             <button onClick={addRows} className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:bg-orange-400 hover:text-white duration-200' >Add Row</button>
             <button onClick={delRows} className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:bg-orange-400 hover:text-white duration-200' >Delete Row</button>
-            
-            <button onClick={addMaterialCode} className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:bg-orange-400 hover:text-white duration-200' >Add Material Code</button>
             
             <button onClick={postFunc} className='py-2 px-5 border rounded-md border-gray-400 bg-white text-green-500 mx-2 hover:bg-green-500 hover:text-white duration-200' >Insert From Excel </button>
           </div>

@@ -4,7 +4,7 @@ import {useSelector} from "react-redux";
 
 function CreateTableNavbarHeaderComponent() {
 
-  const user_status = useSelector(state => state.userSlice.user_status);
+  const user = useSelector(state => state.userSlice.user);
   const warehouse_column_filter = useSelector(state => state.warehouseSlice.warehouse_column_filter);
 
   return (
@@ -93,7 +93,7 @@ function CreateTableNavbarHeaderComponent() {
                 </th>
             }
             {
-              (user_status === '10000' || user_status === '10001' || user_status === '10002' )  &&
+              (user.user_status === '10000' || user.user_status === '10001' || user.user_status === '10002' )  &&
                 <>
                   {
                     warehouse_column_filter.price &&

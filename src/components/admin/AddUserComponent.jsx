@@ -31,7 +31,7 @@ function AddOrderedComponent() {
         projectId: project.projects[0]?.id ?? 2,
         groupId: group.groups[0]?.id ?? 1,
         group_name: '',
-        user_status: user_status[0]?.id ?? 1
+        userStatusId: user_status[0]?.id ?? 1
     });
 
     function createNewOrdered() {
@@ -84,7 +84,7 @@ function AddOrderedComponent() {
                     projectId: project.projects[0]?.id ?? 2,
                     groupId: group.groups[0]?.id ?? 1,
                     group_name: '',
-                    user_status: user_status[0]?.id ?? 1
+                    userStatusId: user_status[0]?.id ?? 1
                 }));
             }, 2000)
         }
@@ -215,7 +215,7 @@ function AddOrderedComponent() {
                     onChange={(event) => {
                         setOrderedData((each) => ({
                             ...each,
-                            user_status: event.target.value,
+                            userStatusId: event.target.value,
                         }))
                     }}
                 >

@@ -1,7 +1,9 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import UserService from "../services/user-service.js";
 import MessageBox from "../layouts/MessageBox.jsx";
+
+import {setLoginErrorFalse} from "../store/user-store";
 
 function ProfilePage() {
     const dispatch = useDispatch();
@@ -25,6 +27,14 @@ function ProfilePage() {
         dispatch(UserService.userLogin(user_data));
 
     }
+
+    useEffect(() => {
+        if(is_login_error === true){
+            setTimeout(() => {
+                dispatch(setLoginErrorFalse());
+            }, 1500)
+        }
+    }, [is_login_error])
 
 
     return (    

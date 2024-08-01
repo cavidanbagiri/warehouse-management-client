@@ -75,7 +75,7 @@ function TableRowComponent(props) {
             {
                 props.warehouse_column_filter.material_name &&
                 <td className='text-start px-1'>
-                    {props.item.material_name} {props.item.material_name} {props.item.material_name} {props.item.material_name}
+                    {props.item.material_name}
                 </td>
             }
             {
@@ -102,7 +102,7 @@ function TableRowComponent(props) {
                     {props.item.unit.charAt(0).toUpperCase() + props.item.unit.slice(1)}
                 </td>
             }
-            {(props.user_status === '10000' || props.user_status === '10001' || props.user_status === '10002') &&
+            {(props.user.user_status === '10000' || props.user.user_status === '10001' || props.user.user_status === '10002') &&
                 <>
                     {
                         props.warehouse_column_filter.price &&

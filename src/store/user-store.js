@@ -7,12 +7,12 @@ axios.defaults.withCredentials = true;
 const initialState = {
     user: {
         email: 'unknown',
-        projectId: 0
+        projectId: 0,
+        user_status: 0,
+        is_admin: false,
     },
-    is_admin: false,
     is_auth: false,
     is_login_error: false,
-    user_status: 0,
 }
 
 export const userSlice = createSlice({
@@ -20,7 +20,11 @@ export const userSlice = createSlice({
     initialState,
     reducers: {
         setUserStatus: (state) => {
-            state.user_status = localStorage.getItem('status_code');
+            state.user.user_status = localStorage.getItem('status_code');
+            state.user.is_admin = JSON.parse(localStorage.getItem('is_admin'));
+        },
+        setLoginErrorFalse: (state) => {
+            state.is_login_error = false
         }
     },
     extraReducers: (builder) => {
@@ -29,12 +33,13 @@ export const userSlice = createSlice({
             if (action.payload !== null) {
                 state.user = action.payload.user;
                 state.is_auth = true;
-                state.is_admin = action.payload.user.is_admin
+                state.user.is_admin = action.payload.user.is_admin
                 state.user.projectId = action.payload.user.projectId
                 localStorage.setItem('token', action.payload.access);
+                localStorage.setItem('is_admin', action.payload.user.is_admin);
                 localStorage.setItem('status_code', action.payload.user.status_code)
                 localStorage.setItem('projectId', action.payload.user.projectId);
-                state.user_status = action.payload.user.status_code;
+                state.user.user_status = action.payload.user.status_code;
                 state.is_login_error = false;
             }
             else {
@@ -44,8 +49,14 @@ export const userSlice = createSlice({
         builder.addCase(UserService.refreshTokens.fulfilled, (state, action) => {
             if (action.payload != null) {
                 localStorage.setItem('token', action.payload.access);
+                localStorage.setItem('is_admin', action.payload.user.is_admin);
+                localStorage.setItem('status_code', action.payload.user.status_code)
+                localStorage.setItem('projectId', action.payload.user.projectId);
                 state.user = action.payload.user;
                 state.user.projectId = action.payload.user.projectId
+                state.user.user_status = action.payload.user.status_code;
+                state.user.is_admin = action.payload.user.is_admin;
+
                 state.is_auth = true;
             }
         })
@@ -75,6 +86,6 @@ export const fetchUsers = createAsyncThunk(
 )
 
 
-export const { setUserStatus } = userSlice.actions
+export const { setUserStatus, setLoginErrorFalse } = userSlice.actions
 
 export default userSlice.reducer;

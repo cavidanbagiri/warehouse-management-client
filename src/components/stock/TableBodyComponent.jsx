@@ -10,7 +10,7 @@ function TableBodyComponent() {
     const dispatch = useDispatch();
     const filter_stock_data = useSelector((state) => state.stockSlice.filter_stock_data);
     const stock_column_filter = useSelector(state => state.stockSlice.stock_column_filter);
-    const user_status = useSelector(state => state.userSlice.user_status);
+    const user = useSelector(state => state.userSlice.user);
 
 
     const handleChange = (event) => {
@@ -32,7 +32,7 @@ function TableBodyComponent() {
                 filter_stock_data.map((item, index) => (
                     <TableRowComponent key={index + 1} index={index + 1} item={item}
                                        handleChange={handleChange}
-                                       user_status={user_status}
+                                       user={user}
                                        stock_column_filter={stock_column_filter}
                                        //true_icon={true_icon}
                                        //false_icon={false_icon}

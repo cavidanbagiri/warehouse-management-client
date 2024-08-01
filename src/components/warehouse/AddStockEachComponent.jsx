@@ -66,7 +66,6 @@ function AddStockEachComponent(props) {
                     <input className='border p-2 rounded-lg'
                            type="number" value={amount} placeholder="Stock Amount" onChange={(e) => {
                         if (e.target.value > props.item.leftover || e.target.value < 0) {
-                            console.log('cant entered amount ');
                             dispatch(setAddStockMessageBoxTrue());
                             dispatch(setAddStockMessageBoxMessage('Entering amount can\'t bigger than leftover amount'));
                             dispatch(setAddStockColorCond({color:'bg-red-500'}));

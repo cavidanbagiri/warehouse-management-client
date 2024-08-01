@@ -32,7 +32,6 @@ function AddCompanyComponent() {
             dispatch(setCreateCompanyMessage('Company Name Required'));
         }
         else {
-            console.log('company data is : ', company_data);
             dispatch(AdminService.createCompany(company_data));
         }
     }

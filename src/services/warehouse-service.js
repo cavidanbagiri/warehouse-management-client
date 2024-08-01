@@ -14,7 +14,6 @@ class WarehouseService {
             }).catch((err) => {
                 console.log('fetch warehouse data Error happen : ', err);
             });
-            console.log('object data is : ', data);
             return data;
         }
     );
@@ -55,6 +54,7 @@ class WarehouseService {
         }
     )
 
+    // Checked
     static updatePO = createAsyncThunk(
         '/warehouse/update/:id',
         async(updated_data) => {
@@ -63,12 +63,10 @@ class WarehouseService {
             then((response)=>{
                 data.data = response.data;
                 data.status = 201;
-                console.log('update respond data is : ', data);
             })
             .catch((err)=>{
                 data.status = 500;
                 data.data = err.response.data;
-                console.log('Get Row Id Error : ', err);
             })
             return data;
         }
@@ -91,7 +89,6 @@ class WarehouseService {
     static fetchSelectedItemsById = createAsyncThunk(
         '/warehouse/fetselecteditems',
         async(selected_ids) => {
-            console.log('fetch selected ids : ', selected_ids);
             let data = {};
             await $api.post(`/warehouse/fetchselecteditems/`, selected_ids)
             .then((response) => {
@@ -103,18 +100,21 @@ class WarehouseService {
         }
     )
 
+    // Checked
     static receiveToStock = createAsyncThunk(
         '/warehouse/receivetostock',
         async(selected_items) => {
             let data = {};
             await $api.post(`/warehouse/receivetostock`, selected_items)
                 .then((respond)=>{
-                     data = respond.status;
+                    console.log('receive to stock respond : ', respond);
+                    data.status = respond.status;
+                    data.data = respond.data.msg;
                 }).catch((err)=>{
-                    console.log('receive tostock Error : ', err);
-                    console.log(err.response.status);
-                    data = err.response.data.msg;
+                    data.status = err.response.status;
+                    data.data = err.response.data;
                 });
+            console.log('receive to stock data : ', data);
             return data;
         }
     )

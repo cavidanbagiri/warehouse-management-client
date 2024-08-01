@@ -40,7 +40,6 @@ function AddOrderedComponent() {
     useEffect(() => {
         if (group.status != -1) {
             setTimeout(() => {
-                console.log('here work')
                 dispatch(setCreateGroupStatusInitial());
                 setGroupData((each) => ({
                     ...each,

@@ -15,7 +15,7 @@ function TableBodyComponent() {
     const filtered_warehouse_data = useSelector((state) => state.warehouseSlice.filtered_warehouse_data);
     const warehouse_column_filter = useSelector(state => state.warehouseSlice.warehouse_column_filter);
     const selected_items = useSelector(state => state.warehouseSlice.selected_items);
-    const user_status = useSelector(state => state.userSlice.user_status);
+    const user = useSelector(state => state.userSlice.user);
 
 
     const handleChange = (event) => {
@@ -37,7 +37,7 @@ function TableBodyComponent() {
                 filtered_warehouse_data.map((item, index) => (
                     <TableRowComponent key={index + 1} index={index + 1} item={item}
                                        handleChange={handleChange}
-                                       user_status={user_status}
+                                       user={user}
                                        warehouse_column_filter={warehouse_column_filter}
                                        true_icon={true_icon}
                                        false_icon={false_icon}

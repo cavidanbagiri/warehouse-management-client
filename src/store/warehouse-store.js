@@ -150,20 +150,22 @@ export const warehouseSlice = createSlice({
         })
         builder.addCase(WarehouseService.receiveToStock.pending, (state)=>{state.addstock.addstock_pending = true;})
         builder.addCase(WarehouseService.receiveToStock.fulfilled, (state, action)=>{
-            if(action.payload === 200){
+            if(action.payload.status === 201){
                 state.addstock.addstock_message_box = true;
                 state.addstock.addstock_color_cond = 'bg-green-500';
                 state.addstock.addstock_toggle = false;
                 state.addstock.addstock_pending = false;
-                state.addstock.addstock_error_message = 'Successfully Add To Stock';
+                state.addstock.addstock_error_message = action.payload.data;
             }
             else{
+                console.log('else work');
                 state.addstock.addstock_message_box = true;
                 state.addstock.addstock_pending = false;
                 state.addstock.addstock_color_cond = 'bg-red-500';
-                state.addstock.addstock_error_message = 'Entering amount greater than leftover.';
+                state.addstock.addstock_error_message = action.payload.data;
             }
         })
+
 
     }
 })

@@ -27,7 +27,6 @@ function AddMaterialCodeComponent() {
             dispatch(setCreateMaterialCodeMessage('Material Name Required'));
         }
         else {
-            // console.log('material data is : ', material_code_data);
             dispatch(AdminService.createMaterialCode(material_code_data));
         }
     }

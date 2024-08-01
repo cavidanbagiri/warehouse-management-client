@@ -4,6 +4,7 @@ import $api from "../http";
 
 class AdminService {
 
+    // Checked
     static createCompany = createAsyncThunk(
         '/createcompany',
         async(company_data) => {
@@ -17,11 +18,11 @@ class AdminService {
                 data.status = err.response.status;
                 data.data = err.response.data;
             })
-            console.log('created data is : ', data);
             return data;
         }
     )
     
+    // Checked
     static fetchCompanies = createAsyncThunk(
         '/companies',
         async()=>{
@@ -39,6 +40,7 @@ class AdminService {
         }
     )
 
+    // Checked
     static createOrdered = createAsyncThunk(
         '/createordered',
         async(ordered_data) => {
@@ -52,11 +54,11 @@ class AdminService {
                 data.status = err.response.status;
                 data.data = err.response.data;
             })
-            console.log('created data is : ', data);
             return data;
         }
     )
 
+    // Checked
     static fetchOrdereds = createAsyncThunk(
         '/fetchordereds',
         async()=>{
@@ -73,6 +75,7 @@ class AdminService {
         }
     )
 
+    
     static createUser = createAsyncThunk(
         '/user/createuser',
         async(user_data) => {
@@ -84,8 +87,9 @@ class AdminService {
             })
             .catch((err)=>{
                 data.status = err.response.status;
-                data.data = err.response.data;
+                data.data = err.response.data.msg;
             })
+            console.log('user data : ', data);
             return data;
         }
     )
@@ -106,6 +110,8 @@ class AdminService {
         }
     )
 
+
+    // Checked
     static createGroup = createAsyncThunk(
         '/creategroup',
         async(group_data) => {
@@ -123,6 +129,7 @@ class AdminService {
         }
     )
 
+    // Checked
     static fetchGroups = createAsyncThunk(
         '/groups',
         async()=>{
@@ -189,6 +196,7 @@ class AdminService {
         }
     )
 
+    // Checked
     static createMaterialCode = createAsyncThunk(
         '/creatematerialcode',
         async(group_data) => {
@@ -202,10 +210,12 @@ class AdminService {
                 data.status = err.response.status;
                 data.data = err.response.data;
             })
+            console.log('object : ', data);
             return data;
         }
     )
 
+    // Checked
     static fetchMaterialCodes = createAsyncThunk(
         '/materialcodes',
         async()=>{
@@ -223,6 +233,7 @@ class AdminService {
         }
     )
 
+    // Checked
     static filterMaterialCodes = createAsyncThunk(
         '/filtermaterialcodes',
         async(filtered_query)=>{
@@ -234,9 +245,9 @@ class AdminService {
                 data.data = response.data;
             })
             .catch((err)=>{
-                console.log('fetch groups error : ', err);
+                data.status = err.response.status;
+                data.data = err.response.data;
             })
-            console.log('coming data', data.data);
             return data;
         }
     )

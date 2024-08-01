@@ -66,7 +66,7 @@ function AddProjectsComponent() {
 
                 <div className='flex  justify-between text-sm my-3'>
                     <div className='w-full'>
-                        <span className='text-gray-400'>Group name</span>
+                        <span className='text-gray-400'>Project name</span>
                         <input className='bg-gray-100 w-full my-2 px-2 py-4 rounded-lg outline-none' type="text" placeholder='' value={project_data.project_name}
                             onChange={(event) => {
                                 setProjectData((each) => ({
