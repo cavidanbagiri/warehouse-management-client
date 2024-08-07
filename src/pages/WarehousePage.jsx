@@ -83,6 +83,12 @@ function WarehousePage() {
         }
     }
 
+    useEffect(() => {
+        return () => {
+            dispatch(clearSelected());
+        }
+    }, [dispatch]);
+
     // Toggle Message Box after adding stock the element
     useEffect(()=>{
         if(addstock.addstock_message_box === true){

@@ -60,6 +60,13 @@ function AreaPage() {
         dispatch(AreaService.fetchAreas(user.projectId));
     }, []);
 
+    
+    useEffect(() => {
+        return () => {
+            dispatch(clearSelected());
+        }
+    }, [dispatch]);
+
     useEffect(() => {
         if (show_message_box) {
             setTimeout(() => {

@@ -4,6 +4,8 @@ import $api from "../http/index.js";
 
 class StockService {
 
+
+    // Checked
     static getcStocks = createAsyncThunk(
         '/stock/fetch/projectid',
         async (projectId) => {
@@ -15,10 +17,12 @@ class StockService {
                 .catch((err) => {
                     console.log('fetch stock Error happen : ', err);
                 })
+                console.log(data);
             return data;
         }
     )
 
+    // Checked
     static filterStockData = createAsyncThunk(
         '/stock/filter',
         async (filter_query) => {
@@ -39,6 +43,7 @@ class StockService {
         }
     )
 
+    // Checked
     static getById = createAsyncThunk(
         '/stock/:id',
         async (id) => {
@@ -54,6 +59,7 @@ class StockService {
         }
     )
 
+    // Checked
     static getDataByIds = createAsyncThunk(
         '/stock/datas',
         async (ids) => {
@@ -69,6 +75,7 @@ class StockService {
         }
     )
 
+    // Checked
     static provideStock = createAsyncThunk(
         '/stock/provide',
         async (provide_data) => {
@@ -76,16 +83,18 @@ class StockService {
             await $api.post(`/stock/provide`, provide_data).
                 then((response) => {
                     data.status = response.status;
+                    data.msg = response.data.msg;
+                    data.data = response.data.data;
                 })
                 .catch((err) => {
                     data.status = err.response.status;
-                    data.error = err.response.data;
-                    console.log(data);
-                    // console.log('error os : ', err);
+                    data.data = err.response.data;
+                    data.msg = err.response.data;
                 })
             return data;
         }
     )
+
 
     static updateStock = createAsyncThunk(
         '/stock/update',
@@ -93,27 +102,53 @@ class StockService {
             let data = {};
             await $api.post(`/stock/update`, updated_data).
                 then((response) => {
-                    console.log('coming response : ', response);
                     data.status = response.status;
+                    data.msg = response.data.msg;
+                    data.data = response.data.data;
                 })
                 .catch((err) => {
-                    data.status = 404;
+                    data.status = err.response.status;
+                    data.msg = err.response.data;
+                    data.data = err.response.data;
                 })
             return data;
         }
     )
 
+    // Checked
     static returnToWarehouse = createAsyncThunk(
         '/stock/return',
         async (updated_data) => {
             let data = {};
             await $api.post(`/stock/return`, updated_data).
                 then((response) => {
-                    data = response;
+                    data.status = response.status;
+                    data.msg = response.data.msg;
+                    data.data = response.data.data;
                 })
                 .catch((err) => {
-                    console.log('Return Id Error : ', err);
-                    data = err.response;
+                    data.status = err.response.status;
+                    data.msg = err.response.data;
+                    data.data = err.response.data;
+                })
+            return data;
+        }
+    )
+
+    static setUnusableMaterial = createAsyncThunk(
+        '/stock/setunusablematerial',
+        async (sending_data) => {
+            let data = {};
+            await $api.post(`/stock/setunusablematerial`, sending_data).
+                then((response) => {
+                    data.status = response.status;
+                    data.msg = response.data.msg;
+                    data.data = response.data.data;
+                })
+                .catch((err) => {
+                    data.status = err.response.status;
+                    data.msg = err.response.msg;
+                    data.data = err.response.data;
                 })
             return data;
         }

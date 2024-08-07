@@ -15,8 +15,8 @@ const initialState = {
         date: true,
         company: false,
         document: false,
-        material_code: true,
-        material_description: true,
+        material_code: false,
+        material_description: false,
         material_name: true,
         type: true,
         qty: true,
@@ -41,6 +41,7 @@ const initialState = {
         order_provide_error_message: '',
         order_provide_pending: false,
         order_provide_color_cond: 'bg-green-500',
+        status: 0
     },
 
     order_update: {
@@ -48,6 +49,8 @@ const initialState = {
         order_update_message_box: false,
         order_update_error_message: '',
         order_update_pending: false,
+        order_update_color_cond: 'bg-green-500',
+        status: 0
     },
 
     order_return: {
@@ -56,6 +59,15 @@ const initialState = {
         order_return_error_message: '',
         order_return_pending: false,
         order_return_color_cond: 'bg-green-500',
+        status: 0
+    },
+
+    material_unusable: {
+        toggle: false,
+        message_box: false,
+        error_message: '',
+        pending: false,
+        color_cond: 'bg-green-500',
     }
 
 }
@@ -89,18 +101,27 @@ export const stockSlice = createSlice({
         setOrderSelectionReturnToggleFalse: (state) => {state.order_return.order_return_toggle = false;},
         setOrderReturnMessageBoxFalse: (state) => {state.order_return.order_return_message_box = false;},
         setOrderReturnMessageBoxTrue: (state) => {state.order_return.order_return_message_box = true;},
+        setorderReturnStatus: (state) => {state.order_return.status = 0;},
         setOrderReturnErrorMessage: (state, action) => {state.order_return.order_return_error_message = action.payload.message;},
         setOrderReturnColorCond: (state, action) => {state.order_return.order_return_color_cond = action.payload.color;},
+
+        setOrderSelectionMaterialUnusableToggleTrue: (state) => {state.material_unusable.toggle = true;},
+        setOrderSelectionMaterialUnusableToggleFalse: (state) => {state.material_unusable.toggle = false;},
+        setOrderMaterialUnusableMessageBoxFalse: (state) => {state.material_unusable.message_box = false;},
+        setOrderMaterialUnusableMessageBoxTrue: (state) => {state.material_unusable.message_box = true;},
+        setOrderMaterialUnusableErrorMessage: (state, action) => {state.material_unusable.error_message = action.payload.message;},
+        setOrderMaterialUnusableColorCond: (state, action) => {state.material_unusable.color_cond = action.payload.color;},
         
         // Order Provide Section
         setOrderSelectionProvideToggleTrue: (state) => {state.order_provide.order_provide_toggle = true;},
         setOrderSelectionProvideToggleFalse: (state) => {state.order_provide.order_provide_toggle = false;},
         setOrderProvideMessageBoxFalse: (state) => {state.order_provide.order_provide_message_box = false;},
         setOrderProvideMessageBoxTrue: (state) => {state.order_provide.order_provide_message_box = true;},
+        setOrderProvideStatus: (state) => {state.order_provide.status = 0;},
         setOrderProvideErrorMessage: (state, action) => {state.order_provide.order_provide_error_message = action.payload.message;},
 
         updateRow: (state, actions) => {
-            let updated_row = state.order_provide.order_provide_entering_data.find((row) => row.ss === actions.payload.ss);
+            let updated_row = state.order_provide.order_provide_entering_data.find((row) => row.id === actions.payload.id);
             updated_row[actions.payload.name] = actions.payload.value;
 
             if (actions.payload.second_name) {
@@ -115,7 +136,7 @@ export const stockSlice = createSlice({
             else {
                 let cond = true;
                 for (let i of state.order_provide.order_provide_entering_data) {
-                    if (i.ss === actions.payload.row.ss) {
+                    if (i.id === actions.payload.row.id) {
                         cond = false;
                         break;
                     }
@@ -124,6 +145,10 @@ export const stockSlice = createSlice({
                     state.order_provide.order_provide_entering_data.push(actions.payload.row);
                 }
             }
+        },
+        clearRow: (state) => {
+            state.order_provide.order_provide_entering_data = [];
+            state.order_provide.order_provide_data = [];
         },
 
         delRow: (state) => {
@@ -164,17 +189,34 @@ export const stockSlice = createSlice({
             }
         })
 
-        // Provide Stock Section
+        // Provide Stock Section Checked
+        builder.addCase(StockService.provideStock.pending, (state)=>{state.order_provide.order_provide_pending = true;})
         builder.addCase(StockService.provideStock.fulfilled, (state, action)=>{
+            state.order_provide.order_provide_pending = false;
             if(action.payload.status === 201){
                 state.order_provide.order_provide_message_box = true;
-                state.order_provide.order_provide_error_message = 'Successfully Provided';
+                state.order_provide.order_provide_error_message = action.payload.msg;
                 state.order_provide.order_provide_color_cond = 'bg-green-500';
+                state.order_provide.status = 201;
+                state.order_provide.order_provide_data = [];
+                state.order_provide.order_provide_entering_data = [];
+
+                action.payload.data.map((item)=>{
+                    state.filter_stock_data.map((data)=>{
+                        if(data.id === item.id){
+                            data.stock = item.stock
+                        }
+                    })
+                })
+
             }
             else{
                 state.order_provide.order_provide_message_box = true;
-                state.order_provide.order_provide_error_message = action.payload.error;
+                state.order_provide.order_provide_error_message = action.payload.msg;
                 state.order_provide.order_provide_color_cond = 'bg-red-500';
+                state.order_provide.status = 500;
+                state.order_provide.order_provide_data = [];
+                state.order_provide.order_provide_entering_data = [];
             }
         })
 
@@ -183,8 +225,28 @@ export const stockSlice = createSlice({
         builder.addCase(StockService.updateStock.fulfilled, (state, action)=>{
             if(action.payload.status === 201){
                 state.order_update.order_update_message_box = true;
-                state.order_update.order_update_error_message = 'Successfully Update';
+                state.order_update.order_update_error_message = action.payload.msg;
                 state.order_update.order_update_pending = false;
+                state.order_update.order_update_color_cond = 'bg-green-500';
+                state.order_update.order_update_toggle = false
+                state.order_update.status = 201;
+                state.filter_stock_data.map((item)=>{
+                    if(item.id === action.payload.data.id){
+                        for(let[key, value] of Object.entries(item)){
+                            item[key] = action.payload.data[key];
+                        }
+                    }
+                })
+            }
+            else if(action.payload.status === 500){
+                state.order_update.order_update_message_box = true;
+                state.order_update.order_update_error_message = action.payload.msg;
+                state.order_update.order_update_pending = false
+                state.order_update.order_update_color_cond = 'bg-red-500'
+                state.order_update.status = 500
+            }
+            else{
+                console.log('Internal Server Error');
             }
         })
 
@@ -193,15 +255,56 @@ export const stockSlice = createSlice({
         builder.addCase(StockService.returnToWarehouse.fulfilled, (state, action)=>{
             if(action.payload.status === 201){
                 state.order_return.order_return_message_box = true;
-                state.order_return.order_return_error_message = 'Successfully Returned';
+                state.order_return.order_return_error_message = action.payload.msg;
                 state.order_return.order_return_pending = false
                 state.order_return.order_return_color_cond = 'bg-green-500'
+                state.order_return.order_return_toggle = false
+                state.order_return.status = 201
+                if(action.payload.data.operation !== 'delete'){     
+                    state.filter_stock_data.map((item)=>{
+                        if(item.id === action.payload.data.id){
+                            item['qty'] = action.payload.data['qty'];
+                            item['stock'] = action.payload.data['stock'];
+                        }
+                    })
+                }
+                else{
+                    state.filter_stock_data = state.filter_stock_data.filter((item)=>{return item.id !== action.payload.data.id})   
+                    state.selected_items = [];
+                }                
             }
             else if(action.payload.status === 500){
                 state.order_return.order_return_message_box = true;
-                state.order_return.order_return_error_message = action.payload.data;
+                state.order_return.order_return_error_message = action.payload.msg;
                 state.order_return.order_return_pending = false
                 state.order_return.order_return_color_cond = 'bg-red-500'
+                state.order_return.status = 500
+            }
+            else{
+                console.log('Internal Server Error');
+            }
+        })
+
+        // Return Stock Section
+        builder.addCase(StockService.setUnusableMaterial.pending, (state)=>{state.material_unusable.pending = true})
+        builder.addCase(StockService.setUnusableMaterial.fulfilled, (state, action)=>{
+            console.log('-> ', action.payload)
+            if(action.payload.status === 201){
+                state.material_unusable.message_box = true;
+                state.material_unusable.error_message = action.payload.msg;
+                state.material_unusable.pending = false
+                state.material_unusable.color_cond = 'bg-green-500'
+                state.filter_stock_data.map((item)=>{
+                    if(item.id === action.payload.data.id){
+                        item['stock'] = Number(action.payload.data['stock']);
+                    }
+                })
+            }
+            else if(action.payload.status === 500){
+                state.material_unusable.message_box = true;
+                state.material_unusable.error_message = action.payload.msg;
+                state.material_unusable.pending = false
+                state.material_unusable.color_cond = 'bg-red-500'
             }
             else{
                 console.log('Internal Server Error');
@@ -217,9 +320,10 @@ export const {
     selectRow, unselectRow, clearSelected,
     setOrderSelectionInformationToggleTrue, setOrderSelectionInformationToggleFalse, 
     setOrderSelectionUpdateToggleTrue, setOrderSelectionUpdateToggleFalse, setOrderUpdateMessageBoxTrue,setOrderUpdateMessageBoxFalse, setOrderUpdateErrorMessage,
-    setOrderSelectionReturnToggleTrue, setOrderSelectionReturnToggleFalse, setOrderReturnMessageBoxTrue,setOrderReturnMessageBoxFalse, setOrderReturnErrorMessage, setOrderReturnColorCond,
-    setOrderSelectionProvideToggleTrue, setOrderSelectionProvideToggleFalse, setOrderProvideMessageBoxTrue,setOrderProvideMessageBoxFalse, setOrderProvideErrorMessage,
-    updateRow, addRow, delRow
+    setOrderSelectionReturnToggleTrue, setOrderSelectionReturnToggleFalse, setOrderReturnMessageBoxTrue,setOrderReturnMessageBoxFalse, setOrderReturnErrorMessage, setOrderReturnColorCond, setorderReturnStatus,
+    setOrderSelectionProvideToggleTrue, setOrderSelectionProvideToggleFalse, setOrderProvideMessageBoxTrue,setOrderProvideMessageBoxFalse, setOrderProvideErrorMessage, setOrderProvideStatus,
+    setOrderSelectionMaterialUnusableToggleTrue, setOrderSelectionMaterialUnusableToggleFalse, setOrderMaterialUnusableMessageBoxTrue,setOrderMaterialUnusableMessageBoxFalse, setOrderMaterialUnusableErrorMessage, setOrderMaterialUnusableColorCond,
+    updateRow, addRow, delRow, clearRow
 } = stockSlice.actions;
 
 

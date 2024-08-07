@@ -14,6 +14,7 @@ class WarehouseService {
             }).catch((err) => {
                 console.log('fetch warehouse data Error happen : ', err);
             });
+            console.log('object data is : ', data);
             return data;
         }
     );
@@ -63,10 +64,12 @@ class WarehouseService {
             then((response)=>{
                 data.data = response.data;
                 data.status = 201;
+                data.msg = response.data.msg;
             })
             .catch((err)=>{
-                data.status = 500;
+                data.status = err.response.status;
                 data.data = err.response.data;
+                data.msg = err.response.data;
             })
             return data;
         }
@@ -107,14 +110,14 @@ class WarehouseService {
             let data = {};
             await $api.post(`/warehouse/receivetostock`, selected_items)
                 .then((respond)=>{
-                    console.log('receive to stock respond : ', respond);
                     data.status = respond.status;
-                    data.data = respond.data.msg;
+                    data.msg = respond.data.msg;
+                    data.data = respond.data.data;
                 }).catch((err)=>{
                     data.status = err.response.status;
+                    data.msg = err.response.data;
                     data.data = err.response.data;
                 });
-            console.log('receive to stock data : ', data);
             return data;
         }
     )

@@ -3,17 +3,16 @@ import { useEffect, useState } from 'react'
 import { IoMdClose } from "react-icons/io";
 import { useDispatch, useSelector } from 'react-redux';
 import {
-    setOrderReturnMessageBoxTrue,
-    setOrderReturnErrorMessage,
-    setOrderSelectionReturnToggleFalse,
-    setOrderReturnColorCond,
-    setorderReturnStatus
+    setOrderMaterialUnusableMessageBoxTrue,
+    setOrderMaterialUnusableErrorMessage,
+    setOrderSelectionMaterialUnusableToggleFalse,
+    setOrderMaterialUnusableColorCond,
 } from '../../store/stock-store.js';
 import StockService from "../../services/stock-service.js";
 
 import CustomLoadingButton from "../common/CustomLoadingButton.jsx";
 
-function OrderUpdateComponent() {
+function MaterialUnusableComponent() {
 
     const dispatch = useDispatch();
     const po_data = useSelector((state) => state.stockSlice.po_data);
@@ -22,39 +21,33 @@ function OrderUpdateComponent() {
     const [material_name, setMaterialName] = useState('');
     const [qty, setQty] = useState(0);
     const [stock, setStock] = useState(0);
-    const [return_amount, setReturnAmount] = useState(0);
+    const [sending_amount, setSendingAmount] = useState(0);
     const [unit, setUnit] = useState('');
     const [serial_number, setSerialNumber] = useState('');
     const [material_id, setMaterialId] = useState('');
+    const [comment, setComment] = useState('');
 
 
     const postFunc = () => {
-        let updated_data = {
+        let sending_data = {
             id: po_data.id,
-            warehouse_id: po_data.WarehouseModel.warehouse_id,
-            return_amount: return_amount,
+            amount: sending_amount,
+            comments: comment,
         };
         let cond = true;
-        if (return_amount > po_data.stock) {
-            cond = false;
-            dispatch(setOrderReturnMessageBoxTrue());
-            dispatch(setOrderReturnColorCond({ color: 'bg-red-500' }));
-            dispatch(setOrderReturnErrorMessage({ message: 'Entering Amount greater than stock' }));
-            return
-        }
+        // if (sending_amount > po_data.stock) {
+        //     cond = false;
+        // }
         if (cond) {
-            dispatch(StockService.returnToWarehouse(updated_data));
+            dispatch(StockService.setUnusableMaterial(sending_data));
         }
-
+        else{
+            dispatch(setOrderMaterialUnusableMessageBoxTrue());
+            dispatch(setOrderMaterialUnusableColorCond({ color: 'bg-red-500' }));
+            dispatch(setOrderMaterialUnusableErrorMessage({ message: 'Entering Amount greater than stock' }));
+        
+        }
     }
-
-    useEffect(() => {
-        if(order_return.status === 201){
-            setTimeout(() => {
-                dispatch(setorderReturnStatus());
-            }, 2000);
-        }
-    }, [order_return.status]);
 
     useEffect(() => {
         if (po_data?.WarehouseModel?.warehouse_id) {
@@ -64,15 +57,12 @@ function OrderUpdateComponent() {
             setQty(po_data.qty);
             setStock(po_data.stock);
             // I Just define max stock, and need to show in ui side
-            setReturnAmount(po_data.stock);
+            setSendingAmount(po_data.stock);
             //setPO(po_data.po);
             setUnit(po_data.WarehouseModel.unit);
             //setPrice(po_data.price);
             setSerialNumber(po_data.serial_number);
             setMaterialId(po_data.material_id);
-        }
-        else {
-            console.log('else work')
         }
 
     }, [po_data]);
@@ -80,17 +70,17 @@ function OrderUpdateComponent() {
 
     return (
 
-        <div className='flex flex-row justify-between z-10 fixed top-0 right-0 w-full h-full bg-black bg-opacity-30'>
-            <div className='w-1/2' ></div>
-            <div className='flex flex-col bg-white w-1/2' >
+        <div className='flex justify-center items-center z-10 fixed top-0 right-0 w-full h-full bg-black bg-opacity-30'>
+            
+            <div className='flex flex-col h-2/3 rounded-lg bg-white w-1/3 ' >
                 {/* Close and Title Component Section */}
                 <div className='flex justify-between p-5 text-end'>
                     <span style={{ fontWeight: 600, fontFamily: 'Open Sans' }} className='text-3xl'>
-                        Order Return Section
+                        Material Unusable Section
                     </span>
                     <span
                         onClick={() => {
-                            dispatch(setOrderSelectionReturnToggleFalse());
+                            dispatch(setOrderSelectionMaterialUnusableToggleFalse());
                         }}
                         className='p-2 hover:bg-gray-100 hover:cursor-pointer rounded-lg'>
                         <IoMdClose className='text-2xl' />
@@ -126,24 +116,24 @@ function OrderUpdateComponent() {
 
                     {/* Material Stock Side */}
                     <div className='flex items-center justify-between mt-3'>
-                        <span className='w-1/3'>Return Amount </span>
+                        <span className='w-1/3'> Sending Amount </span>
                         <div className='relative'>
-                            <input type="number" value={return_amount}
+                            <input type="number" value={sending_amount}
                                 className={'border p-2'}
                                 onChange={(e) => {
-                                    if (e.target.value <= stock && e.target.value >= 0) {
-                                        setReturnAmount(e.target.value);
-                                    }
-                                    else if (e.target.value < 0) {
-                                        dispatch(setOrderReturnMessageBoxTrue());
-                                        dispatch(setOrderReturnColorCond({ color: 'bg-red-500' }));
-                                        dispatch(setOrderReturnErrorMessage({ message: 'Entering Amount greater than stock' }));
-                                    }
-                                    else {
-                                        dispatch(setOrderReturnMessageBoxTrue());
-                                        dispatch(setOrderReturnColorCond({ color: 'bg-red-500' }));
-                                        dispatch(setOrderReturnErrorMessage({ message: 'Entering Amount greater than stock' }));
-                                    }
+                                    //if (e.target.value <= stock && e.target.value >= 0) {
+                                        setSendingAmount(e.target.value);
+                                    // }
+                                    // else if (e.target.value < 0) {
+                                    //     dispatch(setOrderMaterialUnusableMessageBoxTrue());
+                                    //     dispatch(setOrderMaterialUnusableColorCond({ color: 'bg-red-500' }));
+                                    //     dispatch(setOrderMaterialUnusableErrorMessage({ message: 'Entering Amount greater than stock' }));
+                                    // }
+                                    // else {
+                                    //     dispatch(setOrderMaterialUnusableMessageBoxTrue());
+                                    //     dispatch(setOrderMaterialUnusableColorCond({ color: 'bg-red-500' }));
+                                    //     dispatch(setOrderMaterialUnusableErrorMessage({ message: 'Entering Amount greater than stock' }));
+                                    // }
                                 }} />
                         </div>
                     </div>
@@ -176,13 +166,22 @@ function OrderUpdateComponent() {
                         </div>
                     </div>
 
+                    <div className='flex flex-col mt-3'>
+                        <span className='w-1/3'>Remarks </span>
+                        <textarea className='border w-full h-32' onChange={(e)=>{
+                            setComment(e.target.value);
+                        }}>
+
+                        </textarea>
+                    </div>
+
 
                     {/* Button Field */}
                     {
                         !order_return.order_return_pending ?
                             <div className='flex justify-end mt-10'>
                                 <button onClick={postFunc}
-                                    className='px-6 py-3 bg-green-500 rounded-lg text-white'>Post</button>
+                                    className='px-6 py-3 bg-green-500 rounded-lg text-white w-full outline-none hover:bg-green-400 duration-300 text-lg'>Post</button>
                             </div>
                             :
                             <CustomLoadingButton />
@@ -193,4 +192,4 @@ function OrderUpdateComponent() {
     )
 }
 
-export default OrderUpdateComponent
+export default MaterialUnusableComponent

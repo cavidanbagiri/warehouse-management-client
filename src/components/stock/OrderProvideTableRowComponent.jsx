@@ -1,26 +1,28 @@
 
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { updateRow, addRow } from "../../store/stock-store";
+import { updateRow, addRow, clearRow } from "../../store/stock-store";
 
 function OrderProvideTableHeaderComponent(props) {
 
     const dispatch = useDispatch();
 
+    const order_provide = useSelector(state => state.stockSlice.order_provide);
+
     const [row, setRow] = useState({
         id: props.item.id,
         ss: props.index,
-        amount: props.item.stock,
-        serial_number: props.item.serial_number,
-        material_id: props.item.material_id,
+        amount: 0,
+        serial_number: props.item.material_id,
+        material_id: props.item.serial_number,
         providerType: 'Consumption'
     });
 
-    useEffect(() => {
-        dispatch(addRow({ row: row }));
-    },[]);
-
     
+    useEffect(() => {
+        dispatch(addRow({row: row}))
+    }, [row.amount])
+
     return (
         <thead style={{ fontFamily: 'IBM Plex Sans' }} className="text-black bg-white border font-medium text-sm" >
             <tr>
@@ -38,7 +40,7 @@ function OrderProvideTableHeaderComponent(props) {
                 { /* Type */
                     <th scope="col" className="px-6 py-1 text-center border font-medium ">
                         <div className="">
-                        {props.item.WarehouseModel?.type}
+                            {props.item.WarehouseModel?.type}
                         </div>
                     </th>
                 }
@@ -55,7 +57,7 @@ function OrderProvideTableHeaderComponent(props) {
                 }
                 { /* Serial No */
                     <th scope="col" className="px-6 py-1 text-center border font-medium min-w-32">
-                         {props.item.serial_number}
+                        {props.item.serial_number}
                     </th>
                 }
                 { /* Material ID */
@@ -69,70 +71,66 @@ function OrderProvideTableHeaderComponent(props) {
                     <th scope="col" className="p-1 text-center border font-medium min-w-32">
                         <input onChange={
                             (event) => {
-                                setRow((each) => ({
-                                    ...each,
-                                    amount: event.target.value
-                                }))
-                                dispatch(updateRow({ ss: row.ss, name: 'amount', value: event.target.value }));
-                            }} 
-                        type="number" value={row.amount} className="border bg-gray-100 p-2 w-full rounded-md outline-none" placeholder="Amount" />
+                                if (event.target.value > props.item.stock || event.target.value < 0) {
+                                    showMessageBoxMessageHandle('provide', 'Please provide valid amount');
+                                }                                
+                                else {
+                                    setRow((each) => ({
+                                        ...each,
+                                        amount: event.target.value
+                                    }))
+                                    dispatch(updateRow({ id: row.id, ss: row.ss, name: 'amount', value: event.target.value }));
+                                }
+                            }}
+                            type="number" value={row.amount} className="border bg-gray-100 p-2 w-full rounded-md outline-none" placeholder="Amount" />
                     </th>
                 }
 
                 { /* Serial number */
                     <th scope="col" className="p-1 text-center border font-medium min-w-32">
                         <input onChange={(event) => {
-                                setRow((each) => ({
-                                    ...each,
-                                    serial_number: event.target.value
-                                }))
-                                dispatch(updateRow({ ss: row.ss, name: 'serial_number', value: event.target.value }));
-                            }} 
-                        type="text" value={row.serial_number} className="border bg-gray-100 p-2 w-full rounded-md outline-none" placeholder="Serial number" />
+                            setRow((each) => ({
+                                ...each,
+                                serial_number: event.target.value
+                            }))
+                            dispatch(updateRow({ id:row.id, ss: row.ss, name: 'serial_number', value: event.target.value }));
+                        }}
+                            type="text" value={row.serial_number} className="border bg-gray-100 p-2 w-full rounded-md outline-none" placeholder="Serial number" />
                     </th>
                 }
 
                 { /* Material id */
                     <th scope="col" className="p-1 text-center border font-medium min-w-32">
                         <input onChange={(event) => {
-                                setRow((each) => ({
-                                    ...each,
-                                    material_id: event.target.value
-                                }))
-                                dispatch(updateRow({ ss: row.ss, name: 'material_id', value: event.target.value }));
-                            }}  
-                        type="text" value={row.material_id} className="border bg-gray-100 p-2 w-full rounded-md outline-none" placeholder="Material ID" />
+                            setRow((each) => ({
+                                ...each,
+                                material_id: event.target.value
+                            }))
+                            dispatch(updateRow({id:row.id, ss: row.ss, name: 'material_id', value: event.target.value }));
+                        }}
+                            type="text" value={row.material_id} className="border bg-gray-100 p-2 w-full rounded-md outline-none" placeholder="Material ID" />
                     </th>
                 }
 
                 { /* proivder type */
                     <th scope="col" className="p-1 text-center border font-medium min-w-32">
-                        
+
                         <select onChange={(event) => {
-                                setRow((each) => ({
-                                    ...each,
-                                    providerType: event.target.value
-                                }))
-                                dispatch(updateRow({ ss: row.ss, name: 'providerType', value: event.target.value }));
-                            }} 
-                        type="text" value={row.providerType} className="border bg-gray-100 p-2 w-full rounded-md outline-none">
+                            setRow((each) => ({
+                                ...each,
+                                providerType: event.target.value
+                            }))
+                            dispatch(updateRow({ id: row.id, ss: row.ss, name: 'providerType', value: event.target.value }));
+                        }}
+                            type="text" value={row.providerType} className="border bg-gray-100 p-2 w-full rounded-md outline-none">
                             <option value="Consumption">Consumption</option>
                             <option value="Debit">Debit</option>
                         </select>
 
                     </th>
-                    // <th scope="col" className="p-1 text-center border font-medium min-w-32">
-                    //     <input onChange={(event) => {
-                    //             setRow((each) => ({
-                    //                 ...each,
-                    //                 provider_type: event.target.value
-                    //             }))
-                    //             dispatch(updateRow({ ss: row.ss, name: 'provider_type', value: event.target.value }));
-                    //         }} 
-                    //     type="text" value={row.provider_type} className="border bg-gray-100 p-2 w-full rounded-md outline-none" placeholder="Material ID" />
-                    // </th>
+                  
                 }
-        
+
             </tr>
         </thead>
     )

@@ -15,6 +15,7 @@ import MaterialTypeInform from "../components/warehouse/MaterialTypeInformCompon
 import OrderInformationComponent from '../components/stock/OrderInformationComponent';
 import ZeroFilteredComponent from '../components/warehouse/ZeroFilteredComponent.jsx';
 import PageTitleComponent from '../components/stock/PageTitleComponent.jsx';
+import MaterialUnusableComponent from '../components/stock/MaterialUnusableComponent.jsx';
 
 import { IoFilterOutline } from "react-icons/io5";
 
@@ -23,7 +24,10 @@ import StockService from "../services/stock-service.js";
 import {
     setOrderUpdateMessageBoxFalse,
     setOrderReturnMessageBoxFalse,
-    
+
+    setOrderMaterialUnusableMessageBoxFalse,
+    setOrderSelectionMaterialUnusableToggleFalse,
+
     setOrderSelectionUpdateToggleTrue,
     setOrderSelectionInformationToggleTrue,
     setOrderSelectionReturnToggleTrue,
@@ -51,6 +55,8 @@ const StockPage = () => {
 
     const order_return = useSelector((state) => state.stockSlice.order_return);
 
+    const material_unusable = useSelector((state) => state.stockSlice.material_unusable);
+
     const [show_table_column_component, setShowTableColumnCompoenent] = useState(false);
 
     const [show_message_box, setShowMessageBox] = useState(false);
@@ -75,6 +81,10 @@ const StockPage = () => {
             setShowMessageBoxMessage(value)
         }
         else if (key === 'provide') {
+            setShowMessageBox(true);
+            setShowMessageBoxMessage(value)
+        }
+        else if (key === 'unusablematerial') {
             setShowMessageBox(true);
             setShowMessageBoxMessage(value)
         }
@@ -126,6 +136,15 @@ const StockPage = () => {
         }
     }, [dispatch, order_return.order_return_message_box])
 
+    useEffect(() => {
+        if (material_unusable.message_box) {
+            setTimeout(() => {
+                dispatch(setOrderMaterialUnusableMessageBoxFalse());
+                dispatch(setOrderSelectionMaterialUnusableToggleFalse());
+            }, 2000)
+        }
+    }, [dispatch, material_unusable.message_box])
+
 
     return (
         <div className='flex flex-col items-center'>
@@ -160,15 +179,19 @@ const StockPage = () => {
             {
                 order_provide.order_provide_toggle && <OrderProvideComponent />
             }
-            {
-                // order_return.order_return_message_box && <MessageBox message={order_return.order_return_error_message}
-                //     color={order_return.order_return_color_cond} />
-            }
 
 
             {/* order Information */}
             {
                 order_information_toggle && <OrderInformationComponent />
+            }
+
+            {
+                material_unusable.toggle && < MaterialUnusableComponent />
+            }
+            {
+                material_unusable.message_box && <MessageBox message={material_unusable.error_message}
+                    color={material_unusable.color_cond} />
             }
 
 

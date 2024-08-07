@@ -12,14 +12,16 @@ import { IoMdClose } from "react-icons/io";
 import {
     addStockToggleFalse, setAddStockColorCond,
     setAddStockMessageBoxMessage,
-    setAddStockMessageBoxTrue
+    setAddStockMessageBoxTrue,
+    setAddStockStatus
 } from '../../store/warehouse-store';
+import { useEffect } from 'react';
 
 function AddStockComponent() {
 
     const dispatch = useDispatch();
     const fetch_selected_items = useSelector((state) => state.warehouseSlice.fetch_selected_items);
-
+    
     const addstock = useSelector((state) => state.warehouseSlice.addstock);
 
     const receiveStock = () => {
@@ -29,16 +31,22 @@ function AddStockComponent() {
                 cond = false;
                 dispatch(setAddStockMessageBoxTrue());
                 dispatch(setAddStockMessageBoxMessage('The Material entering amount is less than or equal to 0'));
+                dispatch(setAddStockColorCond('bg-red-500'));
+                return;
             }
             if (i.entered_amount <= 0) {
                 cond = false;
                 dispatch(setAddStockMessageBoxTrue());
                 dispatch(setAddStockMessageBoxMessage('The Material entering amount is less than or equal to 0'));
+                dispatch(setAddStockColorCond('bg-red-500'));
+                return;
             }
             else if (Number(i.entered_amount) > i.leftover) {
                 cond = false;
                 dispatch(setAddStockMessageBoxTrue());
                 dispatch(setAddStockMessageBoxMessage('The Material entering amount is greater than leftover'));
+                dispatch(setAddStockColorCond('bg-red-500'));
+                return;
             }
         }
         if (cond) {
@@ -46,6 +54,14 @@ function AddStockComponent() {
         }
     }
 
+    useEffect(() => {
+        if (addstock.status===201) {
+            setTimeout(() => {
+                dispatch(addStockToggleFalse());
+                dispatch(setAddStockStatus())
+            },2000)
+        }
+    }, [addstock.status])
 
     return (
 

@@ -1,6 +1,6 @@
 
 // import React from 'react'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Outlet, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -25,7 +25,17 @@ function Navbar() {
     
     const [selected , setSelected] = useState('Home');
 
-   
+
+    // After Reload get current route
+    useEffect(()=>{
+        const path = window.location.pathname.slice(1);
+        if(path === ''){
+            setSelected('Home');
+        }
+        else{
+            setSelected(path.charAt(0).toUpperCase() + path.slice(1));
+        }
+    },[])
 
     return (
 
@@ -47,7 +57,7 @@ function Navbar() {
                                 <NavbarItemComponent selected={selected} isShown={homeIsShown} setIsShown={setHomeIsShown} iconName={'fa-house'} iconSize={'text-xl'} iconValue={'Home'} />
                             </Link>
 
-                            <Link to="/creatematerial" onClick={() => {setSelected('Create')}}>
+                            <Link to="/create" onClick={() => {setSelected('Create')}}>
                                 <NavbarItemComponent selected={selected} isShown={createMaterialIsShown} setIsShown={setcreateMaterialIsShown} iconName={'fa-plus'} iconSize={'text-2xl'} iconValue={'Create'} />
                             </Link>
 

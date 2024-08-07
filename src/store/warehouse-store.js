@@ -4,7 +4,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import WarehouseService from "../services/warehouse-service";
 
 const initialState = {
-    warehouse_data: [],
+    // warehouse_data: [],
     filtered_warehouse_data: [],
     selected_items: [],
     fetch_selected_items: null,
@@ -26,8 +26,8 @@ const initialState = {
         unit: true,
         price: false,
         currency: false,
-        ordered: true,
-        po: true,
+        ordered: false,
+        po: false,
         certificate: true,
         passport: true
     },
@@ -38,6 +38,7 @@ const initialState = {
         order_update_error_message: '',
         order_update_pending: false,
         order_update_color_cond: 'bg-green-500',
+        status: 0
     },
 
     addstock :{
@@ -46,6 +47,7 @@ const initialState = {
         addstock_error_message: '',
         addstock_pending: false,
         addstock_color_cond: 'bg-green-500',
+        status: 0
     },
 
 }
@@ -70,6 +72,7 @@ export const warehouseSlice = createSlice({
         setOrderSelectionUpdateToggleFalse: (state) => {state.order_update.order_update_toggle = false;},
         setOrderUpdateMessageBoxFalse: (state) => {state.order_update.order_update_message_box = false;},
         setOrderUpdateMessageBoxTrue: (state) => {state.order_update.order_update_message_box = true;},
+        setOrderUpdateStatus: (state) => {state.order_update.status = 0;},
         setOrderUpdateErrorMessage: (state, action) => {state.order_update.order_update_error_message = action.payload.message;},
         setOrderUpdateColorCond: (state, action) => {state.order_update.order_update_color_cond = action.payload.color;},
 
@@ -78,6 +81,7 @@ export const warehouseSlice = createSlice({
         addStockToggleFalse: (state) => {state.addstock.addstock_toggle = false;},
         setAddStockMessageBoxTrue: (state) => {state.addstock.addstock_message_box = true;},
         setAddStockMessageBoxFalse: (state) => {state.addstock.addstock_message_box = false;},
+        setAddStockStatus: (state) => {state.addstock.status = 0;},
         setAddStockMessageBoxMessage: (state, action) => {state.addstock.addstock_error_message = action.payload;},
         setAddStockColorCond: (state, action) => {state.addstock.addstock_color_cond = action.payload.color;},
 
@@ -98,7 +102,6 @@ export const warehouseSlice = createSlice({
 
         builder.addCase(WarehouseService.fetchWarehouseData.fulfilled, (state, action)=>{
             if(action.payload!==null){
-                state.warehouse_data = action.payload;
                 state.filtered_warehouse_data = action.payload;
             }
         })
@@ -122,14 +125,23 @@ export const warehouseSlice = createSlice({
             if(action.payload.status === 201){
                 state.order_update.order_update_pending = false;
                 state.order_update.order_update_message_box = true;
-                state.order_update.order_update_error_message = 'Data Successfully Updated';
+                state.order_update.order_update_error_message = action.payload.data.msg;
                 state.order_update.order_update_color_cond = 'bg-green-500';
+                state.order_update.status = 201;
+                state.filtered_warehouse_data.map((item)=>{
+                    if(item.id === action.payload.data.id){
+                        for(let[key, value] of Object.entries(item)){
+                            item[key] = action.payload.data[key];
+                        }
+                    }
+                })
             }
             else if(action.payload.status === 500){
                 state.order_update.order_update_pending = false;
                 state.order_update.order_update_message_box = true;
                 state.order_update.order_update_error_message = action.payload.data;
                 state.order_update.order_update_color_cond = 'bg-red-500';
+                state.order_update.status = 500;
             }
         })
         builder.addCase(WarehouseService.updateCertOrPassportById.fulfilled, (state, action)=>{
@@ -153,16 +165,25 @@ export const warehouseSlice = createSlice({
             if(action.payload.status === 201){
                 state.addstock.addstock_message_box = true;
                 state.addstock.addstock_color_cond = 'bg-green-500';
-                state.addstock.addstock_toggle = false;
                 state.addstock.addstock_pending = false;
-                state.addstock.addstock_error_message = action.payload.data;
+                state.addstock.addstock_error_message = action.payload.msg;
+                state.addstock.status = 201;
+
+                action.payload.data.map((item)=>{
+                    state.filtered_warehouse_data.map((data)=>{
+                        if(data.id === item.id){
+                            data.leftover = item.leftover
+                        }
+                    })
+                })
+
             }
             else{
-                console.log('else work');
                 state.addstock.addstock_message_box = true;
                 state.addstock.addstock_pending = false;
                 state.addstock.addstock_color_cond = 'bg-red-500';
-                state.addstock.addstock_error_message = action.payload.data;
+                state.addstock.addstock_error_message = action.payload.msg;
+                state.addstock.status = 500;
             }
         })
 
@@ -175,11 +196,11 @@ export const {
     selectRow, unselectRow, clearSelected,
     setOrderSelectionInformationToggleTrue, setOrderSelectionInformationToggleFalse,
     setOrderSelectionUpdateToggleTrue, setOrderSelectionUpdateToggleFalse,
-    setOrderUpdateMessageBoxFalse, setOrderUpdateMessageBoxTrue,
+    setOrderUpdateMessageBoxFalse, setOrderUpdateMessageBoxTrue, setOrderUpdateStatus,
+    setOrderUpdateErrorMessage,setOrderUpdateColorCond, 
     setWarehouseColumnFilter,
-    setOrderUpdateErrorMessage,setOrderUpdateColorCond,
     addStockToggleTrue, addStockToggleFalse, setAddStockMessageBoxFalse,
-    setAddStockMessageBoxMessage, setAddStockMessageBoxTrue, setAddStockColorCond,
+    setAddStockMessageBoxMessage, setAddStockMessageBoxTrue, setAddStockColorCond, setAddStockStatus,
     updatefetchSelectedItems
 } = warehouseSlice.actions;
 

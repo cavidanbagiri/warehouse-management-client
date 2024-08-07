@@ -31,11 +31,19 @@ function OrderUpdateComponent() {
 
 
     const postFunc = () => {
-        let cond = true;
         if(card_number.length < 4){
-            cond = false;
             setShowMessageBox(true);
             setShowMessageBoxMessage('Card Number must be greater than 4 characters');
+            return;
+        }
+        else if(return_amount < 0){
+            setShowMessageBox(true);
+            setShowMessageBoxMessage('Return Amount must be greater than 0');
+            return;
+        }
+        else if(!return_amount){
+            setShowMessageBox(true);
+            setShowMessageBoxMessage('Return Amount must be ent4red value');
             return;
         }
         else{
@@ -43,7 +51,6 @@ function OrderUpdateComponent() {
                 id: po_data?.data?.id,
                 return_amount: return_amount,
             };
-            console.log('return data is : ', return_data);
             dispatch(AreaService.returnToStock(return_data))
         }
 

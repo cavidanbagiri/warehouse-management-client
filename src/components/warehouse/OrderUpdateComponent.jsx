@@ -11,6 +11,7 @@ import {
     setOrderSelectionUpdateToggleFalse,
     setOrderUpdateMessageBoxTrue,
     setOrderUpdateErrorMessage, setOrderUpdateColorCond,
+    setOrderUpdateStatus
 } from '../../store/warehouse-store';
 
 
@@ -22,7 +23,7 @@ function OrderUpdateComponent() {
     const dispatch = useDispatch();
     const po_data = useSelector((state) => state.warehouseSlice.po_data);
     const selected_items = useSelector((state) => state.warehouseSlice.selected_items);
-
+    
     const order_update = useSelector((state) => state.warehouseSlice.order_update);
 
     const companies = useSelector((state) => state.commonSlice.companies);
@@ -107,7 +108,6 @@ function OrderUpdateComponent() {
         }
         if (cond) {
             dispatch(WarehouseService.updatePO(updated_data))
-            // dispatch(setOrderUpdateErrorMessage({ message: 'Data Successfully Updated' }))
         }
 
     }
@@ -135,6 +135,15 @@ function OrderUpdateComponent() {
             }))
         }
     }, [po_data]);
+
+    useEffect(() => {
+        if (order_update.status===201) {
+            setTimeout(() => {
+                dispatch(setOrderSelectionUpdateToggleFalse());
+                dispatch(setOrderUpdateStatus())
+            },2000)
+        }
+    }, [order_update.status])
 
     return (
         <div className='flex flex-row justify-between z-10 fixed top-0 right-0 w-full h-full bg-black bg-opacity-30'>
@@ -220,8 +229,15 @@ function OrderUpdateComponent() {
                     <div className='flex items-center justify-between mt-3'>
                         <span className='w-1/3'>Quantity </span>
                         <div className='relative'>
-                            <input value={qty} className='placeholder-black text-xs bg-white border border-gray-300 rounded-lg p-2 outline-none text-center ' type="text" placeholder='Quantity' onChange={(e) => {
-                                setQty(e.target.value);
+                            <input value={qty} type="number" className='placeholder-black text-xs bg-white border border-gray-300 rounded-lg p-2 outline-none text-center ' placeholder='Quantity' onChange={(e) => {
+                                if(e.target.value<0){
+                                    dispatch(setOrderUpdateMessageBoxTrue());
+                                    dispatch(setOrderUpdateColorCond({color:'bg-red-500'}))
+                                    dispatch(setOrderUpdateErrorMessage({ message: 'Invalid Quantity' }));
+                                }
+                                else{
+                                    setQty(e.target.value);
+                                }
                             }} />
                         </div>
                     </div>

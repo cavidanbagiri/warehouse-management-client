@@ -31,6 +31,7 @@ function OrderSelectedComponent(props) {
                     </div>
                 </div>
                 <div className="flex items-center  ml-[100px]">
+                    
                     <div 
                     onClick={()=>{
                         if(selected_items.length > 1){

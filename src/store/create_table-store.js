@@ -98,14 +98,14 @@ export const createTableSlice = createSlice({
                 state.table_check = [];
                 state.show_load = false;
                 state.show_message = true;
-                state.show_message_text = 'Material Received Successfully';
+                state.show_message_text = action.payload.data;
                 state.show_message_color = 'bg-green-500';
             }
             else {
                 state.show_message_color = 'bg-red-500',
                 state.show_load = false;
                 state.show_message = true;
-                state.show_message_text = 'Material can\'t created, send report to admin';
+                state.show_message_text = action.payload.data;
             }
         })
     }

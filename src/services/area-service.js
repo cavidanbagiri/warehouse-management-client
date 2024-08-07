@@ -16,6 +16,8 @@ class AreaService {
                 .catch((err) => {
                     console.log('fetch areas Error happen : ', err);
                 });
+
+            console.log('fetch areas data : ', data);
             return data;
         }
     )
@@ -64,12 +66,16 @@ class AreaService {
             let data = {};
             await $api.post(`/area/update`, updated_data).
                 then((response) => {
-                    console.log('coming response : ', response);
                     data.status = response.status;
+                    data.msg = response.data.msg;
+                    data.data = response.data.data;
                 })
                 .catch((err) => {
-                    data.status = 404;
+                    data.status = err.response.status;
+                    data.msg = err.response.data;
+                    data.data = err.response.data;
                 })
+            console.log('update data is : ', data);
             return data;
         }
     )
@@ -81,10 +87,12 @@ class AreaService {
             await $api.post(`/area/return`, return_data).
                 then((response) => {
                     data.status = response.status;
-                    data.data = response.data;
+                    data.msg = response.data.msg;
+                    data.data = response.data.data;
                 })
                 .catch((err) => {
                     data.status = err.response.status;
+                    data.msg = err.response.data;
                     data.data = err.response.data;
                 })
             console.log('return data is : ', data);

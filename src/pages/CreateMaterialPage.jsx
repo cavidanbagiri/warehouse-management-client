@@ -172,7 +172,6 @@ function CreateMaterialPage() {
 
     }
     else {
-      console.log('else work');
       dispatch(setShowErrorTrue());
       setTimeout(() => {
         dispatch(setShowErrorFalse());

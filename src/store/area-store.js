@@ -88,7 +88,6 @@ export const areaSlice = createSlice({
             }
             else {
                 state.area_pending = false
-                console.log('area is empty');
             }
         })
 
@@ -112,9 +111,25 @@ export const areaSlice = createSlice({
         builder.addCase(AreaService.updateArea.fulfilled, (state, action)=>{
             if(action.payload.status === 201){
                 state.order_update.order_update_message_box = true;
-                state.order_update.order_update_error_message = 'Successfully Update';
+                state.order_update.order_update_error_message = action.payload.msg;
                 state.order_update.order_update_pending = false;
                 state.order_update.order_update_color_cond = 'bg-green-500'
+                state.order_update.order_update_toggle = false
+                state.filtered_area_data.map((item)=>{
+                    if(item.id === action.payload.data.id){
+                        item['card_number'] = action.payload.data['card_number']
+                        item['username'] = action.payload.data['username']
+                    }
+                })
+            }
+            else if(action.payload.status === 500){
+                state.order_update.order_update_message_box = true;
+                state.order_update.order_update_error_message = action.payload.msg;
+                state.order_update.order_update_pending = false
+                state.order_update.order_update_color_cond = 'bg-red-500'
+            }
+            else{
+                console.log('Internal Server Error');
             }
         })
 
@@ -122,16 +137,22 @@ export const areaSlice = createSlice({
         // Return Area Section
         builder.addCase(AreaService.returnToStock.pending, (state)=>{state.order_return.order_return_pending = true})
         builder.addCase(AreaService.returnToStock.fulfilled, (state, action)=>{
-            console.log('action object val is : ', action.payload);
             if(action.payload.status === 201){
                 state.order_return.order_return_message_box = true;
-                state.order_return.order_return_error_message = 'Successfully Returned';
+                state.order_return.order_return_error_message = action.payload.msg;
                 state.order_return.order_return_pending = false
                 state.order_return.order_return_color_cond = 'bg-green-500'
+                state.order_return.order_return_toggle = false;
+                state.filtered_area_data.map((item)=>{
+                    if(item.id === action.payload.data.id){
+                        item['qty'] = action.payload.data.qty
+                    }
+                })
+
             }
             else if(action.payload.status === 500){
                 state.order_return.order_return_message_box = true;
-                state.order_return.order_return_error_message = action.payload.data;
+                state.order_return.order_return_error_message = action.payload.msg;
                 state.order_return.order_return_pending = false
                 state.order_return.order_return_color_cond = 'bg-red-500'
             }

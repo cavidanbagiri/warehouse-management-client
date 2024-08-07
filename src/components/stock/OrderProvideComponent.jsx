@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { IoMdClose } from "react-icons/io";
 import { useDispatch, useSelector } from 'react-redux';
-import { setOrderProvideMessageBoxFalse, setOrderSelectionProvideToggleFalse } from '../../store/stock-store';
+import { setOrderProvideMessageBoxFalse, setOrderSelectionProvideToggleFalse, setOrderProvideStatus, clearRow } from '../../store/stock-store';
 
 import OrderProvideTableHeaderComponent from './OrderProvideTableHeaderComponent';
 import OrderProvideTableRowComponent from './OrderProvideTableRowComponent';
@@ -71,6 +71,7 @@ function OrderInformationComponent() {
     sending_data.card_number = card_number;
     sending_data.groupId = group.group_id;
     dispatch(StockService.provideStock(sending_data));
+    
   }
 
   useEffect(() => {
@@ -88,6 +89,15 @@ function OrderInformationComponent() {
       }, 2000)
     }
   }, [show_message_box])
+
+  useEffect(() => {
+    if (order_provide.status === 201) {
+      setTimeout(() => {
+          dispatch(setOrderProvideStatus());
+          dispatch(setOrderSelectionProvideToggleFalse());
+      },1999)
+    }
+  }, [order_provide.status]);
 
 
   // When This Componennt is open, query will send to backend for taking all data from database
@@ -118,6 +128,7 @@ function OrderInformationComponent() {
             <span
               onClick={() => {
                 dispatch(setOrderSelectionProvideToggleFalse());
+                dispatch(clearRow());
               }}
               className='p-2 hover:bg-gray-100 hover:cursor-pointer rounded-lg'>
               <IoMdClose className='text-2xl' />

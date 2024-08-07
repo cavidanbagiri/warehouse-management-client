@@ -31,7 +31,7 @@ const router = createBrowserRouter([
                 element: <WarehousePage/>
             },
             {
-                path: "/creatematerial",
+                path: "/create",
                 element: <CreateMaterialPage/>
             },
             {

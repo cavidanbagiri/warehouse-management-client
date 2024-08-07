@@ -65,7 +65,6 @@ function TableRowComponent(props) {
 
     useEffect(() => {
         dispatch(addRow({ row: row }));
-
     })
 
     return (
