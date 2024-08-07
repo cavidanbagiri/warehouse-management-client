@@ -17,8 +17,10 @@ import '../../css/dropdown.css';
 import {
     setOrderSelectionReturnToggleTrue,
     setOrderSelectionUpdateToggleTrue,
+    setOrderSelectionProvideToggleTrue,
     setOrderSelectionMaterialUnusableToggleTrue,
-    setOrderSelectionProvideToggleTrue
+    setOrderSelectionMaterialServiceToggleTrue,
+    
 } from '../../store/stock-store.js';
 import StockService from "../../services/stock-service.js";
 
@@ -137,13 +139,13 @@ function OrderSelectedComponent(props) {
                     <div
                         onClick={() => {
                             if (selected_items.length === 0) {
-                                props.showMessaggeBoxMessageHandle('unusablematerial', 'Please, Choose at least one row to adding stock');
+                                props.showMessaggeBoxMessageHandle('servicematerial', 'Please, Choose at least one row to sending service');
                             }
                             else if (selected_items.length > 1) {
-                                props.showMessaggeBoxMessageHandle('unusablematerial', 'Please, Max 1 Row can selected to return to warehouse');
+                                props.showMessaggeBoxMessageHandle('servicematerial', 'Please, Max 1 Row can selected to sending service');
                             }
                             else {
-                                dispatch(setOrderSelectionMaterialUnusableToggleTrue());
+                                dispatch(setOrderSelectionMaterialServiceToggleTrue());
                                 dispatch(StockService.getById(selected_items[0]));
                             }
                         }}

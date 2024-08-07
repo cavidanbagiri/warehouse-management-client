@@ -147,7 +147,26 @@ class StockService {
                 })
                 .catch((err) => {
                     data.status = err.response.status;
-                    data.msg = err.response.msg;
+                    data.msg = err.response.data;
+                    data.data = err.response.data;
+                })
+            return data;
+        }
+    )
+
+    static setServiceMaterial = createAsyncThunk(
+        '/stock/setservicematerial',
+        async (sending_data) => {
+            let data = {};
+            await $api.post(`/stock/setservicematerial`, sending_data).
+                then((response) => {
+                    data.status = response.status;
+                    data.msg = response.data.msg;
+                    data.data = response.data.data;
+                })
+                .catch((err) => {
+                    data.status = err.response.status;
+                    data.msg = err.response.data;
                     data.data = err.response.data;
                 })
             return data;

@@ -3,16 +3,16 @@ import { useEffect, useState } from 'react'
 import { IoMdClose } from "react-icons/io";
 import { useDispatch, useSelector } from 'react-redux';
 import {
-    setOrderMaterialUnusableMessageBoxTrue,
-    setOrderMaterialUnusableErrorMessage,
-    setOrderSelectionMaterialUnusableToggleFalse,
-    setOrderMaterialUnusableColorCond,
+    setOrderMaterialServiceMessageBoxTrue,
+    setOrderMaterialServiceErrorMessage,
+    setOrderSelectionMaterialServiceToggleFalse,
+    setOrderMaterialServiceColorCond,
 } from '../../store/stock-store.js';
 import StockService from "../../services/stock-service.js";
 
 import CustomLoadingButton from "../common/CustomLoadingButton.jsx";
 
-function MaterialUnusableComponent() {
+function MaterialServiceComponent() {
 
     const dispatch = useDispatch();
     const po_data = useSelector((state) => state.stockSlice.po_data);
@@ -35,16 +35,16 @@ function MaterialUnusableComponent() {
             comments: comment,
         };
         let cond = true;
-        // if (sending_amount > po_data.stock) {
-        //     cond = false;
-        // }
+        if (sending_amount > po_data.stock) {
+            cond = false;
+        }
         if (cond) {
-            dispatch(StockService.setUnusableMaterial(sending_data));
+            dispatch(StockService.setServiceMaterial(sending_data));
         }
         else{
-            dispatch(setOrderMaterialUnusableMessageBoxTrue());
-            dispatch(setOrderMaterialUnusableColorCond({ color: 'bg-red-500' }));
-            dispatch(setOrderMaterialUnusableErrorMessage({ message: 'Entering Amount greater than stock' }));
+            dispatch(setOrderMaterialServiceMessageBoxTrue());
+            dispatch(setOrderMaterialServiceColorCond({ color: 'bg-red-500' }));
+            dispatch(setOrderMaterialServiceErrorMessage({ message: 'Entering Amount greater than stock' }));
         
         }
     }
@@ -76,11 +76,11 @@ function MaterialUnusableComponent() {
                 {/* Close and Title Component Section */}
                 <div className='flex justify-between p-5 text-end'>
                     <span style={{ fontWeight: 600, fontFamily: 'Open Sans' }} className='text-3xl'>
-                        Material Unusable Section
+                        Material Service Section
                     </span>
                     <span
                         onClick={() => {
-                            dispatch(setOrderSelectionMaterialUnusableToggleFalse());
+                            dispatch(setOrderSelectionMaterialServiceToggleFalse());
                         }}
                         className='p-2 hover:bg-gray-100 hover:cursor-pointer rounded-lg'>
                         <IoMdClose className='text-2xl' />
@@ -125,14 +125,14 @@ function MaterialUnusableComponent() {
                                         setSendingAmount(e.target.value);
                                     }
                                     else if (e.target.value < 0) {
-                                        dispatch(setOrderMaterialUnusableMessageBoxTrue());
-                                        dispatch(setOrderMaterialUnusableColorCond({ color: 'bg-red-500' }));
-                                        dispatch(setOrderMaterialUnusableErrorMessage({ message: 'Entering Amount greater than stock' }));
+                                        dispatch(setOrderMaterialServiceMessageBoxTrue());
+                                        dispatch(setOrderMaterialServiceColorCond({ color: 'bg-red-500' }));
+                                        dispatch(setOrderMaterialServiceErrorMessage({ message: 'Entering Amount greater than stock' }));
                                     }
                                     else {
-                                        dispatch(setOrderMaterialUnusableMessageBoxTrue());
-                                        dispatch(setOrderMaterialUnusableColorCond({ color: 'bg-red-500' }));
-                                        dispatch(setOrderMaterialUnusableErrorMessage({ message: 'Entering Amount greater than stock' }));
+                                        dispatch(setOrderMaterialServiceMessageBoxTrue());
+                                        dispatch(setOrderMaterialServiceColorCond({ color: 'bg-red-500' }));
+                                        dispatch(setOrderMaterialServiceErrorMessage({ message: 'Entering Amount greater than stock' }));
                                     }
                                 }} />
                         </div>
@@ -192,4 +192,4 @@ function MaterialUnusableComponent() {
     )
 }
 
-export default MaterialUnusableComponent
+export default MaterialServiceComponent

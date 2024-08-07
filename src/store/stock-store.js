@@ -68,6 +68,14 @@ const initialState = {
         error_message: '',
         pending: false,
         color_cond: 'bg-green-500',
+    },
+
+    material_service: {
+        toggle: false,
+        message_box: false,
+        error_message: '',
+        pending: false,
+        color_cond: 'bg-green-500',
     }
 
 }
@@ -105,6 +113,7 @@ export const stockSlice = createSlice({
         setOrderReturnErrorMessage: (state, action) => {state.order_return.order_return_error_message = action.payload.message;},
         setOrderReturnColorCond: (state, action) => {state.order_return.order_return_color_cond = action.payload.color;},
 
+        // Material Unusable Functions
         setOrderSelectionMaterialUnusableToggleTrue: (state) => {state.material_unusable.toggle = true;},
         setOrderSelectionMaterialUnusableToggleFalse: (state) => {state.material_unusable.toggle = false;},
         setOrderMaterialUnusableMessageBoxFalse: (state) => {state.material_unusable.message_box = false;},
@@ -112,6 +121,17 @@ export const stockSlice = createSlice({
         setOrderMaterialUnusableErrorMessage: (state, action) => {state.material_unusable.error_message = action.payload.message;},
         setOrderMaterialUnusableColorCond: (state, action) => {state.material_unusable.color_cond = action.payload.color;},
         
+
+        // Material Service Functions
+        setOrderSelectionMaterialServiceToggleTrue: (state) => {state.material_service.toggle = true;},
+        setOrderSelectionMaterialServiceToggleFalse: (state) => {state.material_service.toggle = false;},
+        setOrderMaterialServiceMessageBoxFalse: (state) => {state.material_service.message_box = false;},
+        setOrderMaterialServiceMessageBoxTrue: (state) => {state.material_service.message_box = true;},
+        setOrderMaterialServiceErrorMessage: (state, action) => {state.material_service.error_message = action.payload.message;},
+        setOrderMaterialServiceColorCond: (state, action) => {state.material_service.color_cond = action.payload.color;},
+        
+
+
         // Order Provide Section
         setOrderSelectionProvideToggleTrue: (state) => {state.order_provide.order_provide_toggle = true;},
         setOrderSelectionProvideToggleFalse: (state) => {state.order_provide.order_provide_toggle = false;},
@@ -285,10 +305,9 @@ export const stockSlice = createSlice({
             }
         })
 
-        // Return Stock Section
+        // Set unusable Section
         builder.addCase(StockService.setUnusableMaterial.pending, (state)=>{state.material_unusable.pending = true})
         builder.addCase(StockService.setUnusableMaterial.fulfilled, (state, action)=>{
-            console.log('-> ', action.payload)
             if(action.payload.status === 201){
                 state.material_unusable.message_box = true;
                 state.material_unusable.error_message = action.payload.msg;
@@ -311,6 +330,31 @@ export const stockSlice = createSlice({
             }
         })
 
+        // Set service Section
+        builder.addCase(StockService.setServiceMaterial.pending, (state)=>{state.material_service.pending = true})
+        builder.addCase(StockService.setServiceMaterial.fulfilled, (state, action)=>{
+            if(action.payload.status === 201){
+                state.material_service.message_box = true;
+                state.material_service.error_message = action.payload.msg;
+                state.material_service.pending = false
+                state.material_service.color_cond = 'bg-green-500'
+                state.filter_stock_data.map((item)=>{
+                    if(item.id === action.payload.data.id){
+                        item['stock'] = Number(action.payload.data['stock']);
+                    }
+                })
+            }
+            else if(action.payload.status === 500){
+                state.material_service.message_box = true;
+                state.material_service.error_message = action.payload.msg;
+                state.material_service.pending = false
+                state.material_service.color_cond = 'bg-red-500'
+            }
+            else{
+                console.log('Internal Server Error');
+            }
+        })
+
     }
 })
 
@@ -323,6 +367,7 @@ export const {
     setOrderSelectionReturnToggleTrue, setOrderSelectionReturnToggleFalse, setOrderReturnMessageBoxTrue,setOrderReturnMessageBoxFalse, setOrderReturnErrorMessage, setOrderReturnColorCond, setorderReturnStatus,
     setOrderSelectionProvideToggleTrue, setOrderSelectionProvideToggleFalse, setOrderProvideMessageBoxTrue,setOrderProvideMessageBoxFalse, setOrderProvideErrorMessage, setOrderProvideStatus,
     setOrderSelectionMaterialUnusableToggleTrue, setOrderSelectionMaterialUnusableToggleFalse, setOrderMaterialUnusableMessageBoxTrue,setOrderMaterialUnusableMessageBoxFalse, setOrderMaterialUnusableErrorMessage, setOrderMaterialUnusableColorCond,
+    setOrderSelectionMaterialServiceToggleTrue, setOrderSelectionMaterialServiceToggleFalse, setOrderMaterialServiceMessageBoxTrue,setOrderMaterialServiceMessageBoxFalse, setOrderMaterialServiceErrorMessage, setOrderMaterialServiceColorCond,
     updateRow, addRow, delRow, clearRow
 } = stockSlice.actions;
 

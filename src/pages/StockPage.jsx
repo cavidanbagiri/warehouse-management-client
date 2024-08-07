@@ -16,6 +16,7 @@ import OrderInformationComponent from '../components/stock/OrderInformationCompo
 import ZeroFilteredComponent from '../components/warehouse/ZeroFilteredComponent.jsx';
 import PageTitleComponent from '../components/stock/PageTitleComponent.jsx';
 import MaterialUnusableComponent from '../components/stock/MaterialUnusableComponent.jsx';
+import MaterialServiceComponent from '../components/stock/MaterialServiceComponent.jsx';
 
 import { IoFilterOutline } from "react-icons/io5";
 
@@ -27,6 +28,9 @@ import {
 
     setOrderMaterialUnusableMessageBoxFalse,
     setOrderSelectionMaterialUnusableToggleFalse,
+    
+    setOrderMaterialServiceMessageBoxFalse,
+    setOrderSelectionMaterialServiceToggleFalse,
 
     setOrderSelectionUpdateToggleTrue,
     setOrderSelectionInformationToggleTrue,
@@ -56,6 +60,7 @@ const StockPage = () => {
     const order_return = useSelector((state) => state.stockSlice.order_return);
 
     const material_unusable = useSelector((state) => state.stockSlice.material_unusable);
+    const material_service = useSelector((state) => state.stockSlice.material_service);
 
     const [show_table_column_component, setShowTableColumnCompoenent] = useState(false);
 
@@ -85,6 +90,10 @@ const StockPage = () => {
             setShowMessageBoxMessage(value)
         }
         else if (key === 'unusablematerial') {
+            setShowMessageBox(true);
+            setShowMessageBoxMessage(value)
+        }
+        else if (key === 'servicematerial') {
             setShowMessageBox(true);
             setShowMessageBoxMessage(value)
         }
@@ -145,6 +154,15 @@ const StockPage = () => {
         }
     }, [dispatch, material_unusable.message_box])
 
+    useEffect(() => {
+        if (material_service.message_box) {
+            setTimeout(() => {
+                dispatch(setOrderMaterialServiceMessageBoxFalse());
+                dispatch(setOrderSelectionMaterialServiceToggleFalse());
+            }, 2000)
+        }
+    }, [dispatch, material_service.message_box])
+
 
     return (
         <div className='flex flex-col items-center'>
@@ -192,6 +210,14 @@ const StockPage = () => {
             {
                 material_unusable.message_box && <MessageBox message={material_unusable.error_message}
                     color={material_unusable.color_cond} />
+            }
+
+{
+                material_service.toggle && < MaterialServiceComponent />
+            }
+            {
+                material_service.message_box && <MessageBox message={material_service.error_message}
+                    color={material_service.color_cond} />
             }
 
 
