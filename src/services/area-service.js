@@ -17,7 +17,6 @@ class AreaService {
                     console.log('fetch areas Error happen : ', err);
                 });
 
-            console.log('fetch areas data : ', data);
             return data;
         }
     )
@@ -55,7 +54,6 @@ class AreaService {
                     data.status = err.response.status;
                     data.data = err.response.data;
                 })
-                console.log('getById data : ',data);
             return data;
         }
     )
@@ -75,7 +73,6 @@ class AreaService {
                     data.msg = err.response.data;
                     data.data = err.response.data;
                 })
-            console.log('update data is : ', data);
             return data;
         }
     )
@@ -95,7 +92,83 @@ class AreaService {
                     data.msg = err.response.data;
                     data.data = err.response.data;
                 })
-            console.log('return data is : ', data);
+            return data;
+        }
+    )
+
+    static getUnusableMaterials = createAsyncThunk(
+        '/area/fetchcunusablematerials/:projectId',
+        async (projectId) => {
+            let data = {};
+            await $api.get(`/area/fetchcunusablematerials/${projectId}`).
+                then((response) => {
+                    data.status = response.status;
+                    data.msg = response.data.msg;
+                    data.data = response.data;
+                })
+                .catch((err) => {
+                    data.status = err.response.status;
+                    data.msg = err.response.data;
+                    data.data = err.response.data;
+                })
+            console.log('coming data : ', data);
+            return data;
+        }
+    )
+
+    static getServiceMaterials = createAsyncThunk(
+        '/area/fetchcservicematerials:/projectId',
+        async (projectId) => {
+            let data = {};
+            await $api.get(`/area/fetchcservicematerials/${projectId}`).
+                then((response) => {
+                    data.status = response.status;
+                    data.data = response.data;
+                })
+                .catch((err) => {
+                    data.status = err.response.status;
+                    data.data = err.response.data;
+                })
+            console.log('coming data : ', data);
+            return data;
+        }
+    )
+
+    static unusableReturnToStock = createAsyncThunk(
+        '/area/unusabletostock',
+        async (sending_data) => {
+            let data = {};
+            await $api.post(`/area/unusabletostock`, sending_data).
+                then((response) => {
+                    data.status = response.status;
+                    data.msg = response.data.msg;
+                    data.data = response.data.data;
+                })
+                .catch((err) => {
+                    data.status = err.response.status;
+                    data.msg = err.response.data;
+                    data.data = err.response.data;
+                })
+                console.log('unusable stock is : ', data);
+            return data;
+        }
+    )
+
+    static serviceReturnToStock = createAsyncThunk(
+        '/area/servicetostock',
+        async (sending_data) => {
+            let data = {};
+            await $api.post(`/area/servicetostock`, sending_data).
+                then((response) => {
+                    data.status = response.status;
+                    data.msg = response.data.msg;
+                    data.data = response.data.data;
+                })
+                .catch((err) => {
+                    data.status = err.response.status;
+                    data.msg = err.response.data;
+                    data.data = err.response.data;
+                })
             return data;
         }
     )

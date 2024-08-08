@@ -1,0 +1,49 @@
+import React, { useEffect } from 'react'
+
+import { useDispatch, useSelector } from 'react-redux'
+import AreaService from '../../services/area-service';
+
+import ServiceUnusableTableHeaderComponent from './ServiceUnusableTableHeaderComponent.jsx';
+import ServiceUnusableTableBodyComponent from './ServiceUnusableTableBodyComponent.jsx';
+import MessageBox from '../../layouts/MessageBox.jsx';
+
+import {setServiceToStockMessageBoxFalse} from '../../store/area-store.js';
+
+function ServiceTableComponent() {
+
+    const dispatch = useDispatch();
+    
+    const user = useSelector(state => state.userSlice.user);
+    const service_materials = useSelector(state => state.areaSlice.service_materials);
+    const service_to_stock = useSelector(state => state.areaSlice.service_to_stock);
+
+    useEffect(() => {
+        dispatch(AreaService.getServiceMaterials(user.projectId));
+    }, [dispatch])
+
+    useEffect(() => {
+        if(service_to_stock.message_box) {
+            setTimeout(() => {
+                dispatch(setServiceToStockMessageBoxFalse())
+            },2000)
+        }
+    })
+
+    return (
+        <div className='flex w-full my-3'>
+
+            {
+                service_to_stock.message_box &&
+                <MessageBox message={service_to_stock.error_message} color={service_to_stock.color_cond} />
+            }
+            
+            <table className='w-full'>
+                <ServiceUnusableTableHeaderComponent header_for="service"/>
+                <ServiceUnusableTableBodyComponent sending_data={service_materials} header_for="service" />
+            </table>
+
+        </div>
+    )
+}
+
+export default ServiceTableComponent

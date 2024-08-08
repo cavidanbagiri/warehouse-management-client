@@ -29,7 +29,7 @@ function TableRowComponent(props) {
     }, [selected_items]);
 
     return (
-        <tr
+        <tr 
             onDoubleClick={()=>{
                 props.doubleClickInform(props.item.id)
             }}
@@ -74,7 +74,7 @@ function TableRowComponent(props) {
             }
             {
                 props.warehouse_column_filter.material_name &&
-                <td className='text-start px-1'>
+                <td className='text-start px-1' >
                     {props.item.material_name}
                 </td>
             }

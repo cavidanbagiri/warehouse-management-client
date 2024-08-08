@@ -67,7 +67,7 @@ function TableRowComponent(props) {
             {
                 props.stock_column_filter.material_name &&
                 <td className='text-start px-1'>
-                    {props.item.material_name}
+                    {props.item.material_name} 
                 </td>
             }
             {

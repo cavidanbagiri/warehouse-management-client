@@ -11,6 +11,8 @@ import OrderSelectedComponent from '../components/area/OrderSelectedComponent.js
 import OrderUpdateComponent from '../components/area/OrderUpdateComponent.jsx'
 import OrderReturnComponent from '../components/area/OrderReturnComponent.jsx'
 import MessageBox from '../layouts/MessageBox.jsx'
+import UnusableTableComponent from '../components/area/UnusableTableComponent.jsx'
+import ServiceTableComponent from '../components/area/ServiceTableComponent.jsx'
 
 import AreaService from '../services/area-service';
 
@@ -22,6 +24,8 @@ import {
 import { IoFilterOutline } from "react-icons/io5";
 
 import { clearSelected } from '../store/area-store.js';
+import TabComponent from '../components/area/TabComponent.jsx'
+import TableColumnComponentToggle from '../components/area/TableColumnComponentToggle.jsx'
 
 function AreaPage() {
 
@@ -40,6 +44,8 @@ function AreaPage() {
 
     const [show_message_box, setShowMessageBox] = useState(false);
     const [show_message_box_message, setShowMessageBoxMessage] = useState('');
+
+    const [tabs_num, setTabsNum] = useState(0);
 
     const showMessageBoxMessageHandle = (key, value) => {
         if (key === 'update') {
@@ -117,105 +123,114 @@ function AreaPage() {
             {/* Page Title */}
             <PageTitleComponent />
 
-
-            {/* Material Type and Button Section */}
-            <div className='flex flex-col justify-start px-3 w-full'>
-
-                {/* Title Section */}
-
-                {/* <span style={{ fontWeight: 500, fontFamily: 'IBM Plex Sans' }} className='px-2 text-2xl text-start  '>Material Type Information</span> */}
-
-                <div className={'flex  w-full  '}>
-
-                    {/* Button Section */}
-                    <div className='flex flex-col justify-between items-start w-full '>
-
-                        {/* Working Buttons Section */}
-                        <div className='flex justify-end text-xs w-full' style={{ fontWeight: 600 }}>
-
-                            {/* Return Row  */}
-                            <button onClick={() => {
-                                if (selected_items.length > 1) {
-                                    showMessageBoxMessageHandle('return', 'Cant return two or more column same time');
-                                }
-                                else if (selected_items.length === 0) {
-                                    showMessageBoxMessageHandle('return', 'Please choose at least one column for returning to stock');
-                                }
-                                else {
-                                    dispatch(setOrderSelectionReturnToggleTrue());
-                                    dispatch(AreaService.getById(selected_items[0]));
-                                }
-                            }}
-                                className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400 hover:bg-orange-400 hover:text-white duration-200' >Return</button>
+            <TabComponent tabs_num = {tabs_num} setTabsNum = {setTabsNum}/>
 
 
-                            {/* Update Row  */}
-                            <button onClick={() => {
-                                if (selected_items.length > 1) {
-                                    showMessageBoxMessageHandle('update', 'Cant update two or more column same time');
-                                }
-                                else if (selected_items.length === 0) {
-                                    showMessageBoxMessageHandle('update', 'Please choose at least one column');
-                                }
-                                else {
-                                    dispatch(setOrderSelectionUpdateToggleTrue());
-                                    dispatch(AreaService.getById(selected_items[0]));
-                                }
-                            }}
-                                className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400 hover:bg-orange-400 hover:text-white duration-200' >Update</button>
+            {
+                tabs_num === 0 
+                ?
+                    <div className='flex flex-col items-center w-full px-1'>
+
+                    {/* Material Type and Button Section */}
+                    <div className='flex flex-col justify-start px-3 w-full'>
+
+                        {/* Title Section */}
+
+                        {/* <span style={{ fontWeight: 500, fontFamily: 'IBM Plex Sans' }} className='px-2 text-2xl text-start  '>Material Type Information</span> */}
+
+                        <div className={'flex  w-full  '}>
+
+                            {/* Button Section */}
+                            <div className='flex flex-col justify-between items-start w-full '>
+
+                                {/* Working Buttons Section */}
+                                <div className='flex justify-end text-xs w-full' style={{ fontWeight: 600 }}>
+
+                                    {/* Return Row  */}
+                                    <button onClick={() => {
+                                        if (selected_items.length > 1) {
+                                            showMessageBoxMessageHandle('return', 'Cant return two or more column same time');
+                                        }
+                                        else if (selected_items.length === 0) {
+                                            showMessageBoxMessageHandle('return', 'Please choose at least one column for returning to stock');
+                                        }
+                                        else {
+                                            dispatch(setOrderSelectionReturnToggleTrue());
+                                            dispatch(AreaService.getById(selected_items[0]));
+                                        }
+                                    }}
+                                        className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400 hover:bg-orange-400 hover:text-white duration-200' >Return</button>
 
 
-                            {/* Clear Filter */}
-                            <button onClick={() => {
-                                dispatch(clearFilter);
-                            }} className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400 hover:bg-orange-400 hover:text-white duration-200' >Clear Filter</button>
+                                    {/* Update Row  */}
+                                    <button onClick={() => {
+                                        if (selected_items.length > 1) {
+                                            showMessageBoxMessageHandle('update', 'Cant update two or more column same time');
+                                        }
+                                        else if (selected_items.length === 0) {
+                                            showMessageBoxMessageHandle('update', 'Please choose at least one column');
+                                        }
+                                        else {
+                                            dispatch(setOrderSelectionUpdateToggleTrue());
+                                            dispatch(AreaService.getById(selected_items[0]));
+                                        }
+                                    }}
+                                        className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400 hover:bg-orange-400 hover:text-white duration-200' >Update</button>
 
-                            {/* Clear Selected  */}
-                            <button onClick={() => {
-                                dispatch(clearSelected());
-                            }} className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400 hover:bg-orange-400 hover:text-white duration-200' >Reset Select</button>
+
+                                    {/* Clear Filter */}
+                                    <button onClick={() => {
+                                        dispatch(clearFilter);
+                                    }} className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400 hover:bg-orange-400 hover:text-white duration-200' >Clear Filter</button>
+
+                                    {/* Clear Selected  */}
+                                    <button onClick={() => {
+                                        dispatch(clearSelected());
+                                    }} className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400 hover:bg-orange-400 hover:text-white duration-200' >Reset Select</button>
+
+                                </div>
+
+
+                            </div>
 
                         </div>
-
-
                     </div>
 
-                </div>
-            </div>
-
-            {/* Table Column Filter */}
-            <div className='flex justify-end items-center relative text-xs w-full px-4 my-4' style={{ fontWeight: 600 }}>
-                <span onClick={() => {
-                    show_table_column_component ? setShowTableColumnCompoenent(false) : setShowTableColumnCompoenent(true);
-                }}
-                    className='text-sm font-medium text-gray-700 ml-2 hover:cursor-pointer'>Table Columns Filter</span>
-                <span onClick={() => {
-                    show_table_column_component ? setShowTableColumnCompoenent(false) : setShowTableColumnCompoenent(true);
-                }}
-                    className='pl-2'><IoFilterOutline className='text-base hover:cursor-pointer' /></span>
-                {
-                    show_table_column_component && <TableColumnFilterComponent />
-                }
-            </div>
+                
+                    <TableColumnComponentToggle/>
 
 
-            <FilterComponent />
+                    <FilterComponent />
 
 
-            {/* Table Section */}
-            <table className='w-full'>
-                <TableHeaderComponent />
-                <TableBodyComponent />
-            </table>
+                    {/* Table Section */}
+                    <table className='w-full'>
+                        <TableHeaderComponent />
+                        <TableBodyComponent />
+                    </table>
 
-            {
-                !filtered_area_data.length && <ZeroFilteredComponent resetFunc={clearFilter} />
+                    {
+                        !filtered_area_data.length && <ZeroFilteredComponent resetFunc={clearFilter} />
+                    }
+
+                    {/* Row Selected Section */}
+                    {
+                        selected_items.length >= 1 ? <OrderSelectedComponent showMessaggeBoxMessageHandle={showMessageBoxMessageHandle} /> : <div></div>
+                    }
+
+                    </div>
+                :
+                tabs_num === 1 
+                ? 
+                    <UnusableTableComponent />
+                :
+                tabs_num === 2
+                ?
+                    <ServiceTableComponent />
+                :
+                    <div></div>
             }
 
-            {/* Row Selected Section */}
-            {
-                selected_items.length >= 1 ? <OrderSelectedComponent showMessaggeBoxMessageHandle={showMessageBoxMessageHandle} /> : <div></div>
-            }
 
         </div>
     )

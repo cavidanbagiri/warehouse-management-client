@@ -8,9 +8,26 @@ const initialState = {
     filtered_area_data: [],
     area_pending: false,
 
+    unusable_materials: [],
+    service_materials: [],
+
     selected_items: [],
 
     po_data: {},
+
+    unusable_to_stock:{
+        message_box: false,
+        error_message: '',
+        pending: false,
+        color_cond: 'bg-green-500',
+    },
+
+    service_to_stock:{
+        message_box: false,
+        error_message: '',
+        pending: false,
+        color_cond: 'bg-green-500',
+    },
 
     order_update: {
         order_update_toggle: false,
@@ -73,6 +90,10 @@ export const areaSlice = createSlice({
         setOrderReturnMessageBoxTrue: (state) => {state.order_return.order_return_message_box = true;},
         setOrderReturnErrorMessage: (state, action) => {state.order_return.order_return_error_message = action.payload.message;},
         setOrderReturnColorCond: (state, action) => {state.order_return.order_return_color_cond = action.payload.color;},
+
+
+        setServiceToStockMessageBoxFalse: (state) => {state.service_to_stock.message_box = false;},
+        setUnusableToStockMessageBoxFalse: (state) => {state.unusable_to_stock.message_box = false;},
         
 
     },
@@ -91,12 +112,14 @@ export const areaSlice = createSlice({
             }
         })
 
+
         // Filter Area Data
         builder.addCase(AreaService.filterAreaData.pending, (state) => { state.area_pending = true })
         builder.addCase(AreaService.filterAreaData.fulfilled, (state, action) => {
             state.area_pending = false
             state.filtered_area_data = action.payload
         })
+
 
         // Get Stock By Id
         builder.addCase(AreaService.getById.fulfilled, (state, action)=>{
@@ -161,6 +184,65 @@ export const areaSlice = createSlice({
             }
         })
 
+        builder.addCase(AreaService.getUnusableMaterials.fulfilled, (state, action)=>{
+            state.unusable_materials = action.payload.data
+        })
+
+        builder.addCase(AreaService.getServiceMaterials.fulfilled, (state, action)=>{
+            state.service_materials = action.payload.data
+        })
+
+
+        // Unusable To Stock
+        builder.addCase(AreaService.unusableReturnToStock.pending, (state)=>{state.unusable_to_stock.pending = true})
+        builder.addCase(AreaService.unusableReturnToStock.fulfilled, (state, action)=>{
+            if(action.payload.status === 201){
+                state.unusable_to_stock.message_box = true;
+                state.unusable_to_stock.error_message = action.payload.msg;
+                state.unusable_to_stock.pending = false
+                state.unusable_to_stock.color_cond = 'bg-green-500'
+                state.unusable_materials.map((item)=>{
+                    if(item.id === action.payload.data.id){
+                        item['amount'] = action.payload.data.amount
+                    }
+                })
+            }
+            else if(action.payload.status === 500){
+                state.unusable_to_stock.message_box = true;
+                state.unusable_to_stock.error_message = action.payload.msg;
+                state.unusable_to_stock.pending = false
+                state.unusable_to_stock.color_cond = 'bg-red-500'
+            }
+            else{
+                console.log('Internal Server Error');
+            }
+        })
+
+        // Service To Stock
+        builder.addCase(AreaService.serviceReturnToStock.pending, (state)=>{state.service_to_stock.pending = true})
+        builder.addCase(AreaService.serviceReturnToStock.fulfilled, (state, action)=>{
+            if(action.payload.status === 201){
+                state.service_to_stock.message_box = true;
+                state.service_to_stock.error_message = action.payload.msg;
+                state.service_to_stock.pending = false
+                state.service_to_stock.color_cond = 'bg-green-500'
+                state.service_materials.map((item)=>{
+                    if(item.id === action.payload.data.id){
+                        item['amount'] = action.payload.data.amount
+                    }
+                })
+            }
+            else if(action.payload.status === 500){
+                state.service_to_stock.message_box = true;
+                state.service_to_stock.error_message = action.payload.msg;
+                state.service_to_stock.pending = false
+                state.service_to_stock.color_cond = 'bg-red-500'
+            }
+            else{
+                console.log('Internal Server Error');
+            }
+        })
+
     }
 })
 
@@ -171,7 +253,7 @@ export const {
     selectRow, unselectRow, clearSelected,
     setOrderSelectionUpdateToggleTrue, setOrderSelectionUpdateToggleFalse, setOrderUpdateMessageBoxTrue,setOrderUpdateMessageBoxFalse, setOrderUpdateErrorMessage,
     setOrderSelectionReturnToggleTrue, setOrderSelectionReturnToggleFalse, setOrderReturnMessageBoxTrue, setOrderReturnMessageBoxFalse, setOrderReturnErrorMessage,
-
+    setServiceToStockMessageBoxFalse, setUnusableToStockMessageBoxFalse
  } = areaSlice.actions
 
 export default areaSlice.reducer
