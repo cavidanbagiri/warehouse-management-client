@@ -50,19 +50,17 @@ class WarehouseService {
             .catch((err)=>{
                 console.log('Get Row Id Error : ', err);
             })
-            console.log('object data is : ', data);
             return data;
         }
     )
 
-    // Checked
     static updatePO = createAsyncThunk(
         '/warehouse/update/:id',
         async(updated_data) => {
             let data = {};
             await $api.post(`/warehouse/update/${updated_data.id}`, updated_data).
             then((response)=>{
-                data.data = response.data;
+                data.data = response.data.data;
                 data.status = 201;
                 data.msg = response.data.msg;
             })
@@ -81,9 +79,14 @@ class WarehouseService {
             let data = {};
             await $api.post(`/warehouse/updatecertorpassportbyid`, updated_data)
                 .then((response) => {
-                    data = response.data;
+                    console.log('coming response is : ', response);
+                    data.data = response.data.data;
+                    data.status = response.status;
+                    data.msg = response.data.msg;
                 }).catch((err)=>{
-                    console.log('Update Row Id Error : ', err);
+                    data.status = err.response.status;
+                    data.data = err.response.data;
+                    data.msg = err.response.data;
                 })
             return data;
         }
@@ -103,7 +106,6 @@ class WarehouseService {
         }
     )
 
-    // Checked
     static receiveToStock = createAsyncThunk(
         '/warehouse/receivetostock',
         async(selected_items) => {
@@ -118,6 +120,41 @@ class WarehouseService {
                     data.msg = err.response.data;
                     data.data = err.response.data;
                 });
+            return data;
+        }
+    )
+
+    static handleUploadClick = createAsyncThunk(
+        '/warehouse/uploadcertificateorpassport',
+        async(file) => {
+            let data = {};
+            await $api.post(`/warehouse/uploadcertificateorpassport`, file)
+                .then((respond)=>{
+                    data.status = respond.status;
+                    data.msg = respond.data.msg;
+                    data.data = respond.data.data;
+                }).catch((err)=>{
+                    data.status = err.response.status;
+                    data.msg = err.response.data;
+                    data.data = err.response.data;
+                });
+            return data;
+        }
+    )
+
+    static fetchCertificatesOrPassports = createAsyncThunk(
+        '/warehouse/fetchcertificatesorpassport',
+        async(warehouseId) => {
+            let data = {};
+            await $api.get(`/warehouse/fetchcertificatesorpassport/${warehouseId}`)
+                .then((respond)=>{
+                    data.status = respond.status;
+                    data.data = respond.data;
+                }).catch((err)=>{
+                    data.status = err.response.status;
+                    data.msg = err.response.data;
+                });
+                console.log('coming datas are ', data);
             return data;
         }
     )

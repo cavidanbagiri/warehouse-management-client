@@ -13,6 +13,23 @@ const initialState = {
 
     order_information_toggle: false,
 
+    certificate_and_passport: {
+        message_box: false,
+        error_message: '',
+        pending: false,
+        color_cond: 'bg-green-500',
+    },
+
+
+    upload_certificate_and_passport: {
+        message_box: false,
+        error_message: '',
+        pending: false,
+        color_cond: 'bg-green-500',
+    },
+
+    certificate_and_passport_data: [],
+
     warehouse_column_filter:{
         date: true,
         company: true,
@@ -94,7 +111,12 @@ export const warehouseSlice = createSlice({
             item['entered_amount'] = action.payload.entered_amount;
             item['serial_number'] = action.payload.serial_number;
             item['material_id'] = action.payload.material_id;
-        }
+        },
+
+
+        // Set Certificate and Passport Message Box False
+        setCertificateAndPassportMessageBoxFalse: (state) => {state.certificate_and_passport.message_box = false;},
+        setUploadCertificateAndPassportMessageBoxFalse: (state) => {state.upload_certificate_and_passport.message_box = false;}
 
     },
     extraReducers: (builder) => {
@@ -105,11 +127,21 @@ export const warehouseSlice = createSlice({
                 state.filtered_warehouse_data = action.payload;
             }
         })
+        
         builder.addCase(WarehouseService.filterWarehouseData.fulfilled, (state, action)=>{
             if(action.payload!==null){
                 state.filtered_warehouse_data = action.payload;
             }
         })
+
+        builder.addCase(WarehouseService.fetchCertificatesOrPassports.fulfilled, (state, action)=>{
+            if(action.payload.status === 200){
+                state.certificate_and_passport_data = action.payload.data;
+            }
+        })
+
+
+        // -------------------------------------------------------------- Get PO By Id Section
         builder.addCase(WarehouseService.getPOById.fulfilled, (state, action)=>{
             if(action.payload!==null){
                 state.po_data = action.payload;
@@ -125,7 +157,7 @@ export const warehouseSlice = createSlice({
             if(action.payload.status === 201){
                 state.order_update.order_update_pending = false;
                 state.order_update.order_update_message_box = true;
-                state.order_update.order_update_error_message = action.payload.data.msg;
+                state.order_update.order_update_error_message = action.payload.msg;
                 state.order_update.order_update_color_cond = 'bg-green-500';
                 state.order_update.status = 201;
                 state.filtered_warehouse_data.map((item)=>{
@@ -144,15 +176,53 @@ export const warehouseSlice = createSlice({
                 state.order_update.status = 500;
             }
         })
+
+
+        // -------------------------------------------------------------- Update Row Certificate and passport 
+        builder.addCase(WarehouseService.updateCertOrPassportById.pending, (state, action)=>{
+            state.certificate_and_passport.pending = true;
+        })
         builder.addCase(WarehouseService.updateCertOrPassportById.fulfilled, (state, action)=>{
-            if(action.payload!==null){
-                const item = state.filtered_warehouse_data.find((item)=>item.id===action.payload.id);
-                item.certificate = action.payload.certificate;
-                item.passport = action.payload.passport;
+            state.certificate_and_passport.pending = false;
+            if(action.payload.status === 201){
+                const item = state.filtered_warehouse_data.find((item)=>item.id===action.payload.data.id);
+                item.certificate = action.payload.data.certificate;
+                item.passport = action.payload.data.passport;
+                state.certificate_and_passport.color_cond = 'bg-green-500';
+                state.certificate_and_passport.message_box = true;
+                state.certificate_and_passport.error_message = action.payload.msg;
+            }
+            else if(action.payload.status === 500){
+                state.certificate_and_passport.color_cond = 'bg-red-500';
+                state.certificate_and_passport.message_box = true;
+                state.certificate_and_passport.error_message = action.payload.data;
+            }
+            else{
+                console.log('Internal Server Error : ');
             }
         })
-        // ----------------------------------------------------------------------------------
-
+        
+        
+        // -------------------------------------------------------------- Update Row Certificate and passport 
+        builder.addCase(WarehouseService.handleUploadClick.pending, (state, action)=>{
+            state.upload_certificate_and_passport.pending = true;
+        })
+        builder.addCase(WarehouseService.handleUploadClick.fulfilled, (state, action)=>{
+            state.upload_certificate_and_passport.pending = false;
+            if(action.payload.status === 201){
+                state.upload_certificate_and_passport.color_cond = 'bg-green-500';
+                state.upload_certificate_and_passport.message_box = true;
+                state.upload_certificate_and_passport.error_message = action.payload.msg;
+            }
+            else if(action.payload.status === 500){
+                state.upload_certificate_and_passport.color_cond = 'bg-red-500';
+                state.upload_certificate_and_passport.message_box = true;
+                state.upload_certificate_and_passport.error_message = action.payload.data;
+            }
+            else{
+                console.log('Internal Server Error : ');
+            }
+        })
 
         // -------------------------------------------------------------- Add Stock
         builder.addCase(WarehouseService.fetchSelectedItemsById.fulfilled, (state, action)=>{
@@ -201,7 +271,8 @@ export const {
     setWarehouseColumnFilter,
     addStockToggleTrue, addStockToggleFalse, setAddStockMessageBoxFalse,
     setAddStockMessageBoxMessage, setAddStockMessageBoxTrue, setAddStockColorCond, setAddStockStatus,
-    updatefetchSelectedItems
+    updatefetchSelectedItems,
+    setCertificateAndPassportMessageBoxFalse, setUploadCertificateAndPassportMessageBoxFalse
 } = warehouseSlice.actions;
 
 

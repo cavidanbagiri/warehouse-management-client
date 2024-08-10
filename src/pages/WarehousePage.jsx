@@ -26,6 +26,8 @@ import {
     addStockToggleTrue,
     setAddStockMessageBoxFalse,
     clearSelected, 
+    setCertificateAndPassportMessageBoxFalse,
+    setUploadCertificateAndPassportMessageBoxFalse
 } from "../store/warehouse-store.js";
 
 function WarehousePage() {
@@ -39,6 +41,8 @@ function WarehousePage() {
     const order_information_toggle = useSelector((state) => state.warehouseSlice.order_information_toggle);
     const order_update = useSelector((state) => state.warehouseSlice.order_update);
     const addstock = useSelector((state) => state.warehouseSlice.addstock);
+    const certificate_and_passport = useSelector((state) => state.warehouseSlice.certificate_and_passport);
+    const upload_certificate_and_passport = useSelector((state) => state.warehouseSlice.upload_certificate_and_passport);
 
 
     const [show_message_box, setShowMessageBox] = useState(false);
@@ -121,6 +125,24 @@ function WarehousePage() {
         dispatch(WarehouseService.fetchWarehouseData(projectId));
     }, [dispatch])
 
+    // Set Certificate and Passport Message Box False
+    useEffect(()=>{
+        if(certificate_and_passport.message_box === true){
+            setTimeout(()=>{
+                dispatch(setCertificateAndPassportMessageBoxFalse());
+            },2000)
+        }
+    },[certificate_and_passport.message_box, dispatch]);
+
+    // Set Upload Certificate and Passport Message Box False
+    useEffect(()=>{
+        if(upload_certificate_and_passport.message_box === true){
+            setTimeout(()=>{
+                dispatch(setUploadCertificateAndPassportMessageBoxFalse());
+            },2000)
+        }
+    },[upload_certificate_and_passport.message_box, dispatch]);
+
     return (
 
         <div className='flex flex-col items-center'>
@@ -152,6 +174,17 @@ function WarehousePage() {
             {/* order Information */}
             {
                 order_information_toggle && <OrderInformationComponent />
+            }
+
+
+            {/* Certificate and Passport */}
+            {
+                certificate_and_passport.message_box && <MessageBox message={certificate_and_passport.error_message} color={certificate_and_passport.color_cond} />
+            }
+
+            {/* Certificate and Passport */}
+            {
+                upload_certificate_and_passport.message_box && <MessageBox message={upload_certificate_and_passport.error_message} color={upload_certificate_and_passport.color_cond} />
             }
 
 

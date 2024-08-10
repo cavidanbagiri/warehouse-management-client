@@ -8,6 +8,11 @@ import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import WarehouseService from "../../services/warehouse-service.js";
 
+import CertificateComponent from "./CertificateComponent.jsx";
+import PassportComponent from "./PassportComponent.jsx";
+
+import { keyframes } from '@emotion/react';
+
 function TableRowComponent(props) {
 
     const dispatch = useDispatch();
@@ -27,6 +32,20 @@ function TableRowComponent(props) {
             setChecked(false);
         }
     }, [selected_items]);
+
+    
+
+    function handleEscape(e) {
+        if (e.key === 'Escape') {
+            setCertOpposite(false);
+            setPassportOpposite(false);
+        }
+    }
+
+    useEffect(() => {
+        document.addEventListener('keydown', handleEscape, true);
+    }, [])
+
 
     return (
         <tr 
@@ -132,6 +151,7 @@ function TableRowComponent(props) {
                 </td>
             }
             {
+                // Certificate
                 props.warehouse_column_filter.certificate &&
                 <td className=''
                     onMouseEnter={()=>{
@@ -142,6 +162,7 @@ function TableRowComponent(props) {
                     }}
                 >
                     <div className='relative flex items-center justify-between'>
+                        {/* Certificate Icon */}
                         {
                             props.item.certificate ?
                                 <div className='flex items-center justify-center w-full'>
@@ -152,6 +173,7 @@ function TableRowComponent(props) {
                                     <img className='w-5 h-5' src={props.false_icon} alt=""/>
                                 </div>
                         }
+                        {/* Show Certificate Component */}
                         {
                             certificate && <BsThreeDotsVertical className={`text-lg`}
                             onClick={()=>{
@@ -160,27 +182,13 @@ function TableRowComponent(props) {
                             />
                         }
                         {
-                            cert_opposite &&
-                            <div onClick={()=>{
-                                console.log(`${props.item.id} certf clicked`);
-                                const data = {
-                                    id: props.item.id,
-                                    key: 'certificate',
-                                    value: props.item.certificate
-                                }
-                                dispatch(WarehouseService.updateCertOrPassportById(data));
-                                setCertOpposite(!cert_opposite);
-                            }} className={`absolute flex justify-center top-5 right-1 p-1 w-40 rounded-lg bg-white z-10 shadow-lg border-b border-gray-200 `}>
-                                <span
-                                    className={`hover:bg-gray-100 w-full p-2 rounded-lg text-base`}>
-                                    Set Opposite
-                                </span>
-                            </div>
+                            cert_opposite && <CertificateComponent item={props.item} setCertOpposite={setCertOpposite}/>
                         }
                     </div>
                 </td>
             }
             {
+                //Passport
                 props.warehouse_column_filter.passport &&
                 <td className='relative'
                     onMouseEnter={()=>{
@@ -209,20 +217,7 @@ function TableRowComponent(props) {
                         }
                         {
                             passport_opposite &&
-                            <div className={`absolute flex justify-center top-5 right-1 p-1 w-40 rounded-lg bg-white z-10 shadow-lg border-b border-gray-200 `}>
-                                <span onClick={()=>{
-                                    const data = {
-                                        id: props.item.id,
-                                        key: 'passport',
-                                        value: props.item.passport
-                                    }
-                                    dispatch(WarehouseService.updateCertOrPassportById(data));
-                                    setPassportOpposite(!passport_opposite);
-                                }}
-                                      className={`hover:bg-gray-100 w-full p-2 rounded-lg text-base`}>
-                                    Set Opposite
-                                </span>
-                            </div>
+                                <PassportComponent item={props.item} setPassportOpposite={setPassportOpposite}/>
                         }
                     </div>
                 </td>
