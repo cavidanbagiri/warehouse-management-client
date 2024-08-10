@@ -1,5 +1,5 @@
 
-import  { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import WarehouseService from '../services/warehouse-service';
 
@@ -15,6 +15,7 @@ import TableColumnFilterComponent from "../components/warehouse/TableColumnFilte
 import AddStockComponent from "../components/warehouse/AddStockComponent.jsx";
 import FilterComponent from "../components/warehouse/FilterComponent.jsx";
 import PageTitleComponent from '../components/warehouse/PageTitleComponent.jsx';
+import SpinnerComponent from '../components/common/SpinnerComponent.jsx';
 
 import { IoFilterOutline } from "react-icons/io5";
 
@@ -25,7 +26,7 @@ import {
     setOrderUpdateMessageBoxFalse,
     addStockToggleTrue,
     setAddStockMessageBoxFalse,
-    clearSelected, 
+    clearSelected,
     setCertificateAndPassportMessageBoxFalse,
     setUploadCertificateAndPassportMessageBoxFalse
 } from "../store/warehouse-store.js";
@@ -37,6 +38,7 @@ function WarehousePage() {
     const user = useSelector((state) => state.userSlice.user);
     const type_count = useSelector((state) => state.commonSlice.type_count);
     const filtered_warehouse_data = useSelector((state) => state.warehouseSlice.filtered_warehouse_data);
+    const filtered_warehouse_data_pending = useSelector((state) => state.warehouseSlice.filtered_warehouse_data_pending);
     const selected_items = useSelector((state) => state.warehouseSlice.selected_items);
     const order_information_toggle = useSelector((state) => state.warehouseSlice.order_information_toggle);
     const order_update = useSelector((state) => state.warehouseSlice.order_update);
@@ -87,6 +89,12 @@ function WarehousePage() {
         }
     }
 
+    // Fetch Warehouse Data
+    useEffect(() => {
+        const projectId = user.projectId;
+        dispatch(WarehouseService.fetchWarehouseData(projectId));
+    }, [dispatch])
+
     useEffect(() => {
         return () => {
             dispatch(clearSelected());
@@ -94,21 +102,21 @@ function WarehousePage() {
     }, [dispatch]);
 
     // Toggle Message Box after adding stock the element
-    useEffect(()=>{
-        if(addstock.addstock_message_box === true){
-            setTimeout(()=>{
+    useEffect(() => {
+        if (addstock.addstock_message_box === true) {
+            setTimeout(() => {
                 dispatch(setAddStockMessageBoxFalse());
-            },2000)
+            }, 2000)
         }
-    },[addstock.addstock_message_box, dispatch])
+    }, [addstock.addstock_message_box, dispatch])
 
-    useEffect(()=>{
-        if(order_update.order_update_message_box === true){
-            setTimeout(()=>{
+    useEffect(() => {
+        if (order_update.order_update_message_box === true) {
+            setTimeout(() => {
                 dispatch(setOrderUpdateMessageBoxFalse());
-            },2000)
+            }, 2000)
         }
-    },[order_update.order_update_message_box, dispatch])
+    }, [order_update.order_update_message_box, dispatch])
 
     // Show Message Box Controller
     useEffect(() => {
@@ -119,29 +127,24 @@ function WarehousePage() {
         }
     }, [show_message_box])
 
-    // Fetch Warehouse Data
-    useEffect(() => {
-        const projectId = user.projectId;
-        dispatch(WarehouseService.fetchWarehouseData(projectId));
-    }, [dispatch])
 
     // Set Certificate and Passport Message Box False
-    useEffect(()=>{
-        if(certificate_and_passport.message_box === true){
-            setTimeout(()=>{
+    useEffect(() => {
+        if (certificate_and_passport.message_box === true) {
+            setTimeout(() => {
                 dispatch(setCertificateAndPassportMessageBoxFalse());
-            },2000)
+            }, 2000)
         }
-    },[certificate_and_passport.message_box, dispatch]);
+    }, [certificate_and_passport.message_box, dispatch]);
 
     // Set Upload Certificate and Passport Message Box False
-    useEffect(()=>{
-        if(upload_certificate_and_passport.message_box === true){
-            setTimeout(()=>{
+    useEffect(() => {
+        if (upload_certificate_and_passport.message_box === true) {
+            setTimeout(() => {
                 dispatch(setUploadCertificateAndPassportMessageBoxFalse());
-            },2000)
+            }, 2000)
         }
-    },[upload_certificate_and_passport.message_box, dispatch]);
+    }, [upload_certificate_and_passport.message_box, dispatch]);
 
     return (
 
@@ -206,77 +209,77 @@ function WarehousePage() {
                                     : item.type === 'Project' ? <MaterialTypeInform color={'border-green-500'} key={index + 1} item={item} getTypeFilter={getTypeFilter} />
                                         : item.type === 'Fixture' ? <MaterialTypeInform color={'border-blue-500'} key={index + 1} item={item} getTypeFilter={getTypeFilter} />
                                             : item.type === 'Safety' ? <MaterialTypeInform color={'border-pink-500'} key={index + 1} item={item} getTypeFilter={getTypeFilter} />
-                                            : item.type === 'Administrative' ? <MaterialTypeInform color={'border-sky-500'} key={index + 1} item={item} getTypeFilter={getTypeFilter} />
-                                                : <MaterialTypeInform key={index + 1} color={'border-orange-500'} item={item} getTypeFilter={getTypeFilter} />
+                                                : item.type === 'Administrative' ? <MaterialTypeInform color={'border-sky-500'} key={index + 1} item={item} getTypeFilter={getTypeFilter} />
+                                                    : <MaterialTypeInform key={index + 1} color={'border-orange-500'} item={item} getTypeFilter={getTypeFilter} />
                             ))
                         }
                     </div>
-                    
+
                     {/* Button Section */}
                     <div className='flex flex-col justify-between items-start w-full '>
 
                         {/* Working Buttons Section */}
                         <div className='flex justify-end text-xs w-full' style={{ fontWeight: 600 }}>
-                            <button onClick={()=>{
-                                if(selected_items.length === 0){
+                            <button onClick={() => {
+                                if (selected_items.length === 0) {
                                     showMessageBoxMessageHandle('addstock', 'Please, Choose at least one row to adding stock');
                                 }
-                                else{
+                                else {
                                     dispatch(addStockToggleTrue());
                                     dispatch(WarehouseService.fetchSelectedItemsById(selected_items));
                                 }
                             }}
                                 className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400  hover:bg-orange-400 hover:text-white duration-200' >Add To Stock</button>
-                            <button onClick={()=>{
-                                if(selected_items.length > 1){
+                            <button onClick={() => {
+                                if (selected_items.length > 1) {
                                     showMessageBoxMessageHandle('update', 'Cant update two or more column same time');
                                 }
-                                else if(selected_items.length === 0){
+                                else if (selected_items.length === 0) {
                                     showMessageBoxMessageHandle('update', 'Please Choose at least one row');
                                 }
-                                else{
+                                else {
                                     dispatch(setOrderSelectionUpdateToggleTrue());
                                     dispatch(WarehouseService.getPOById(selected_items[0]));
                                 }
                             }}
-                                    className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400 hover:bg-orange-400 hover:text-white duration-200' >Update Row</button>
-                            <button onClick={()=>{
+                                className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400 hover:bg-orange-400 hover:text-white duration-200' >Update Row</button>
+                            <button onClick={() => {
                                 showMessageBoxMessageHandle('delete', 'Dont have authorization for deleting');
                             }}
                                 className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400 hover:bg-orange-400 hover:text-white duration-200' >Delete Row</button>
-                            
-                            <button onClick={()=>{
-                                if(selected_items.length > 1){
+
+                            <button onClick={() => {
+                                if (selected_items.length > 1) {
                                     showMessageBoxMessageHandle('inform', 'Cant get inform two or more column same time');
                                 }
-                                else if(selected_items.length === 0){
+                                else if (selected_items.length === 0) {
                                     showMessageBoxMessageHandle('inform', 'Please Choose at least one row');
                                 }
-                                else{
+                                else {
                                     dispatch(setOrderSelectionInformationToggleTrue());
                                     dispatch(WarehouseService.getPOById(selected_items[0]));
                                 }
                             }}
-                                    className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400 hover:bg-orange-400 hover:text-white duration-200' >Get Information</button>
+                                className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400 hover:bg-orange-400 hover:text-white duration-200' >Get Information</button>
                             <button onClick={clearFilter} className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400 hover:bg-orange-400 hover:text-white duration-200' >Clear Filter</button>
 
-                            <button onClick={()=>{
+                            <button onClick={() => {
                                 dispatch(clearSelected());
                             }} className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400 hover:bg-orange-400 hover:text-white duration-200' >Reset Select</button>
                         </div>
 
                         {/* Table Column Name Section */}
                         <div className='flex justify-end items-center relative text-xs w-full px-4 mt-8' style={{ fontWeight: 600 }}>
-                            <span onClick={()=>{
+                            <span onClick={() => {
                                 show_table_column_component ? setShowTableColumnCompoenent(false) : setShowTableColumnCompoenent(true);
                             }}
                                 className='text-sm font-medium text-gray-700 ml-2 hover:cursor-pointer' >Table Columns Filter</span>
-                            <span onClick={()=>{
+                            <span onClick={() => {
                                 show_table_column_component ? setShowTableColumnCompoenent(false) : setShowTableColumnCompoenent(true);
                             }}
-                                className='pl-2'><IoFilterOutline  className='text-base hover:cursor-pointer' /></span>
+                                className='pl-2'><IoFilterOutline className='text-base hover:cursor-pointer' /></span>
                             {
-                                show_table_column_component && <TableColumnFilterComponent/>
+                                show_table_column_component && <TableColumnFilterComponent />
                             }
                         </div>
 
@@ -290,17 +293,27 @@ function WarehousePage() {
                 <span className='text-2xl  tracking-tighter' style={{ fontWeight: 500, fontFamily: 'IBM Plex Sans' }}>Filter</span>
             </div>
 
-            <FilterComponent/>
+            <FilterComponent />
 
-            {/* Table Section */}
-            <table className='w-full'>
+
+            <table className='w-full flex-col'>
                 <TableHeaderComponent />
-                <TableBodyComponent />
+                {
+                    !filtered_warehouse_data_pending &&
+                    <TableBodyComponent />
+                }
             </table>
+
+            {
+                filtered_warehouse_data_pending &&
+                <div className='flex justify-center items-center p-10 w-full h-96 '>
+                    <SpinnerComponent />
+                </div>
+            }
 
 
             {
-                !filtered_warehouse_data.length && <ZeroFilteredComponent resetFunc={clearFilter} />
+                !filtered_warehouse_data.length && filtered_warehouse_data_pending === false && <ZeroFilteredComponent resetFunc={clearFilter} />
             }
 
             {/* Row Selected Section */}

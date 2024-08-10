@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import NavbarItemComponent from '../components/navbar/navbar_item-component';
 
 
+
 import { TbHexagonLetterWFilled } from "react-icons/tb";
 import ProfilePage from "../pages/ProfilePage.jsx";
 import UserService from "../services/user-service.js";
@@ -72,6 +73,8 @@ function Navbar() {
                             <Link to="/area" onClick={() => {setSelected('Area')}}>
                                 <NavbarItemComponent selected={selected} isShown={areaIsShown} setIsShown={setAreaIsShown} iconName={'fa-area'} iconSize={'text-xl'} iconValue={'Area'} />
                             </Link>
+
+                            
 
                         </div>
                         <div onClick={() => {

@@ -17,6 +17,7 @@ import ZeroFilteredComponent from '../components/warehouse/ZeroFilteredComponent
 import PageTitleComponent from '../components/stock/PageTitleComponent.jsx';
 import MaterialUnusableComponent from '../components/stock/MaterialUnusableComponent.jsx';
 import MaterialServiceComponent from '../components/stock/MaterialServiceComponent.jsx';
+import SpinnerComponent from '../components/common/SpinnerComponent.jsx';
 
 import { IoFilterOutline } from "react-icons/io5";
 
@@ -48,6 +49,8 @@ const StockPage = () => {
     const selected_items = useSelector((state) => state.stockSlice.selected_items);
 
     const filter_stock_data = useSelector((state) => state.stockSlice.filter_stock_data);
+
+    const filter_stock_data_pending = useSelector((state) => state.stockSlice.filter_stock_data_pending);
 
     const order_information_toggle = useSelector((state) => state.stockSlice.order_information_toggle);
 
@@ -366,14 +369,29 @@ const StockPage = () => {
             <FilterComponent />
 
 
-            {/* Table Section */}
-            <table className='w-full'>
+            <table className='w-full flex-col'>
                 <TableHeaderComponent />
-                <TableBodyComponent />
+                {
+                    !filter_stock_data_pending &&
+                    <TableBodyComponent />
+                }
             </table>
 
             {
-                filter_stock_data.length === 0 && <ZeroFilteredComponent resetFunc={clearFilter} />
+                filter_stock_data_pending &&
+                <div className='flex justify-center items-center p-10 w-full h-96 '>
+                    <SpinnerComponent />
+                </div>
+            }
+
+            {/* Table Section */}
+            {/* <table className='w-full'>
+                <TableHeaderComponent />
+                <TableBodyComponent />
+            </table> */}
+
+            {
+                filter_stock_data.length === 0 && !filter_stock_data_pending && <ZeroFilteredComponent resetFunc={clearFilter} />
             }
 
 

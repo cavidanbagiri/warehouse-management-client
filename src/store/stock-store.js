@@ -8,6 +8,7 @@ const initialState = {
     po_data: {},
 
     filter_stock_data: [],
+    filter_stock_data_pending: [],
 
     selected_items: [],
 
@@ -180,14 +181,22 @@ export const stockSlice = createSlice({
     extraReducers:(builder)=>{
 
         // Get all stocks
+        builder.addCase(StockService.getcStocks.pending, (state, action)=>{
+            state.filter_stock_data_pending = true;
+        })
         builder.addCase(StockService.getcStocks.fulfilled, (state, action)=>{
+            state.filter_stock_data_pending = false;
             if(action.payload!==null){
                 state.filter_stock_data = action.payload;
             }
         })
 
         // Filter stocks
+        builder.addCase(StockService.filterStockData.pending, (state, action)=>{
+            state.filter_stock_data_pending = true;
+        })
         builder.addCase(StockService.filterStockData.fulfilled, (state, action)=>{
+            state.filter_stock_data_pending = false;
             if(action.payload!==null){
                 state.filter_stock_data = action.payload;
             }

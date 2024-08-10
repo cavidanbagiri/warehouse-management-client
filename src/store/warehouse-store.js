@@ -6,6 +6,8 @@ import WarehouseService from "../services/warehouse-service";
 const initialState = {
     // warehouse_data: [],
     filtered_warehouse_data: [],
+    filtered_warehouse_data_pending: false,
+
     selected_items: [],
     fetch_selected_items: null,
 
@@ -122,13 +124,24 @@ export const warehouseSlice = createSlice({
     extraReducers: (builder) => {
 
 
+        // -------------------------------------------------------------- Fetch Data Section
+        builder.addCase(WarehouseService.fetchWarehouseData.pending, (state)=>{
+            state.filtered_warehouse_data_pending = true;
+        })
         builder.addCase(WarehouseService.fetchWarehouseData.fulfilled, (state, action)=>{
+            state.filtered_warehouse_data_pending = false;
             if(action.payload!==null){
                 state.filtered_warehouse_data = action.payload;
             }
         })
         
+
+        // -------------------------------------------------------------- Filter Data Section
+        builder.addCase(WarehouseService.filterWarehouseData.pending, (state)=>{
+            state.filtered_warehouse_data_pending = true;
+        })
         builder.addCase(WarehouseService.filterWarehouseData.fulfilled, (state, action)=>{
+            state.filtered_warehouse_data_pending = false;
             if(action.payload!==null){
                 state.filtered_warehouse_data = action.payload;
             }
