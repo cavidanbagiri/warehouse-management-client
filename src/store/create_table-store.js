@@ -93,17 +93,16 @@ export const createTableSlice = createSlice({
             state.show_load = true;
         })
         builder.addCase(CreateTableService.receiveWarehouse.fulfilled, (state, action) => {
+            state.show_load = false;
             if (action.payload.status === 201) {
                 state.table = [];
                 state.table_check = [];
-                state.show_load = false;
                 state.show_message = true;
                 state.show_message_text = action.payload.data;
                 state.show_message_color = 'bg-green-500';
             }
             else {
                 state.show_message_color = 'bg-red-500',
-                state.show_load = false;
                 state.show_message = true;
                 state.show_message_text = action.payload.data;
             }

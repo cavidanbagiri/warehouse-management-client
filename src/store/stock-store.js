@@ -235,7 +235,6 @@ export const stockSlice = createSlice({
                 state.order_provide.status = 201;
                 state.order_provide.order_provide_data = [];
                 state.order_provide.order_provide_entering_data = [];
-
                 action.payload.data.map((item)=>{
                     state.filter_stock_data.map((data)=>{
                         if(data.id === item.id){

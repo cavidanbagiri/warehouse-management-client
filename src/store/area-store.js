@@ -115,9 +115,10 @@ export const areaSlice = createSlice({
         // Filter Area Data
         builder.addCase(AreaService.filterAreaData.pending, (state) => { state.filtered_area_data_pending = true })
         builder.addCase(AreaService.filterAreaData.fulfilled, (state, action) => {
+            console.log('action payload is : ', action.payload)
             state.filtered_area_data_pending = false
             if (action.payload.status === 200) {
-                state.filtered_area_data = action.payload
+                state.filtered_area_data = action.payload.data
             }
         })
 

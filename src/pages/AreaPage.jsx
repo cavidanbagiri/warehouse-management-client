@@ -66,6 +66,7 @@ function AreaPage() {
 
     useEffect(() => {
         dispatch(AreaService.fetchAreas(user.projectId));
+        console.log('this is  work');
     }, []);
 
     

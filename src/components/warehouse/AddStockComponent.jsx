@@ -59,7 +59,6 @@ function AddStockComponent() {
     useEffect(() => {
         if (addstock.status===201) {
             setTimeout(() => {
-                dispatch(addStockToggleFalse());
                 dispatch(setAddStockStatus())
             },2000)
         }

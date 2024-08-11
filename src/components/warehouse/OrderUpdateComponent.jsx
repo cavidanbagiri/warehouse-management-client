@@ -143,7 +143,6 @@ function OrderUpdateComponent() {
     useEffect(() => {
         if (order_update.status===201) {
             setTimeout(() => {
-                dispatch(setOrderSelectionUpdateToggleFalse());
                 dispatch(setOrderUpdateStatus())
             },2000)
         }

@@ -7,7 +7,7 @@ function TableHeaderComponent() {
       <th scope="col" className="px-6 py-2 text-center border">
         S/S
       </th>
-      <th scope="col" className="px-6 py-1 text-center border min-w-64 font-medium ">
+      <th scope="col" className="px-6 py-1 text-center border min-w-40 font-medium ">
         <div className="">
           Material Code
         </div>
@@ -27,7 +27,7 @@ function TableHeaderComponent() {
           Type
         </div>
       </th>
-      <th scope="col" className="px-6 py-1 text-center border w-28 font-medium ">
+      <th scope="col" className="px-6 py-1 text-center border min-w-28 font-medium ">
         Qty
       </th>
       <th scope="col" className="px-6 py-1 text-center border w-4 font-medium ">
@@ -36,7 +36,7 @@ function TableHeaderComponent() {
       <th scope="col" className="px-6 py-1 text-center border w-28 font-medium ">
         Price
       </th>
-      <th scope="col" className="px-6 py-1 text-center border font-medium  w-28">
+      <th scope="col" className="px-6 py-1 text-center border font-medium  min-w-28">
         Total
       </th>
       <th scope="col" className="px-6 py-1 text-center border font-medium min-w-24">

@@ -68,7 +68,7 @@ function TableRowComponent(props) {
     })
 
     return (
-        <tr className=' relative border-b'>
+        <tr className=' relative border-b '>
             <td className='py-4'>
                 {row.ss}
             </td>
@@ -89,11 +89,17 @@ function TableRowComponent(props) {
                 }
             </td>
             <td>
-                {row.description}
+                {
+                    row.description === '' 
+                    ? 
+                    <spam>Not Selected</spam>
+                    :
+                    row.description
+                }
             </td>
 
             <td>
-                <input className=" outline-none  w-full h-full p-2 " type="text" placeholder="Material Name..."
+                <input className="text-sm outline-none border-none w-full h-full p-2 border-transparent focus:border-transparent focus:ring-0" type="text" placeholder="Material Name..."
                     onChange={
                         (event) => {
                             setRow((each) => ({
@@ -105,7 +111,7 @@ function TableRowComponent(props) {
             </td>
             <td>
                 <select defaultValue={'Consumable'}
-                    className=' p-2 outline-none text-gray-500 appearance-none hover:cursor-pointer'
+                    className='text-sm p-2 outline-none text-gray-500 border-none hover:cursor-pointer border-transparent focus:border-transparent focus:ring-0'
                     onChange={(event) => {
                         setRow((each) => ({
                             ...each,
@@ -122,7 +128,7 @@ function TableRowComponent(props) {
                 </select>
             </td>
             <td>
-                <input className="outline-none w-full h-full p-2 text-center" type="number" placeholder="Amount..."
+                <input className="text-sm outline-none w-full h-full p-2 text-center border-none border-transparent focus:border-transparent focus:ring-0" type="number" placeholder="Amount..."
                     onChange={
                         (event) => {
                             setRow((each) => ({
@@ -134,7 +140,7 @@ function TableRowComponent(props) {
                         }} />
             </td>
             <td className=''>
-                <select value={row.unit} className='  p-2 outline-none appearance-none' onChange={(event) => {
+                <select value={row.unit} className='text-sm p-2 outline-none  border-none border-transparent focus:border-transparent focus:ring-0' onChange={(event) => {
                     setRow((each) => ({
                         ...each,
                         unit: event.target.value
@@ -145,7 +151,7 @@ function TableRowComponent(props) {
                 </select>
             </td>
             <td>
-                <input className="outline-none w-full h-full p-2 text-center" type="number" placeholder="Price..."
+                <input className="text-sm outline-none w-full h-full p-2 text-center  border-none border-transparent focus:border-transparent focus:ring-0" type="number" placeholder="Price..."
                     onChange={
                         (event) => {
                             setRow((each) => ({
@@ -162,7 +168,7 @@ function TableRowComponent(props) {
             </td>
 
             <td>
-                <input className="outline-none w-full h-full p-2 text-center" type="text" placeholder="PO number..."
+                <input className="text-sm outline-none w-full h-full p-2 text-center border-none border-transparent focus:border-transparent focus:ring-0" type="text" placeholder="PO number..."
                     onChange={
                         (event) => {
                             setRow((each) => ({
@@ -174,7 +180,8 @@ function TableRowComponent(props) {
             </td>
 
             <td>
-                <input value={row.certificate} type="checkbox" onChange={(event) => {
+                <input value={row.certificate} type="checkbox" className='rounded-sm'
+                onChange={(event) => {
                     setRow((each) => ({
                         ...each,
                         certificate: event.target.checked
@@ -184,7 +191,8 @@ function TableRowComponent(props) {
             </td>
 
             <td>
-                <input value={row.passport} type="checkbox" onChange={(event) => {
+                <input value={row.passport} type="checkbox" className=' rounded-sm '
+                onChange={(event) => {
                     setRow((each) => ({
                         ...each,
                         passport: event.target.checked

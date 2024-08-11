@@ -15,15 +15,12 @@ function TableBodyComponent() {
 
     const handleChange = (event) => {
         
+        console.log('filtered area data : ', filtered_area_data);
+
         event.target.checked ?
             dispatch(selectRow(event.target.value)) :
             dispatch(unselectRow(event.target.value))
     }
-
-    // const doubleClickInform = (po_id) => {
-    //     dispatch(setOrderSelectionInformationToggleTrue());
-    //     dispatch(WarehouseService.getPOById(po_id));
-    // }
 
     return (
 
@@ -35,10 +32,6 @@ function TableBodyComponent() {
                         user_status={user_status}
                         area_column_filter={area_column_filter}
                         handleChange={handleChange}
-                        //true_icon={true_icon}
-                        //false_icon={false_icon}
-                        //selected_items={selected_items}
-                        //doubleClickInform = {doubleClickInform}
                     />
                 ))
             }

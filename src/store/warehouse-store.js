@@ -177,11 +177,12 @@ export const warehouseSlice = createSlice({
             state.order_update.order_update_pending = true;
         })
         builder.addCase(WarehouseService.updatePO.fulfilled, (state, action)=>{
+            state.order_update.order_update_pending = false;
             if(action.payload.status === 201){
-                state.order_update.order_update_pending = false;
                 state.order_update.order_update_message_box = true;
                 state.order_update.order_update_error_message = action.payload.msg;
                 state.order_update.order_update_color_cond = 'bg-green-500';
+                state.order_update.order_update_toggle = false;
                 state.order_update.status = 201;
                 state.filtered_warehouse_data.map((item)=>{
                     if(item.id === action.payload.data.id){
@@ -192,7 +193,6 @@ export const warehouseSlice = createSlice({
                 })
             }
             else if(action.payload.status === 500){
-                state.order_update.order_update_pending = false;
                 state.order_update.order_update_message_box = true;
                 state.order_update.order_update_error_message = action.payload.data;
                 state.order_update.order_update_color_cond = 'bg-red-500';
@@ -257,13 +257,13 @@ export const warehouseSlice = createSlice({
         })
         builder.addCase(WarehouseService.receiveToStock.pending, (state)=>{state.addstock.addstock_pending = true;})
         builder.addCase(WarehouseService.receiveToStock.fulfilled, (state, action)=>{
+            state.addstock.addstock_pending = false;
             if(action.payload.status === 201){
                 state.addstock.addstock_message_box = true;
                 state.addstock.addstock_color_cond = 'bg-green-500';
-                state.addstock.addstock_pending = false;
                 state.addstock.addstock_error_message = action.payload.msg;
                 state.addstock.status = 201;
-
+                state.addstock.addstock_toggle = false;
                 action.payload.data.map((item)=>{
                     state.filtered_warehouse_data.map((data)=>{
                         if(data.id === item.id){
@@ -275,7 +275,6 @@ export const warehouseSlice = createSlice({
             }
             else{
                 state.addstock.addstock_message_box = true;
-                state.addstock.addstock_pending = false;
                 state.addstock.addstock_color_cond = 'bg-red-500';
                 state.addstock.addstock_error_message = action.payload.msg;
                 state.addstock.status = 500;

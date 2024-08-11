@@ -33,10 +33,12 @@ class AreaService {
             }
             await $api.get(`/area/filter/${query}`)
                 .then((response) => {
-                    data = response.data;
+                    data.status = response.status;
+                    data.data = response.data;
                 }).catch((err) => {
                     console.log('fetch warehouse data Error happen : ', err);
                 });
+                console.log('coming data is : ', data);
             return data;
         }
     )
@@ -111,7 +113,6 @@ class AreaService {
                     data.msg = err.response.data;
                     data.data = err.response.data;
                 })
-            console.log('coming data : ', data);
             return data;
         }
     )
@@ -129,7 +130,6 @@ class AreaService {
                     data.status = err.response.status;
                     data.data = err.response.data;
                 })
-            console.log('coming data : ', data);
             return data;
         }
     )
