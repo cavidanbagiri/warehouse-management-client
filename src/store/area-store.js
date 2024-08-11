@@ -4,16 +4,19 @@ import { createSlice } from '@reduxjs/toolkit';
 import AreaService from '../services/area-service';
 const initialState = {
 
-    area_data: [],
     filtered_area_data: [],
-    area_pending: false,
+    filtered_area_data_pending: false,
 
     unusable_materials: [],
+    unusable_materials_pending: false,
+
     service_materials: [],
+    service_materials_pending: false,
 
     selected_items: [],
 
     po_data: {},
+    po_data_pending: false,
 
     unusable_to_stock:{
         message_box: false,
@@ -100,29 +103,29 @@ export const areaSlice = createSlice({
     extraReducers: (builder) => {
 
         // Fetch Areas Data
-        builder.addCase(AreaService.fetchAreas.pending, (state) => { state.area_pending = true })
+        builder.addCase(AreaService.fetchAreas.pending, (state) => { state.filtered_area_data_pending = true })
         builder.addCase(AreaService.fetchAreas.fulfilled, (state, action) => {
+            state.filtered_area_data_pending = false
             if (action.payload.status === 200) {
-                state.area_pending = false
-                state.area_data = action.payload.data
                 state.filtered_area_data = action.payload.data
-            }
-            else {
-                state.area_pending = false
             }
         })
 
 
         // Filter Area Data
-        builder.addCase(AreaService.filterAreaData.pending, (state) => { state.area_pending = true })
+        builder.addCase(AreaService.filterAreaData.pending, (state) => { state.filtered_area_data_pending = true })
         builder.addCase(AreaService.filterAreaData.fulfilled, (state, action) => {
-            state.area_pending = false
-            state.filtered_area_data = action.payload
+            state.filtered_area_data_pending = false
+            if (action.payload.status === 200) {
+                state.filtered_area_data = action.payload
+            }
         })
 
 
         // Get Stock By Id
+        builder.addCase(AreaService.getById.pending, (state)=>{state.po_data_pending = true;})
         builder.addCase(AreaService.getById.fulfilled, (state, action)=>{
+            state.po_data_pending = false
             if(action.payload!==null){
                 state.po_data = action.payload;
             }
@@ -184,12 +187,22 @@ export const areaSlice = createSlice({
             }
         })
 
+
+        // Get Unusable Materials
+        builder.addCase(AreaService.getUnusableMaterials.pending, (state)=>{state.unusable_materials_pending = true})
         builder.addCase(AreaService.getUnusableMaterials.fulfilled, (state, action)=>{
-            state.unusable_materials = action.payload.data
+            state.unusable_materials_pending = false
+            if(action.payload.status === 200){
+                state.unusable_materials = action.payload.data
+            }
         })
 
+        builder.addCase(AreaService.getServiceMaterials.pending, (state)=>{state.service_materials_pending = true})
         builder.addCase(AreaService.getServiceMaterials.fulfilled, (state, action)=>{
-            state.service_materials = action.payload.data
+            state.service_materials_pending = false
+            if(action.payload.status === 200){
+                state.service_materials = action.payload.data
+            }
         })
 
 

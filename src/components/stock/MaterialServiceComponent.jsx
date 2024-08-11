@@ -11,12 +11,16 @@ import {
 import StockService from "../../services/stock-service.js";
 
 import CustomLoadingButton from "../common/CustomLoadingButton.jsx";
+import SpinnerComponent from '../common/SpinnerComponent.jsx';
 
 function MaterialServiceComponent() {
 
     const dispatch = useDispatch();
+
     const po_data = useSelector((state) => state.stockSlice.po_data);
-    const order_return = useSelector((state) => state.stockSlice.order_return);
+    const po_data_pending = useSelector((state) => state.stockSlice.po_data_pending);
+
+    const material_service = useSelector((state) => state.stockSlice.material_service);
 
     const [material_name, setMaterialName] = useState('');
     const [qty, setQty] = useState(0);
@@ -41,11 +45,11 @@ function MaterialServiceComponent() {
         if (cond) {
             dispatch(StockService.setServiceMaterial(sending_data));
         }
-        else{
+        else {
             dispatch(setOrderMaterialServiceMessageBoxTrue());
             dispatch(setOrderMaterialServiceColorCond({ color: 'bg-red-500' }));
             dispatch(setOrderMaterialServiceErrorMessage({ message: 'Entering Amount greater than stock' }));
-        
+
         }
     }
 
@@ -71,7 +75,7 @@ function MaterialServiceComponent() {
     return (
 
         <div className='flex justify-center items-center z-10 fixed top-0 right-0 w-full h-full bg-black bg-opacity-30'>
-            
+
             <div className='flex flex-col h-2/3 rounded-lg bg-white w-1/3 ' >
                 {/* Close and Title Component Section */}
                 <div className='flex justify-between p-5 text-end'>
@@ -86,107 +90,113 @@ function MaterialServiceComponent() {
                         <IoMdClose className='text-2xl' />
                     </span>
                 </div>
-                <div className='flex flex-col p-4 '>
 
-                    {/* Material Name Side */}
-                    <div className='flex items-center justify-between mt-3'>
-                        <span className='w-1/3'>Material Name </span>
-                        <div className='relative w-full flex justify-end'>
-                            <span className={''}>
-                                {material_name}
-                            </span>
+                {po_data_pending && <div className='flex justify-center w-full'><SpinnerComponent /></div>}
+
+                {po_data && !po_data_pending &&
+                    <div className='flex flex-col p-4 '>
+
+                        {/* Material Name Side */}
+                        <div className='flex items-center justify-between mt-3'>
+                            <span className='w-1/3'>Material Name </span>
+                            <div className='relative w-full flex justify-end'>
+                                <span className={''}>
+                                    {material_name}
+                                </span>
+                            </div>
                         </div>
-                    </div>
 
-                    {/* Material Qty Side */}
-                    <div className='flex items-center justify-between mt-3'>
-                        <span className='w-1/3'>Quantity </span>
-                        <div className='relative'>
-                            {qty}
-                        </div>
-                    </div>
-
-                    {/* Material Stock Side */}
-                    <div className='flex items-center justify-between mt-3'>
-                        <span className='w-1/3'>Stock </span>
-                        <div className='relative'>
-                            {stock}
-                        </div>
-                    </div>
-
-                    {/* Material Stock Side */}
-                    <div className='flex items-center justify-between mt-3'>
-                        <span className='w-1/3'> Sending Amount </span>
-                        <div className='relative'>
-                            <input type="number" value={sending_amount}
-                                className={'border p-2'}
-                                onChange={(e) => {
-                                    if (e.target.value <= stock && e.target.value >= 0) {
-                                        setSendingAmount(e.target.value);
-                                    }
-                                    else if (e.target.value < 0) {
-                                        dispatch(setOrderMaterialServiceMessageBoxTrue());
-                                        dispatch(setOrderMaterialServiceColorCond({ color: 'bg-red-500' }));
-                                        dispatch(setOrderMaterialServiceErrorMessage({ message: 'Entering Amount greater than stock' }));
-                                    }
-                                    else {
-                                        dispatch(setOrderMaterialServiceMessageBoxTrue());
-                                        dispatch(setOrderMaterialServiceColorCond({ color: 'bg-red-500' }));
-                                        dispatch(setOrderMaterialServiceErrorMessage({ message: 'Entering Amount greater than stock' }));
-                                    }
-                                }} />
-                        </div>
-                    </div>
-
-                    {/* Matterial Type Side */}
-                    <div className='flex items-center justify-between mt-3'>
-                        <span className='w-1/3'>Unit </span>
-                        <div className='relative'>
-                            {unit}
-                        </div>
-                    </div>
-
-                    {/* Serial Number Side */}
-                    <div className='flex items-center justify-between mt-3'>
-                        <span className='w-1/3'>Serial Number </span>
-                        <div className='relative w-full'>
+                        {/* Material Qty Side */}
+                        <div className='flex items-center justify-between mt-3'>
+                            <span className='w-1/3'>Quantity </span>
                             <div className='relative'>
-                                {serial_number}
+                                {qty}
                             </div>
                         </div>
-                    </div>
 
-                    {/* Material ID Side */}
-                    <div className='flex items-center justify-between mt-3'>
-                        <span className='w-1/3'>Material ID </span>
-                        <div className='relative w-full'>
+                        {/* Material Stock Side */}
+                        <div className='flex items-center justify-between mt-3'>
+                            <span className='w-1/3'>Stock </span>
                             <div className='relative'>
-                                {material_id}
+                                {stock}
                             </div>
                         </div>
-                    </div>
 
-                    <div className='flex flex-col mt-3'>
-                        <span className='w-1/3'>Remarks </span>
-                        <textarea className='border w-full h-32' onChange={(e)=>{
-                            setComment(e.target.value);
-                        }}>
-
-                        </textarea>
-                    </div>
-
-
-                    {/* Button Field */}
-                    {
-                        !order_return.order_return_pending ?
-                            <div className='flex justify-end mt-10'>
-                                <button onClick={postFunc}
-                                    className='px-6 py-3 bg-green-500 rounded-lg text-white w-full outline-none hover:bg-green-400 duration-300 text-lg'>Post</button>
+                        {/* Material Stock Side */}
+                        <div className='flex items-center justify-between mt-3'>
+                            <span className='w-1/3'> Sending Amount </span>
+                            <div className='relative'>
+                                <input type="number" value={sending_amount}
+                                    className={'border p-2'}
+                                    onChange={(e) => {
+                                        if (e.target.value <= stock && e.target.value >= 0) {
+                                            setSendingAmount(e.target.value);
+                                        }
+                                        else if (e.target.value < 0) {
+                                            dispatch(setOrderMaterialServiceMessageBoxTrue());
+                                            dispatch(setOrderMaterialServiceColorCond({ color: 'bg-red-500' }));
+                                            dispatch(setOrderMaterialServiceErrorMessage({ message: 'Entering Amount greater than stock' }));
+                                        }
+                                        else {
+                                            dispatch(setOrderMaterialServiceMessageBoxTrue());
+                                            dispatch(setOrderMaterialServiceColorCond({ color: 'bg-red-500' }));
+                                            dispatch(setOrderMaterialServiceErrorMessage({ message: 'Entering Amount greater than stock' }));
+                                        }
+                                    }} />
                             </div>
-                            :
-                            <CustomLoadingButton />
-                    }
-                </div>
+                        </div>
+
+                        {/* Matterial Type Side */}
+                        <div className='flex items-center justify-between mt-3'>
+                            <span className='w-1/3'>Unit </span>
+                            <div className='relative'>
+                                {unit}
+                            </div>
+                        </div>
+
+                        {/* Serial Number Side */}
+                        <div className='flex items-center justify-between mt-3'>
+                            <span className='w-1/3'>Serial Number </span>
+                            <div className='relative w-full'>
+                                <div className='relative'>
+                                    {serial_number}
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Material ID Side */}
+                        <div className='flex items-center justify-between mt-3'>
+                            <span className='w-1/3'>Material ID </span>
+                            <div className='relative w-full'>
+                                <div className='relative'>
+                                    {material_id}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className='flex flex-col mt-3'>
+                            <span className='w-1/3'>Remarks </span>
+                            <textarea className='border w-full h-32' onChange={(e) => {
+                                setComment(e.target.value);
+                            }}>
+
+                            </textarea>
+                        </div>
+
+
+                        {/* Button Field */}
+                        {
+                            !material_service.pending ?
+                                <div className='flex justify-end mt-10'>
+                                    <button onClick={postFunc}
+                                        className='px-6 py-3 bg-green-500 rounded-lg text-white w-full outline-none hover:bg-green-400 duration-300 text-lg'>Post</button>
+                                </div>
+                                :
+                                <CustomLoadingButton />
+                        }
+                    </div>
+                }
+
             </div>
         </div>
     )

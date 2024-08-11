@@ -13,6 +13,7 @@ import OrderReturnComponent from '../components/area/OrderReturnComponent.jsx'
 import MessageBox from '../layouts/MessageBox.jsx'
 import UnusableTableComponent from '../components/area/UnusableTableComponent.jsx'
 import ServiceTableComponent from '../components/area/ServiceTableComponent.jsx'
+import SpinnerComponent from '../components/common/SpinnerComponent.jsx'
 
 import AreaService from '../services/area-service';
 
@@ -34,6 +35,7 @@ function AreaPage() {
     const user = useSelector(state => state.userSlice.user);
 
     const filtered_area_data = useSelector((state) => state.areaSlice.filtered_area_data);
+    const filtered_area_data_pending = useSelector((state) => state.areaSlice.filtered_area_data_pending);
 
     const selected_items = useSelector((state) => state.areaSlice.selected_items);
 
@@ -126,7 +128,7 @@ function AreaPage() {
             <TabComponent tabs_num = {tabs_num} setTabsNum = {setTabsNum}/>
 
 
-            {
+            {   
                 tabs_num === 0 
                 ?
                     <div className='flex flex-col items-center w-full px-1'>
@@ -206,11 +208,22 @@ function AreaPage() {
                     {/* Table Section */}
                     <table className='w-full'>
                         <TableHeaderComponent />
-                        <TableBodyComponent />
+                        {
+                            !filtered_area_data_pending && <TableBodyComponent />
+                        }
+                        {/* <TableBodyComponent /> */}
+
                     </table>
 
                     {
-                        !filtered_area_data.length && <ZeroFilteredComponent resetFunc={clearFilter} />
+                        filtered_area_data_pending && 
+                        <div className='flex justify-center items-center p-10 w-full h-96 '>
+                            <SpinnerComponent />
+                        </div>
+                    }
+
+                    {
+                        !filtered_area_data.length && !filtered_area_data_pending && <ZeroFilteredComponent resetFunc={clearFilter} />
                     }
 
                     {/* Row Selected Section */}

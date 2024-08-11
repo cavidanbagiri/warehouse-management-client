@@ -16,11 +16,13 @@ import {
     setAddStockStatus
 } from '../../store/warehouse-store';
 import { useEffect } from 'react';
+import SpinnerComponent from '../common/SpinnerComponent.jsx';
 
 function AddStockComponent() {
 
     const dispatch = useDispatch();
     const fetch_selected_items = useSelector((state) => state.warehouseSlice.fetch_selected_items);
+    const fetch_selected_items_pending = useSelector((state) => state.warehouseSlice.fetch_selected_items_pending);
     
     const addstock = useSelector((state) => state.warehouseSlice.addstock);
 
@@ -82,11 +84,16 @@ function AddStockComponent() {
                     </span>
                 </div>
                 <div className={'p-5 '}>
-                    {fetch_selected_items &&
+
+                    {fetch_selected_items_pending && <div className='flex justify-center w-full'> <SpinnerComponent /> </div>
+                    } 
+
+                    { fetch_selected_items && !fetch_selected_items_pending &&
                         fetch_selected_items.map((item, index) => (
                             <AddStockEachComponent item={item} key={index} />
                         ))
                     }
+
                     <div className={'flex justify-end'}>
                         {
                             !addstock.addstock_pending  ?

@@ -384,11 +384,6 @@ const StockPage = () => {
                 </div>
             }
 
-            {/* Table Section */}
-            {/* <table className='w-full'>
-                <TableHeaderComponent />
-                <TableBodyComponent />
-            </table> */}
 
             {
                 filter_stock_data.length === 0 && !filter_stock_data_pending && <ZeroFilteredComponent resetFunc={clearFilter} />

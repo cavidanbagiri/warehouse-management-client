@@ -11,11 +11,14 @@ import {
 import StockService from "../../services/stock-service.js";
 
 import CustomLoadingButton from "../common/CustomLoadingButton.jsx";
+import SpinnerComponent from '../common/SpinnerComponent.jsx';
 
 function OrderUpdateComponent() {
 
     const dispatch = useDispatch();
     const po_data = useSelector((state) => state.stockSlice.po_data);
+    const po_data_pending = useSelector((state) => state.stockSlice.po_data_pending);
+
     const order_update = useSelector((state) => state.stockSlice.order_update);
 
     const [material_name, setMaterialName] = useState('');
@@ -47,11 +50,11 @@ function OrderUpdateComponent() {
             setSerialNumber(po_data.serial_number);
             setMaterialId(po_data.material_id);
         }
-        else{
+        else {
             console.log('else work')
         }
 
-    },[po_data]);
+    }, [po_data]);
 
     return (
 
@@ -71,68 +74,74 @@ function OrderUpdateComponent() {
                         <IoMdClose className='text-2xl' />
                     </span>
                 </div>
-                <div className='flex flex-col p-4 '>
 
-                    {/* Material Name Side */}
-                    <div className='flex items-center justify-between mt-3'>
-                        <span className='w-1/3'>Material Name </span>
-                        <div className='relative w-full flex justify-end'>
-                            <span className={''}>
-                                {material_name}
-                            </span>
-                        </div>
-                    </div>
+                {po_data_pending && <div className='flex justify-center w-full'><SpinnerComponent /></div>}
 
-                    {/* Material Qty Side */}
-                    <div className='flex items-center justify-between mt-3'>
-                        <span className='w-1/3'>Stock </span>
-                        <div className='relative'>
-                            {stock}
-                        </div>
-                    </div>
+                {po_data && !po_data_pending &&
+                    <div className='flex flex-col p-4 '>
 
-                    {/* Matterial Type Side */}
-                    <div className='flex items-center justify-between mt-3'>
-                        <span className='w-1/3'>Unit </span>
-                        <div className='relative'>
-                            {unit}
-                        </div>
-                    </div>
-
-                    {/* Serial Number Side */}
-                    <div className='flex items-center justify-between mt-3'>
-                        <span className='w-1/3'>Serial Number </span>
-                        <div className='relative w-full'>
-                            <input value={serial_number} type="text" className={'border p-2 rounded-lg'} onChange={(e) => {
-                                setSerialNumber(e.target.value);
-                            }} />
-                        </div>
-                    </div>
-
-                    {/* Material ID Side */}
-                    <div className='flex items-center justify-between mt-3'>
-                        <span className='w-1/3'>Material ID </span>
-                        <div className='relative w-full'>
-                            <input value={material_id} type="text" className={'border p-2 rounded-lg'}
-                                   onChange={(e) => {
-                                       setMaterialId(e.target.value);
-                                   }}/>
-                        </div>
-                    </div>
-
-
-                    {/* Button Field */}
-                    {
-                        !order_update.order_update_pending ?
-
-                            <div className='flex justify-end mt-10'>
-                                <button onClick={postFunc}
-                                        className='px-6 py-3 bg-green-500 rounded-lg text-white'>Post Some</button>
+                        {/* Material Name Side */}
+                        <div className='flex items-center justify-between mt-3'>
+                            <span className='w-1/3'>Material Name </span>
+                            <div className='relative w-full flex justify-end'>
+                                <span className={''}>
+                                    {material_name}
+                                </span>
                             </div>
-                            :
-                            <CustomLoadingButton/>
-                    }
-                </div>
+                        </div>
+
+                        {/* Material Qty Side */}
+                        <div className='flex items-center justify-between mt-3'>
+                            <span className='w-1/3'>Stock </span>
+                            <div className='relative'>
+                                {stock}
+                            </div>
+                        </div>
+
+                        {/* Matterial Type Side */}
+                        <div className='flex items-center justify-between mt-3'>
+                            <span className='w-1/3'>Unit </span>
+                            <div className='relative'>
+                                {unit}
+                            </div>
+                        </div>
+
+                        {/* Serial Number Side */}
+                        <div className='flex items-center justify-between mt-3'>
+                            <span className='w-1/3'>Serial Number </span>
+                            <div className='relative w-full'>
+                                <input value={serial_number} type="text" className={'border p-2 rounded-lg'} onChange={(e) => {
+                                    setSerialNumber(e.target.value);
+                                }} />
+                            </div>
+                        </div>
+
+                        {/* Material ID Side */}
+                        <div className='flex items-center justify-between mt-3'>
+                            <span className='w-1/3'>Material ID </span>
+                            <div className='relative w-full'>
+                                <input value={material_id} type="text" className={'border p-2 rounded-lg'}
+                                    onChange={(e) => {
+                                        setMaterialId(e.target.value);
+                                    }} />
+                            </div>
+                        </div>
+
+
+                        {/* Button Field */}
+                        {
+                            !order_update.order_update_pending ?
+
+                                <div className='flex justify-end mt-10'>
+                                    <button onClick={postFunc}
+                                        className='px-6 py-3 bg-green-500 rounded-lg text-white'>Post Some</button>
+                                </div>
+                                :
+                                <CustomLoadingButton />
+                        }
+                    </div>
+                }
+                
             </div>
         </div>
     )

@@ -220,6 +220,7 @@ function WarehousePage() {
 
                         {/* Working Buttons Section */}
                         <div className='flex justify-end text-xs w-full' style={{ fontWeight: 600 }}>
+
                             <button onClick={() => {
                                 if (selected_items.length === 0) {
                                     showMessageBoxMessageHandle('addstock', 'Please, Choose at least one row to adding stock');
@@ -230,6 +231,7 @@ function WarehousePage() {
                                 }
                             }}
                                 className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400  hover:bg-orange-400 hover:text-white duration-200' >Add To Stock</button>
+                            
                             <button onClick={() => {
                                 if (selected_items.length > 1) {
                                     showMessageBoxMessageHandle('update', 'Cant update two or more column same time');

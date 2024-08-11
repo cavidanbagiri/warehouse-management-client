@@ -16,12 +16,16 @@ import {
 
 
 import { IoMdClose } from "react-icons/io";
+import SpinnerComponent from '../common/SpinnerComponent.jsx';
 
 
 function OrderUpdateComponent() {
 
     const dispatch = useDispatch();
+
     const po_data = useSelector((state) => state.warehouseSlice.po_data);
+    const po_data_pending = useSelector((state) => state.warehouseSlice.po_data_pending);
+    
     const selected_items = useSelector((state) => state.warehouseSlice.selected_items);
     
     const order_update = useSelector((state) => state.warehouseSlice.order_update);
@@ -147,8 +151,12 @@ function OrderUpdateComponent() {
 
     return (
         <div className='flex flex-row justify-between z-10 fixed top-0 right-0 w-full h-full bg-black bg-opacity-30'>
+            
             <div className='w-1/2' ></div>
+            
+
             <div className='flex flex-col bg-white w-1/2' >
+            
                 {/* Close and Title Component Section */}
                 <div className='flex justify-between p-5 text-end'>
                     <span style={{ fontWeight: 600, fontFamily: 'Open Sans' }} className='text-3xl'>
@@ -162,156 +170,161 @@ function OrderUpdateComponent() {
                         <IoMdClose className='text-2xl' />
                     </span>
                 </div>
-                <div className='flex flex-col p-4 '>
-                    {/* Company Section */}
-                    <div className='flex items-center justify-between'>
-                        <span className='w-1/3'>Company Name </span>
-                        <div className='relative'>
-                            <button className='text-xs bg-white border border-gray-300 w-96 rounded-lg p-2 text-ellipsis overflow-hidden text-nowrap outline-none' onClick={() => {
-                                setIsCompanyDropDown(!isCompanyDropDown)
-                            }}>
-                                {company.companyId === '' ? 'Company' : company.company_name}
-                            </button>
-                            {
-                                isCompanyDropDown && <DropDownComponent
-                                    data={companies}
-                                    text_name={'company_name'}
-                                    input_name={'Company...'}
-                                    listenFunc={listenCompany}
-                                    filterChange={filterChange}
-                                />
-                            }
-                        </div>
-                    </div>
-
-                    {/* Ordered Side */}
-                    <div className='flex items-center justify-between mt-3'>
-                        <span className='w-1/3'>Ordered Name </span>
-                        <div className='relative'>
-                            <button className='text-xs bg-white border border-gray-300 w-64 rounded-lg  p-2  text-ellipsis overflow-hidden text-nowrap outline-none' onClick={() => {
-                                setIsOrderedDropDown(!isOrderedDropDown)
-                            }}>
-                                {ordered.orderedId === '' ? 'Orderer' : ordered.ordered_name}
-                            </button>
-                            {
-                                isOrderedDropDown && <DropDownComponent
-                                    data={ordereds}
-                                    text_name={'username'}
-                                    input_name={'Orderer...'}
-                                    listenFunc={listenUser}
-                                    filterChange={filterChange}
-                                />
-                            }
-                        </div>
-                    </div>
-
-                    {/* Doc Number Side */}
-                    <div className='flex items-center justify-between mt-3'>
-                        <span className='w-1/3'>Document Number </span>
-                        <div className='relative'>
-                            <input value={documentnum} className='placeholder-black text-xs bg-white border border-gray-300 rounded-lg p-2 outline-none text-center' type="text" placeholder='Document' onChange={(e) => {
-                                setDocumentNum(e.target.value);
-                            }} />
-                        </div>
-                    </div>
-
-                    {/* Material Name Side */}
-                    <div className='flex items-center justify-between mt-3'>
-                        <span className='w-1/3'>Material Name </span>
-                        <div className='relative w-full'>
-                            <input value={material_name} className='placeholder-black text-xs bg-white border border-gray-300 w-full rounded-lg p-2 outline-none text-center ' type="text" placeholder='Material Name' onChange={(e) => {
-                                setMaterialName(e.target.value);
-                            }} />
-                        </div>
-                    </div>
-
-                    {/* Material Qty Side */}
-                    <div className='flex items-center justify-between mt-3'>
-                        <span className='w-1/3'>Quantity </span>
-                        <div className='relative'>
-                            <input value={qty} type="number" className='placeholder-black text-xs bg-white border border-gray-300 rounded-lg p-2 outline-none text-center ' placeholder='Quantity' onChange={(e) => {
-                                if(e.target.value<0){
-                                    dispatch(setOrderUpdateMessageBoxTrue());
-                                    dispatch(setOrderUpdateColorCond({color:'bg-red-500'}))
-                                    dispatch(setOrderUpdateErrorMessage({ message: 'Invalid Quantity' }));
-                                }
-                                else{
-                                    setQty(e.target.value);
-                                }
-                            }} />
-                        </div>
-                    </div>
-
-                    {/* Matterial Type Side */}
-                    <div className='flex items-center justify-between mt-3'>
-                        <span className='w-1/3'>Unit </span>
-                        <div className='relative'>
-                            <select value={unit} className='w-48 border p-2 outline-none rounded-lg text-xs text-center'
-                                onChange={(e) => {
-                                    setUnit(e.target.value);
+                { po_data_pending && <div className='flex justify-center w-full'><SpinnerComponent/></div>}
+                
+                {po_data && !po_data_pending &&
+                    <div className='flex flex-col p-4 '>
+                        {/* Company Section */}
+                        <div className='flex items-center justify-between'>
+                            <span className='w-1/3'>Company Name </span>
+                            <div className='relative'>
+                                <button className='text-xs bg-white border border-gray-300 w-96 rounded-lg p-2 text-ellipsis overflow-hidden text-nowrap outline-none' onClick={() => {
+                                    setIsCompanyDropDown(!isCompanyDropDown)
                                 }}>
-                                <option value="pcs">Pcs</option>
-                                <option value="ton">Ton</option>
-                                <option value="kg">Kg</option>
-                                <option value="lt">Lt</option>
-                                <option value="mt">Mt</option>
-                                <option value="mt2">Mt2</option>
-                                <option value="mt3">Mt3</option>
-                            </select>
+                                    {company.companyId === '' ? 'Company' : company.company_name}
+                                </button>
+                                {
+                                    isCompanyDropDown && <DropDownComponent
+                                        data={companies}
+                                        text_name={'company_name'}
+                                        input_name={'Company...'}
+                                        listenFunc={listenCompany}
+                                        filterChange={filterChange}
+                                    />
+                                }
+                            </div>
                         </div>
-                    </div>
 
-                    {/* Material Qty Side */}
-                    <div className='flex items-center justify-between mt-3'>
-                        <span className='w-1/3'>Price </span>
-                        <div className='relative'>
-                            <input value={price} className='placeholder-black text-xs bg-white border border-gray-300 rounded-lg w-36  p-2 outline-none text-center ' type="text" placeholder='Price' onChange={(e) => {
-                                setPrice(e.target.value);
-                            }} />
+                        {/* Ordered Side */}
+                        <div className='flex items-center justify-between mt-3'>
+                            <span className='w-1/3'>Ordered Name </span>
+                            <div className='relative'>
+                                <button className='text-xs bg-white border border-gray-300 w-64 rounded-lg  p-2  text-ellipsis overflow-hidden text-nowrap outline-none' onClick={() => {
+                                    setIsOrderedDropDown(!isOrderedDropDown)
+                                }}>
+                                    {ordered.orderedId === '' ? 'Orderer' : ordered.ordered_name}
+                                </button>
+                                {
+                                    isOrderedDropDown && <DropDownComponent
+                                        data={ordereds}
+                                        text_name={'username'}
+                                        input_name={'Orderer...'}
+                                        listenFunc={listenUser}
+                                        filterChange={filterChange}
+                                    />
+                                }
+                            </div>
                         </div>
-                    </div>
 
-                    {/* Material Name Side */}
-                    <div className='flex items-center justify-between mt-3'>
-                        <span className='w-1/3'>Order Num </span>
-                        <div className='relative'>
-                            <input value={po}
-                                className='placeholder-black text-xs bg-white border border-gray-300 rounded-lg   p-2 outline-none text-center '
-                                type="text" placeholder='Order Num' onChange={(e) => {
-                                    setPO(e.target.value);
+                        {/* Doc Number Side */}
+                        <div className='flex items-center justify-between mt-3'>
+                            <span className='w-1/3'>Document Number </span>
+                            <div className='relative'>
+                                <input value={documentnum} className='placeholder-black text-xs bg-white border border-gray-300 rounded-lg p-2 outline-none text-center' type="text" placeholder='Document' onChange={(e) => {
+                                    setDocumentNum(e.target.value);
                                 }} />
+                            </div>
                         </div>
-                    </div>
 
-                    {/* Matterial Type Side */}
-                    <div className='flex items-center justify-between mt-3'>
-                        <span className='w-1/3'>Material Type </span>
-                        <div className='relative '>
-                            <select onChange={(event) => {
-                                setMaterialType(event.target.value);
-                            }}
-                                className='w-full border p-2 outline-none rounded-lg text-xs'
-                                value={material_type}>
-                                <option value="Project">Project</option>
-                                <option value="Consumable">Consumable</option>
-                                <option value="Fixture">Fixture</option>
-                                <option value="Hand Tools">Hand Tools</option>
-                                <option value="Safety">Safety</option>
-                            </select>
+                        {/* Material Name Side */}
+                        <div className='flex items-center justify-between mt-3'>
+                            <span className='w-1/3'>Material Name </span>
+                            <div className='relative w-full'>
+                                <input value={material_name} className='placeholder-black text-xs bg-white border border-gray-300 w-full rounded-lg p-2 outline-none text-center ' type="text" placeholder='Material Name' onChange={(e) => {
+                                    setMaterialName(e.target.value);
+                                }} />
+                            </div>
                         </div>
-                    </div>
 
-                    {/* Button Field */}
-                    {
-                        !order_update.order_update_pending ?
-                    <div className='flex justify-end mt-10'>
-                        <button onClick={postFunc}
-                            className='px-6 py-3 bg-green-500 rounded-lg text-white'>Post</button>
+                        {/* Material Qty Side */}
+                        <div className='flex items-center justify-between mt-3'>
+                            <span className='w-1/3'>Quantity </span>
+                            <div className='relative'>
+                                <input value={qty} type="number" className='placeholder-black text-xs bg-white border border-gray-300 rounded-lg p-2 outline-none text-center ' placeholder='Quantity' onChange={(e) => {
+                                    if(e.target.value<0){
+                                        dispatch(setOrderUpdateMessageBoxTrue());
+                                        dispatch(setOrderUpdateColorCond({color:'bg-red-500'}))
+                                        dispatch(setOrderUpdateErrorMessage({ message: 'Invalid Quantity' }));
+                                    }
+                                    else{
+                                        setQty(e.target.value);
+                                    }
+                                }} />
+                            </div>
+                        </div>
+
+                        {/* Matterial Type Side */}
+                        <div className='flex items-center justify-between mt-3'>
+                            <span className='w-1/3'>Unit </span>
+                            <div className='relative'>
+                                <select value={unit} className='w-48 border p-2 outline-none rounded-lg text-xs text-center'
+                                    onChange={(e) => {
+                                        setUnit(e.target.value);
+                                    }}>
+                                    <option value="pcs">Pcs</option>
+                                    <option value="ton">Ton</option>
+                                    <option value="kg">Kg</option>
+                                    <option value="lt">Lt</option>
+                                    <option value="mt">Mt</option>
+                                    <option value="mt2">Mt2</option>
+                                    <option value="mt3">Mt3</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        {/* Material Qty Side */}
+                        <div className='flex items-center justify-between mt-3'>
+                            <span className='w-1/3'>Price </span>
+                            <div className='relative'>
+                                <input value={price} className='placeholder-black text-xs bg-white border border-gray-300 rounded-lg w-36  p-2 outline-none text-center ' type="text" placeholder='Price' onChange={(e) => {
+                                    setPrice(e.target.value);
+                                }} />
+                            </div>
+                        </div>
+
+                        {/* Material Name Side */}
+                        <div className='flex items-center justify-between mt-3'>
+                            <span className='w-1/3'>Order Num </span>
+                            <div className='relative'>
+                                <input value={po}
+                                    className='placeholder-black text-xs bg-white border border-gray-300 rounded-lg   p-2 outline-none text-center '
+                                    type="text" placeholder='Order Num' onChange={(e) => {
+                                        setPO(e.target.value);
+                                    }} />
+                            </div>
+                        </div>
+
+                        {/* Matterial Type Side */}
+                        <div className='flex items-center justify-between mt-3'>
+                            <span className='w-1/3'>Material Type </span>
+                            <div className='relative '>
+                                <select onChange={(event) => {
+                                    setMaterialType(event.target.value);
+                                }}
+                                    className='w-full border p-2 outline-none rounded-lg text-xs'
+                                    value={material_type}>
+                                    <option value="Project">Project</option>
+                                    <option value="Consumable">Consumable</option>
+                                    <option value="Fixture">Fixture</option>
+                                    <option value="Hand Tools">Hand Tools</option>
+                                    <option value="Safety">Safety</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        {/* Button Field */}
+                        {
+                            !order_update.order_update_pending ?
+                        <div className='flex justify-end mt-10'>
+                            <button onClick={postFunc}
+                                className='px-6 py-3 bg-green-500 rounded-lg text-white'>Post</button>
+                        </div>
+                                :
+                                <CustomLoadingButton/>
+                        }
                     </div>
-                            :
-                            <CustomLoadingButton/>
-                    }
-                </div>
+                }
+            
             </div>
         </div>
     )

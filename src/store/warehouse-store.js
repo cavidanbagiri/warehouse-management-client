@@ -9,9 +9,12 @@ const initialState = {
     filtered_warehouse_data_pending: false,
 
     selected_items: [],
+
     fetch_selected_items: null,
+    fetch_selected_items_pending: false,
 
     po_data: {},
+    po_data_pending: false,
 
     order_information_toggle: false,
 
@@ -31,6 +34,7 @@ const initialState = {
     },
 
     certificate_and_passport_data: [],
+    certificate_and_passport_data_pending: false,
 
     warehouse_column_filter:{
         date: true,
@@ -147,7 +151,11 @@ export const warehouseSlice = createSlice({
             }
         })
 
+
+        // -------------------------------------------------------------- Get Certificates Or Passports Section
+        builder.addCase(WarehouseService.fetchCertificatesOrPassports.pending, (state)=>{state.certificate_and_passport_data_pending = true;})
         builder.addCase(WarehouseService.fetchCertificatesOrPassports.fulfilled, (state, action)=>{
+            state.certificate_and_passport_data_pending = false;
             if(action.payload.status === 200){
                 state.certificate_and_passport_data = action.payload.data;
             }
@@ -155,7 +163,9 @@ export const warehouseSlice = createSlice({
 
 
         // -------------------------------------------------------------- Get PO By Id Section
+        builder.addCase(WarehouseService.getPOById.pending, (state)=>{state.po_data_pending = true;})
         builder.addCase(WarehouseService.getPOById.fulfilled, (state, action)=>{
+            state.po_data_pending = false;
             if(action.payload!==null){
                 state.po_data = action.payload;
             }
@@ -238,7 +248,9 @@ export const warehouseSlice = createSlice({
         })
 
         // -------------------------------------------------------------- Add Stock
+        builder.addCase(WarehouseService.fetchSelectedItemsById.pending, (state)=>{state.fetch_selected_items_pending = true;})
         builder.addCase(WarehouseService.fetchSelectedItemsById.fulfilled, (state, action)=>{
+            state.fetch_selected_items_pending = false;
             if(action.payload!==null){
                 state.fetch_selected_items = action.payload;
             }

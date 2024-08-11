@@ -11,6 +11,7 @@ import { IoCloudUploadOutline } from "react-icons/io5";
 import { MdUpdate } from "react-icons/md";
 
 import PDF_file_icon from '../../assets/PDF_file_icon.webp';
+import SpinnerComponent from '../common/SpinnerComponent.jsx';
 
 function CertificateComponent(props) {
 
@@ -19,6 +20,7 @@ function CertificateComponent(props) {
     const certificate_and_passport = useSelector((state) => state.warehouseSlice.certificate_and_passport);
     const upload_certificate_and_passport = useSelector((state) => state.warehouseSlice.upload_certificate_and_passport);
     const certificate_and_passport_data = useSelector((state) => state.warehouseSlice.certificate_and_passport_data);
+    const certificate_and_passport_data_pending = useSelector((state) => state.warehouseSlice.certificate_and_passport_data_pending);
 
     const [file, setFile] = useState(null);
 
@@ -67,24 +69,30 @@ function CertificateComponent(props) {
                 <p className='text-start text-2xl text-gray-400 mb-2'>
                     Documents
                 </p>
+
                 {
-                    certificate_and_passport_data.length > 0 ?
-                        <div className='flex flex-wrap text-base text-gray-400 '>
-                            {
-                                certificate_and_passport_data.map((item, index) =>
-                                    // <div className='mr-4' key={index}>
+                    certificate_and_passport_data_pending && <SpinnerComponent />
+                }
+
+                {
+                    certificate_and_passport_data.length > 0 && !certificate_and_passport_data_pending &&
+                    <div className='flex flex-wrap text-base text-gray-400 '>
+                        {
+                            certificate_and_passport_data.map((item, index) =>
                                 <a href={item.location} target="_blank" key={index} className='mr-4 my-2'>
-                                            <img src={PDF_file_icon} alt="" className='w-14 h-16' />
-                                            {item.filename}
-                                        </a>
-                                    // </div>
-                                )
-                            }
-                        </div>
-                        :
-                        <p className='text-base  text-gray-400'>
-                            There is not any documents
-                        </p>
+                                    <img src={PDF_file_icon} alt="" className='w-14 h-16' />
+                                    {item.filename}
+                                </a>
+                            )
+                        }
+                    </div>
+                }
+
+                {
+                    certificate_and_passport_data.length === 0 && !certificate_and_passport_data_pending &&
+                    <p className='text-base  text-gray-400'>
+                        There is not any documents
+                    </p>
                 }
 
             </div>

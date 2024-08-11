@@ -10,6 +10,8 @@ import MessageBox from "../../layouts/MessageBox";
 import CustomLoadingButton from '../common/CustomLoadingButton'
 import DropDownComponent from "../common/DropdownComponent";
 
+import SpinnerComponent from '../common/SpinnerComponent.jsx';
+
 import StockService from "../../services/stock-service";
 
 import { filterGroup } from "../../store/common-store";
@@ -18,7 +20,7 @@ function OrderInformationComponent() {
 
   const dispatch = useDispatch();
 
-  const selected_items = useSelector(state => state.stockSlice.selected_items);
+  // const selected_items = useSelector(state => state.stockSlice.selected_items);
   const order_provide = useSelector(state => state.stockSlice.order_provide);
   const filtered_groups = useSelector(state => state.commonSlice.filtered_groups);
 
@@ -201,12 +203,16 @@ function OrderInformationComponent() {
         {/* Table Section */}
         <table className='w-full'>
           <OrderProvideTableHeaderComponent />
+
           {
             order_provide.order_provide_data.map((item, index) => (
               <OrderProvideTableRowComponent key={index + 1} index={index + 1} item={item} />
             ))
           }
         </table>
+        {
+            order_provide.order_provide_data_pending && <div className="flex justify-center items-center h-96 w-full"><SpinnerComponent /></div>
+        }
 
       </div>
     </div>

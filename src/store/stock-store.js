@@ -6,6 +6,7 @@ import StockService from "../services/stock-service.js";
 const initialState = {
 
     po_data: {},
+    po_data_pending: false,
 
     filter_stock_data: [],
     filter_stock_data_pending: [],
@@ -42,6 +43,7 @@ const initialState = {
         order_provide_error_message: '',
         order_provide_pending: false,
         order_provide_color_cond: 'bg-green-500',
+        order_provide_data_pending: [],
         status: 0
     },
 
@@ -203,14 +205,18 @@ export const stockSlice = createSlice({
         })
 
         // Get Stock By Id
+        builder.addCase(StockService.getById.pending, (state, action)=>{state.po_data_pending = true;})
         builder.addCase(StockService.getById.fulfilled, (state, action)=>{
+            state.po_data_pending = false;
             if(action.payload!==null){
                 state.po_data = action.payload;
             }
         })
 
         // Get all datas for providing to area
+        builder.addCase(StockService.getDataByIds.pending, (state)=>{state.order_provide.order_provide_data_pending = true;})
         builder.addCase(StockService.getDataByIds.fulfilled, (state, action)=>{
+            state.order_provide.order_provide_data_pending = false;
             if(action.payload!==null){
                 state.order_provide.order_provide_data = action.payload;
             }else{
