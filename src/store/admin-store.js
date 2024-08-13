@@ -285,7 +285,6 @@ export const adminSlice = createSlice({
         })
         builder.addCase(AdminService.fetchMaterialCodes.fulfilled, (state, action) => {
             if (action.payload.status === 200) {
-                console.log('this is work');
                 state.material_code.material_codes = action.payload.data;
             }
         })

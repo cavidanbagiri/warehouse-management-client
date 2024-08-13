@@ -17,7 +17,6 @@ class StockService {
                 .catch((err) => {
                     console.log('fetch stock Error happen : ', err);
                 })
-                console.log(data);
             return data;
         }
     )

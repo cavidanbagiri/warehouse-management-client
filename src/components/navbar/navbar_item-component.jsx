@@ -15,7 +15,7 @@ function NavbarItemComponent(props) {
             <span
                 onMouseEnter={() => props.setIsShown(true)}
                 onMouseLeave={() => props.setIsShown(false)}>
-                {props.iconValue === 'Home' && <CiHome className={`${props.selected === 'Home' ? 'text-orange-500' : 'text-black'} my-3 text-3xl`} />}
+                {props.iconValue === 'Home' && <CiHome className={`${props.selected === 'Home' ? 'text-orange-500 ' : 'text-black'} my-3 text-3xl`} />}
                 {props.iconValue === 'Stock' && <PiStackThin className={`${props.selected === 'Stock' ? 'text-orange-500' : 'text-black'} my-3 text-3xl`} />}
                 {props.iconValue === 'Create' && <CiSquarePlus className={`${props.selected === 'Create' ? 'text-orange-500' : 'text-black'} my-3 text-3xl`} />}
                 {props.iconValue === 'Warehouse' && <PiWarehouseThin className={`${props.selected === 'Warehouse' ? 'text-orange-500' : 'text-black'} my-3 text-3xl`} />}

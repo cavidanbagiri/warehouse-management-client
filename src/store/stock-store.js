@@ -33,7 +33,6 @@ const initialState = {
         po: false,
     },
 
-    order_information_toggle: false,
 
     order_provide: {
         order_provide_toggle: false,
@@ -96,9 +95,6 @@ export const stockSlice = createSlice({
         unselectRow: (state, action) => {state.selected_items = state.selected_items.filter((item)=>item!==action.payload)},
         clearSelected: (state) => {state.selected_items = [];},
 
-        // Row Information Section
-        setOrderSelectionInformationToggleTrue: (state) => {state.order_information_toggle = true;},
-        setOrderSelectionInformationToggleFalse: (state) => {state.order_information_toggle = false;},
 
         // Order Update Functions
         setOrderSelectionUpdateToggleTrue: (state) => {state.order_update.order_update_toggle = true;},
@@ -376,7 +372,6 @@ export const stockSlice = createSlice({
 export const {
     setStockColumnFilter,
     selectRow, unselectRow, clearSelected,
-    setOrderSelectionInformationToggleTrue, setOrderSelectionInformationToggleFalse, 
     setOrderSelectionUpdateToggleTrue, setOrderSelectionUpdateToggleFalse, setOrderUpdateMessageBoxTrue,setOrderUpdateMessageBoxFalse, setOrderUpdateErrorMessage,
     setOrderSelectionReturnToggleTrue, setOrderSelectionReturnToggleFalse, setOrderReturnMessageBoxTrue,setOrderReturnMessageBoxFalse, setOrderReturnErrorMessage, setOrderReturnColorCond, setorderReturnStatus,
     setOrderSelectionProvideToggleTrue, setOrderSelectionProvideToggleFalse, setOrderProvideMessageBoxTrue,setOrderProvideMessageBoxFalse, setOrderProvideErrorMessage, setOrderProvideStatus,

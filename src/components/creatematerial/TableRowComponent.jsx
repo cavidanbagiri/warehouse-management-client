@@ -92,7 +92,7 @@ function TableRowComponent(props) {
                 {
                     row.description === '' 
                     ? 
-                    <spam>Not Selected</spam>
+                    <span>Not Selected</span>
                     :
                     row.description
                 }

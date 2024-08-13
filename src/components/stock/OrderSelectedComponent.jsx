@@ -20,9 +20,12 @@ import {
     setOrderSelectionProvideToggleTrue,
     setOrderSelectionMaterialUnusableToggleTrue,
     setOrderSelectionMaterialServiceToggleTrue,
-    
 } from '../../store/stock-store.js';
+
+import {rowInformToggleTrue} from '../../store/common-store.js';
+
 import StockService from "../../services/stock-service.js";
+import CommonService from '../../services/common.services.js';  
 
 function OrderSelectedComponent(props) {
 
@@ -48,8 +51,9 @@ function OrderSelectedComponent(props) {
                                 props.showMessaggeBoxMessageHandle('inform', 'Cant get inform two or more column same time');
                             }
                             else {
-                                // dispatch(setOrderSelectionInformationToggleTrue());
-                                // dispatch(WarehouseService.getPOById(selected_items[0]));
+                                dispatch(rowInformToggleTrue());
+                                const data = {'module':'stock', 'id':selected_items[0]}
+                                dispatch(CommonService.getRowInform(data));
                             }
                         }}
                         className="flex flex-col items-center mx-3 cursor-pointer w-full hover:bg-gray-50">

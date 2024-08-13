@@ -228,7 +228,6 @@ class AdminService {
             .catch((err)=>{
                 console.log('fetch groups error : ', err);
             })
-            console.log('coming data', data.data);
             return data;
         }
     )

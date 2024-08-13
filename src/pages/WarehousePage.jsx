@@ -9,7 +9,7 @@ import OrderSelectedComponent from '../components/warehouse/OrderSelectedCompone
 import ZeroFilteredComponent from '../components/warehouse/ZeroFilteredComponent';
 import MaterialTypeInform from '../components/warehouse/MaterialTypeInformComponent';
 import MessageBox from '../layouts/MessageBox';
-import OrderInformationComponent from '../components/warehouse/OrderInformationComponent';
+import RowInformationComponent from '../components/common/RowInformationComponent.jsx';
 import OrderUpdateComponent from '../components/warehouse/OrderUpdateComponent';
 import TableColumnFilterComponent from "../components/warehouse/TableColumnFilterComponent.jsx";
 import AddStockComponent from "../components/warehouse/AddStockComponent.jsx";
@@ -21,7 +21,6 @@ import { IoFilterOutline } from "react-icons/io5";
 
 
 import {
-    setOrderSelectionInformationToggleTrue,
     setOrderSelectionUpdateToggleTrue,
     setOrderUpdateMessageBoxFalse,
     addStockToggleTrue,
@@ -30,6 +29,9 @@ import {
     setCertificateAndPassportMessageBoxFalse,
     setUploadCertificateAndPassportMessageBoxFalse
 } from "../store/warehouse-store.js";
+
+import { rowInformToggleTrue } from "../store/common-store.js";
+import CommonService from '../services/common.services.js';
 
 function WarehousePage() {
 
@@ -40,7 +42,7 @@ function WarehousePage() {
     const filtered_warehouse_data = useSelector((state) => state.warehouseSlice.filtered_warehouse_data);
     const filtered_warehouse_data_pending = useSelector((state) => state.warehouseSlice.filtered_warehouse_data_pending);
     const selected_items = useSelector((state) => state.warehouseSlice.selected_items);
-    const order_information_toggle = useSelector((state) => state.warehouseSlice.order_information_toggle);
+    const row_inform = useSelector((state) => state.commonSlice.row_inform);
     const order_update = useSelector((state) => state.warehouseSlice.order_update);
     const addstock = useSelector((state) => state.warehouseSlice.addstock);
     const certificate_and_passport = useSelector((state) => state.warehouseSlice.certificate_and_passport);
@@ -176,7 +178,7 @@ function WarehousePage() {
 
             {/* order Information */}
             {
-                order_information_toggle && <OrderInformationComponent />
+                row_inform.toggle && <RowInformationComponent />
             }
 
 
@@ -231,7 +233,7 @@ function WarehousePage() {
                                 }
                             }}
                                 className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400  hover:bg-orange-400 hover:text-white duration-200' >Add To Stock</button>
-                            
+
                             <button onClick={() => {
                                 if (selected_items.length > 1) {
                                     showMessageBoxMessageHandle('update', 'Cant update two or more column same time');
@@ -258,8 +260,9 @@ function WarehousePage() {
                                     showMessageBoxMessageHandle('inform', 'Please Choose at least one row');
                                 }
                                 else {
-                                    dispatch(setOrderSelectionInformationToggleTrue());
-                                    dispatch(WarehouseService.getPOById(selected_items[0]));
+                                    dispatch(rowInformToggleTrue());
+                                    const data = {'module':'warehouse', 'id':selected_items[0]}
+                                    dispatch(CommonService.getRowInform(data));
                                 }
                             }}
                                 className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400 hover:bg-orange-400 hover:text-white duration-200' >Get Information</button>

@@ -16,8 +16,6 @@ const initialState = {
     po_data: {},
     po_data_pending: false,
 
-    order_information_toggle: false,
-
     certificate_and_passport: {
         message_box: false,
         error_message: '',
@@ -84,10 +82,6 @@ export const warehouseSlice = createSlice({
         selectRow: (state, action) => {state.selected_items.push(action.payload);},
         unselectRow: (state, action) => {state.selected_items = state.selected_items.filter((item)=>item!==action.payload);},
         clearSelected: (state) => {state.selected_items = []},
-
-        // Order information
-        setOrderSelectionInformationToggleTrue: (state) => {state.order_information_toggle = true;},
-        setOrderSelectionInformationToggleFalse: (state) => {state.order_information_toggle = false;},
 
 
         // Update Section
@@ -288,7 +282,6 @@ export const warehouseSlice = createSlice({
 
 export const {
     selectRow, unselectRow, clearSelected,
-    setOrderSelectionInformationToggleTrue, setOrderSelectionInformationToggleFalse,
     setOrderSelectionUpdateToggleTrue, setOrderSelectionUpdateToggleFalse,
     setOrderUpdateMessageBoxFalse, setOrderUpdateMessageBoxTrue, setOrderUpdateStatus,
     setOrderUpdateErrorMessage,setOrderUpdateColorCond, 

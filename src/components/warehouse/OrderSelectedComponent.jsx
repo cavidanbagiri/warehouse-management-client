@@ -6,13 +6,19 @@ import { MdDeleteOutline } from "react-icons/md";
 import { IoIosAddCircleOutline } from "react-icons/io";
 import { IoIosInformationCircleOutline } from "react-icons/io";
 
-import '../../css/dropdown.css';
 import WarehouseService from '../../services/warehouse-service';
+import CommonService from '../../services/common.services';
+
+import { rowInformToggleTrue } from '../../store/common-store';
+
 import {
     addStockToggleTrue,
-    setOrderSelectionInformationToggleTrue,
     setOrderSelectionUpdateToggleTrue
 } from '../../store/warehouse-store';
+
+
+import '../../css/dropdown.css';
+
 
 function OrderSelectedComponent(props) {
 
@@ -38,8 +44,9 @@ function OrderSelectedComponent(props) {
                             props.showMessaggeBoxMessageHandle('inform', 'Cant get inform two or more column same time');
                         }
                         else{
-                            dispatch(setOrderSelectionInformationToggleTrue());
-                            dispatch(WarehouseService.getPOById(selected_items[0]));
+                            dispatch(rowInformToggleTrue());
+                            const data = {'module':'warehouse', 'id':selected_items[0]}
+                            dispatch(CommonService.getRowInform(data));
                         }
                     }}
                     className="flex flex-col items-center mx-3 cursor-pointer w-full hover:bg-gray-50">

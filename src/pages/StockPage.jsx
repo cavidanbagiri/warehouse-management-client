@@ -12,16 +12,21 @@ import OrderUpdateComponent from "../components/stock/OrderUpdateComponent.jsx";
 import OrderReturnComponent from "../components/stock/OrderReturnComponent.jsx";
 import OrderProvideComponent from "../components/stock/OrderProvideComponent.jsx";
 import MaterialTypeInform from "../components/warehouse/MaterialTypeInformComponent.jsx";
-import OrderInformationComponent from '../components/stock/OrderInformationComponent';
 import ZeroFilteredComponent from '../components/warehouse/ZeroFilteredComponent.jsx';
 import PageTitleComponent from '../components/stock/PageTitleComponent.jsx';
 import MaterialUnusableComponent from '../components/stock/MaterialUnusableComponent.jsx';
 import MaterialServiceComponent from '../components/stock/MaterialServiceComponent.jsx';
+import RowInformationComponent from '../components/common/RowInformationComponent.jsx';
 import SpinnerComponent from '../components/common/SpinnerComponent.jsx';
+
 
 import { IoFilterOutline } from "react-icons/io5";
 
+
 import StockService from "../services/stock-service.js";
+import CommonService from '../services/common.services.js';
+
+import { rowInformToggleTrue } from "../store/common-store.js";
 
 import {
     setOrderUpdateMessageBoxFalse,
@@ -34,11 +39,12 @@ import {
     setOrderSelectionMaterialServiceToggleFalse,
 
     setOrderSelectionUpdateToggleTrue,
-    setOrderSelectionInformationToggleTrue,
     setOrderSelectionReturnToggleTrue,
     setOrderSelectionProvideToggleTrue,
     clearSelected,
 } from "../store/stock-store.js";
+
+
 
 const StockPage = () => {
 
@@ -48,11 +54,12 @@ const StockPage = () => {
 
     const selected_items = useSelector((state) => state.stockSlice.selected_items);
 
+    const row_inform = useSelector((state) => state.commonSlice.row_inform);
+
     const filter_stock_data = useSelector((state) => state.stockSlice.filter_stock_data);
 
     const filter_stock_data_pending = useSelector((state) => state.stockSlice.filter_stock_data_pending);
 
-    const order_information_toggle = useSelector((state) => state.stockSlice.order_information_toggle);
 
     const order_update = useSelector((state) => state.stockSlice.order_update);
 
@@ -202,9 +209,9 @@ const StockPage = () => {
             }
 
 
-            {/* order Information */}
+            {/* row Information */}
             {
-                order_information_toggle && <OrderInformationComponent />
+                row_inform.toggle && <RowInformationComponent />
             }
 
             {
@@ -326,8 +333,9 @@ const StockPage = () => {
                                     showMessageBoxMessageHandle('inform', 'Please Choose at least one row');
                                 }
                                 else {
-                                    dispatch(setOrderSelectionInformationToggleTrue());
-                                    dispatch(StockService.getById(selected_items[0]));
+                                    dispatch(rowInformToggleTrue());
+                                    const data = {'module':'stock', 'id':selected_items[0]}
+                                    dispatch(CommonService.getRowInform(data));
                                 }
                             }}
                                 className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400 hover:bg-orange-400 hover:text-white duration-200' >Get Information</button>

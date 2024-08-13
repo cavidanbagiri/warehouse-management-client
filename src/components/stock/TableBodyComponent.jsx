@@ -5,6 +5,10 @@ import TableRowComponent from './TableRowComponent'
 
 import {selectRow, unselectRow} from '../../store/stock-store';
 
+import {rowInformToggleTrue} from '../../store/common-store';
+
+import CommonService from '../../services/common.services';
+
 function TableBodyComponent() {
 
     const dispatch = useDispatch();
@@ -19,10 +23,11 @@ function TableBodyComponent() {
             dispatch(unselectRow(event.target.value))
     }
 
-    // const doubleClickInform = (po_id) => {
-    //     dispatch(setOrderSelectionInformationToggleTrue());
-    //     dispatch(WarehouseService.getPOById(po_id));
-    // }
+    const doubleClickInform = (po_id) => {
+        dispatch(rowInformToggleTrue());
+        const data = { 'module': 'stock', 'id': po_id }
+        dispatch(CommonService.getRowInform(data));
+    }
 
     return (
 
@@ -37,7 +42,7 @@ function TableBodyComponent() {
                                        //true_icon={true_icon}
                                        //false_icon={false_icon}
                                        //selected_items={selected_items}
-                                       //doubleClickInform = {doubleClickInform}
+                                       doubleClickInform = {doubleClickInform}
                     />
                 ))
             }

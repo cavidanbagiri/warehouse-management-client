@@ -9,7 +9,7 @@ import NavbarItemComponent from '../components/navbar/navbar_item-component';
 
 
 import { TbHexagonLetterWFilled } from "react-icons/tb";
-import ProfilePage from "../pages/ProfilePage.jsx";
+import LoginPage from "../pages/LoginPage.jsx";
 import UserService from "../services/user-service.js";
 
 function Navbar() {
@@ -23,6 +23,7 @@ function Navbar() {
     const [warehouseIsShown, setWarehouseIsShown] = useState(false);
     const [logoutIsShown, setLogoutIsShown] = useState(false);
     const [areaIsShown, setAreaIsShown] = useState(false);
+    const [profileIsShown, setProfileIsShown] = useState(false);
     
     const [selected , setSelected] = useState('Home');
 
@@ -74,7 +75,9 @@ function Navbar() {
                                 <NavbarItemComponent selected={selected} isShown={areaIsShown} setIsShown={setAreaIsShown} iconName={'fa-area'} iconSize={'text-xl'} iconValue={'Area'} />
                             </Link>
 
-                            
+                            <Link to="/profile" onClick={() => {setSelected('Profile')}}>
+                                <NavbarItemComponent selected={selected} isShown={profileIsShown} setIsShown={setProfileIsShown} iconName={'fa-profile'} iconSize={'text-xl'} iconValue={'Profile'} />
+                            </Link>
 
                         </div>
                         <div onClick={() => {
@@ -86,7 +89,7 @@ function Navbar() {
 
                 </div>
                 :
-                <ProfilePage />
+                <LoginPage />
             }
             {
                 is_auth && <Outlet />

@@ -103,6 +103,22 @@ class CommonService {
         }
     )
 
+    static getRowInform = createAsyncThunk(
+        'rowinform/module/id',
+        async(coming_data) => {
+            let data = {};
+            await $api.get(`/rowinform/${coming_data.module}/${coming_data.id}`)
+            .then((response) => {
+                data.status = response.status;
+                data.data = response.data;
+            }).catch((err) => {
+                data.status = err.response.status;
+                data.data = err.response.data;
+            });
+            return data;
+        }
+    )
+
 
 }
 

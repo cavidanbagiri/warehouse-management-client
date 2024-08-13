@@ -14,7 +14,6 @@ class WarehouseService {
             }).catch((err) => {
                 console.log('fetch warehouse data Error happen : ', err);
             });
-            console.log('object data is : ', data);
             return data;
         }
     );

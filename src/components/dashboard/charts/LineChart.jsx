@@ -1,0 +1,25 @@
+// components/LineChart.js
+import React from "react";
+import { Line } from "react-chartjs-2";
+function LineChart({ chartData }) {
+  return (
+    <div className="flex flex-col justify-around items-around w-full h-full ">
+      <h2 className='text-center font-bold text-3xl'>Material Type Analyz</h2>
+      <Line
+        data={chartData}
+        options={{
+          plugins: {
+            title: {
+              display: false,
+              text: "Users Gained between 2016-2020"
+            },
+            legend: {
+              display: false
+            }
+          }
+        }}
+      />
+    </div>
+  );
+}
+export default LineChart;

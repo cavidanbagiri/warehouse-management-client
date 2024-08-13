@@ -10,6 +10,13 @@ const initialState = {
     type_count: [],
     groups: [],
 
+
+    row_inform: {
+        toggle: false,
+        pending: false,
+        data: {},
+    },
+
     filtered_groups: [],
 
     material_code:{
@@ -27,7 +34,11 @@ export const commonSlice = createSlice({
                 return el.group_name.includes(action.payload);
             })
             state.filtered_groups = dummy;
-        }
+        },
+
+        rowInformToggleTrue: (state) => {state.row_inform.toggle = true; },
+        rowInformToggleFalse: (state) => {state.row_inform.toggle = false; },
+
     },
     extraReducers: (builder) => {
         
@@ -82,10 +93,23 @@ export const commonSlice = createSlice({
                 state.material_code.material_codes = action.payload.data;
             }
         })
+
+        // Row Information
+
+        builder.addCase(CommonService.getRowInform.pending, (state, action) => {
+            state.row_inform.pending = true;
+        })
+        builder.addCase(CommonService.getRowInform.fulfilled, (state, action) => {
+            state.row_inform.pending = false;
+            if(action.payload.status === 200){
+                state.row_inform.data = action.payload.data;
+            }
+        })
+
     }
 })
 
-export const { filterGroup } = commonSlice.actions;
+export const { filterGroup, rowInformToggleFalse, rowInformToggleTrue } = commonSlice.actions;
 
 
 export default commonSlice.reducer;
