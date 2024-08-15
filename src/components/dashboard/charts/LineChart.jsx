@@ -3,7 +3,7 @@ import React from "react";
 import { Line } from "react-chartjs-2";
 function LineChart({ chartData }) {
   return (
-    <div className="flex flex-col justify-around items-around w-full h-full ">
+    <div className="flex flex-col justify-between items-center w-full h-full ">
       <h2 className='text-center font-bold text-3xl'>Material Type Analyz</h2>
       <Line
         data={chartData}

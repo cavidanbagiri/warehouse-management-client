@@ -10,13 +10,21 @@ import PageTitleComponent from '../components/dashboard/PageTitleComponent';
 import MenuSideComponent from '../components/dashboard/MenuSideComponent';
 import StockAnalyzComponent from '../components/dashboard/StockAnalyzComponent';
 import MaterialTypeComponent from '../components/dashboard/MaterialTypeComponent';
-import TypeInformComponent from '../components/dashboard/TypeInformComponent';
+import STFAnalyzComponent from '../components/dashboard/STFAnalyzComponent';
 import GroupChartComponent from '../components/dashboard/GroupChartComponent';
-import GroupListComponent from '../components/dashboard/GroupListComponent';
+import TopCompaniesListComponent from '../components/dashboard/TopCompaniesListComponent';
 
 const DashboardPage = () => {
 
+  const dispatch = useDispatch();
+
   const user = useSelector(state => state.userSlice.user);
+
+  useEffect(() => {
+    dispatch(CommonService.getTopCompanies());
+    dispatch(CommonService.getStockAnalyz(user.projectId));
+    dispatch(CommonService.getGroupChartAnalyz(user.projectId));
+  }, [])
 
   return (
     <div style={{ fontFamily: "IBM Plex Sans", fontSize: '24px' }} className='flex flex-col  bg-gray-100 ' >
@@ -30,15 +38,15 @@ const DashboardPage = () => {
 
       <div className='grid grid-cols-11 gap-1 mt-5'>
 
-        <StockAnalyzComponent />
-
         <MaterialTypeComponent />
 
-        <TypeInformComponent />
+        <StockAnalyzComponent />
+
+        <STFAnalyzComponent />
 
         <GroupChartComponent/>
 
-        <GroupListComponent/>
+        <TopCompaniesListComponent/>
 
       </div>
 

@@ -69,7 +69,7 @@ function MaterialTypeComponent() {
     });
 
     return (
-        <div className='col-span-5 bg-white h-[510px] mx-4 p-2 rounded-xl overflow-hidden'>
+        <div className='col-span-5 bg-white h-[550px] ml-8 p-2 rounded-xl overflow-hidden'>
             <LineChart chartData={chartData} />
         </div>
     )

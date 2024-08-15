@@ -97,7 +97,6 @@ class CommonService {
                 data = response.data;
             }).catch((err) => {
                 data = null;
-                console.log('fetch groups Error happen : ', err);
             });
             return data;
         }
@@ -119,6 +118,54 @@ class CommonService {
         }
     )
 
+    static getTopCompanies = createAsyncThunk(
+        'fetchtopcompanies/',
+        async() => {
+            let data = {};
+            await $api.get('/topcompanies')
+            .then((response) => {
+                data.status = response.status;
+                data.data = response.data;
+            }).catch((err) => {
+                data.status = err.response.status;
+                data.data = err.response.data;
+            });
+            return data;
+        }
+    )
+
+
+    static getStockAnalyz = createAsyncThunk(
+        '/stockanalyz/',
+        async(projectId) => {
+            let data = {};
+            await $api.get(`/stockanalyz/${projectId}`)
+            .then((response) => {
+                data.status = response.status;
+                data.data = response.data;
+            }).catch((err) => {
+                data.status = err.response.status;
+                data.data = err.response.data;
+            });
+            return data;
+        }
+    )
+
+    static getGroupChartAnalyz = createAsyncThunk(
+        'groupchartanalyz/',
+        async(projectId) => {
+            let data = {};
+            await $api.get(`/groupchartanalyz/${projectId}`)
+            .then((response) => {
+                data.status = response.status;
+                data.data = response.data;
+            }).catch((err) => {
+                data.status = err.response.status;
+                data.data = err.response.data;
+            });
+            return data;
+        }
+    )
 
 }
 

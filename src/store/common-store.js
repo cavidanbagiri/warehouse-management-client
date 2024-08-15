@@ -10,6 +10,10 @@ const initialState = {
     type_count: [],
     groups: [],
 
+    // For Dashboard
+    top_companies: [],
+    stock_analyz: [],
+    group_chart_analyz: [],
 
     row_inform: {
         toggle: false,
@@ -95,7 +99,6 @@ export const commonSlice = createSlice({
         })
 
         // Row Information
-
         builder.addCase(CommonService.getRowInform.pending, (state, action) => {
             state.row_inform.pending = true;
         })
@@ -103,6 +106,36 @@ export const commonSlice = createSlice({
             state.row_inform.pending = false;
             if(action.payload.status === 200){
                 state.row_inform.data = action.payload.data;
+            }
+        })
+
+        // Top Companies
+        builder.addCase(CommonService.getTopCompanies.fulfilled, (state, action) => {
+            if (action.payload.status === 200) {
+                state.top_companies = action.payload.data;
+            }
+            else{
+                console.log('Internal server error ');
+            }
+        })
+
+        // Stock Analyz
+        builder.addCase(CommonService.getStockAnalyz.fulfilled, (state, action) => {
+            if (action.payload.status === 200) {
+                state.stock_analyz = action.payload.data;
+            }
+            else{
+                console.log('Internal server error ');
+            }
+        })
+
+        // Group Chart Analyz
+        builder.addCase(CommonService.getGroupChartAnalyz.fulfilled, (state, action) => {
+            if (action.payload.status === 200) {
+                state.group_chart_analyz = action.payload.data;
+            }
+            else{
+                console.log('Internal server error ');
             }
         })
 

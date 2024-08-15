@@ -7,6 +7,7 @@ axios.defaults.withCredentials = true;
 const initialState = {
     user: {
         email: 'unknown',
+        username: '',
         projectId: 0,
         user_status: 0,
         is_admin: false,
@@ -33,13 +34,15 @@ export const userSlice = createSlice({
             if (action.payload !== null) {
                 state.user = action.payload.user;
                 state.is_auth = true;
-                state.user.is_admin = action.payload.user.is_admin
-                state.user.projectId = action.payload.user.projectId
                 localStorage.setItem('token', action.payload.access);
                 localStorage.setItem('is_admin', action.payload.user.is_admin);
                 localStorage.setItem('status_code', action.payload.user.status_code)
                 localStorage.setItem('projectId', action.payload.user.projectId);
+                localStorage.setItem('username', action.payload.user.username);
+                state.user.is_admin = action.payload.user.is_admin;
+                state.user.projectId = action.payload.user.projectId;
                 state.user.user_status = action.payload.user.status_code;
+                state.user.username = action.payload.user.username;
                 state.is_login_error = false;
             }
             else {
@@ -52,11 +55,12 @@ export const userSlice = createSlice({
                 localStorage.setItem('is_admin', action.payload.user.is_admin);
                 localStorage.setItem('status_code', action.payload.user.status_code)
                 localStorage.setItem('projectId', action.payload.user.projectId);
+                localStorage.setItem('username', action.payload.user.username);
                 state.user = action.payload.user;
                 state.user.projectId = action.payload.user.projectId
                 state.user.user_status = action.payload.user.status_code;
                 state.user.is_admin = action.payload.user.is_admin;
-
+                state.user.username = action.payload.user.username;
                 state.is_auth = true;
             }
         })
