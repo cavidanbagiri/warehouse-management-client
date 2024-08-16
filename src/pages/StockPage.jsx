@@ -295,9 +295,12 @@ const StockPage = () => {
                                 else if (selected_items.length === 0) {
                                     showMessageBoxMessageHandle('return', 'Please choose at least one column for returning to warehouse');
                                 }
-                                else {
+                                else if(user.is_admin || user.status_code === 1000 || user.status_code === 10000 || user.status_code === 10001){
                                     dispatch(setOrderSelectionReturnToggleTrue());
                                     dispatch(StockService.getById(selected_items[0]));
+                                }
+                                else {
+                                    showMessageBoxMessageHandle('return', 'You dont have permissions for this operation');
                                 }
                             }}
                                 className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400 hover:bg-orange-400 hover:text-white duration-200' >Return</button>
@@ -311,9 +314,12 @@ const StockPage = () => {
                                 else if (selected_items.length === 0) {
                                     showMessageBoxMessageHandle('update', 'Please choose at least one column');
                                 }
-                                else {
+                                else if(user.is_admin || user.status_code === 1000 || user.status_code === 10000 || user.status_code === 10001){
                                     dispatch(setOrderSelectionUpdateToggleTrue());
                                     dispatch(StockService.getById(selected_items[0]));
+                                }
+                                else {
+                                    showMessageBoxMessageHandle('update', 'You dont have permissions for this operation');
                                 }
                             }}
                                 className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400 hover:bg-orange-400 hover:text-white duration-200' >Update</button>

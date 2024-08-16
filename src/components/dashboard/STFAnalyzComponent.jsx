@@ -16,7 +16,7 @@ function STFAnalyzComponent() {
         <h2 className='w-full text-center font-bold text-3xl'>STF Analyz</h2>
         <div className='flex flex-col items-between justify-around  w-full h-full'>
           {
-            type_count.map((item, index) => {
+            type_count.length>0 ? type_count.map((item, index) => {
               return (
                 <div key={index} className='flex items-center justify-between mt-2'>
                   <div className='w-[130px]'>
@@ -30,6 +30,10 @@ function STFAnalyzComponent() {
                 </div>
               )
             })
+            :
+            <div className='text-center'>
+              <span className='text-gray-400 text-5xl font-bold'>No Data</span>
+            </div>
           }
         </div>
       </div>

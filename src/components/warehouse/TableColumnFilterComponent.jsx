@@ -5,6 +5,8 @@ import Switch from '@mui/material/Switch';
 
 import {setWarehouseColumnFilter} from "../../store/warehouse-store.js";
 
+import '../../css/dropdown.css';
+
 function TableColumnFilterComponent() {
 
     const dispatch = useDispatch();
@@ -13,7 +15,7 @@ function TableColumnFilterComponent() {
 
     return (
        <div
-           className='flex flex-col absolute top-10 h-96 w-96 z-10 rounded-lg shadow-2xl bg-white p-2 border overflow-y-scroll '>
+           className='dropdown-box-animation flex flex-col absolute top-10 h-96 w-96 z-10 rounded-xl shadow-2xl bg-white p-2 border overflow-y-scroll '>
             <span style={{fontFamily: 'Saira Condensed'}} className=' px-2 w-full my-1 text-2xl'>Filter Column</span>
            <ul style={{fontFamily: 'IBM Plex Sans'}}
                className='text-black font-medium'>

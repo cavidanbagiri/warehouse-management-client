@@ -17,7 +17,7 @@ import AdminModal from '../layouts/AdminModal';
 
 import LoadingButton from '@mui/lab/LoadingButton';
 
-import {CURRENCIES} from '../constants/values';
+import { CURRENCIES } from '../constants/values';
 
 import { LuRefreshCw } from "react-icons/lu";
 
@@ -46,8 +46,8 @@ function CreateMaterialPage() {
   const [message, setMessage] = useState('');
   const [isCompanyDropDown, setIsCompanyDropDown] = useState(false);
   const [isUserDropDown, setIsUserDropDown] = useState(false);
-  const [company_refresh_message, setCompanyRefreshMessage ] = useState(false);
-  const [ordered_refresh_message, setOrderedRefreshMessage ] = useState(false);
+  const [company_refresh_message, setCompanyRefreshMessage] = useState(false);
+  const [ordered_refresh_message, setOrderedRefreshMessage] = useState(false);
   const [doc_num, setDocNum] = useState('');
   const [currency, setCurrency] = useState('rub');
 
@@ -63,10 +63,9 @@ function CreateMaterialPage() {
   })
 
   function addCompany() {
-    console.log('object');
-    if(user.is_admin || user.user_status == 10000)
+    if (user.is_admin || user.status_code === 1000 || user.status_code === 10000 || user.status_code === 10001 )
       setAddCompany(true);
-    else{
+    else {
       setMessage('You dont have permissions for this operation');
       dispatch(setShowErrorTrue());
       setTimeout(() => {
@@ -75,9 +74,9 @@ function CreateMaterialPage() {
     }
   }
   function addOrdered() {
-    if(user.is_admin || user.user_status == 10000)
+    if (user.is_admin || user.status_code === 1000 || user.status_code === 10000 || user.status_code === 10001 )
       setAddOrdered(true);
-    else{
+    else {
       setMessage('You dont have permissions for this operation');
       dispatch(setShowErrorTrue());
       setTimeout(() => {
@@ -86,9 +85,9 @@ function CreateMaterialPage() {
     }
   }
   function addGroup() {
-    if(user.is_admin || user.user_status == 10000)
+    if (user.is_admin || user.status_code === 1000 || user.status_code === 10000 || user.status_code === 10001 )
       setAddGroup(true);
-    else{
+    else {
       setMessage('You dont have permissions for this operation');
       dispatch(setShowErrorTrue());
       setTimeout(() => {
@@ -97,9 +96,9 @@ function CreateMaterialPage() {
     }
   }
   function addMaterialCode() {
-    if(user.is_admin || user.user_status == 10000)
+    if (user.is_admin || user.status_code === 1000 || user.status_code === 10000 || user.status_code === 10001 )
       setAddMaterialCode(true);
-    else{
+    else {
       setMessage('You dont have permissions for this operation');
       dispatch(setShowErrorTrue());
       setTimeout(() => {
@@ -108,7 +107,7 @@ function CreateMaterialPage() {
     }
   }
 
-  function addRows() {dispatch(addTableCheck());}
+  function addRows() { dispatch(addTableCheck()); }
   function delRows() {
     if (table.length > 1) {
       dispatch(delRow());
@@ -130,53 +129,65 @@ function CreateMaterialPage() {
   }
 
   function postFunc() {
-    let cond = true;
-    if (company.company_name === '') {
-      setMessage(`Company name must be selected`)
-      cond = false;
-    }
-    else if (ordered.ordered_name === '') {
-      setMessage(`Ordered name must be selected`);
-      cond = false;
-    }
-    if(table.length === 0){
-      setMessage('Table is empty');
-      cond = false;
-    }
-    else{
-      for (let i of table) {
-        if (i.material_name === "") {
-          setMessage(`In ${i.ss} row, Material name must be selected`);
-          cond = false;
-          break;
-        }
-        else if (i.qty <= 0) {
-          setMessage(`In ${i.ss} row, Quantity is not valid`);
-          cond = false;
-          break;
-        }
-        else if (i.material_code_id === ''){
-          setMessage(`In ${i.ss} row, Material Code doesnt entered`);
-          cond = false;
-          break;
+    if (user.is_admin || user.status_code === 1000 || user.status_code === 10000 || user.status_code === 10001 ) {
+      let cond = true;
+      if (company.company_name === '') {
+        setMessage(`Company name must be selected`)
+        cond = false;
+      }
+      else if (ordered.ordered_name === '') {
+        setMessage(`Ordered name must be selected`);
+        cond = false;
+      }
+      if (table.length === 0) {
+        setMessage('Table is empty');
+        cond = false;
+      }
+      else {
+        for (let i of table) {
+          if (i.material_name === "") {
+            setMessage(`In ${i.ss} row, Material name must be selected`);
+            cond = false;
+            break;
+          }
+          else if (i.qty <= 0) {
+            setMessage(`In ${i.ss} row, Quantity is not valid`);
+            cond = false;
+            break;
+          }
+          else if (i.material_code_id === '') {
+            setMessage(`In ${i.ss} row, Material Code doesnt entered`);
+            cond = false;
+            break;
+          }
         }
       }
-    }
-    if (cond) {
-      const default_data = { companyId: company.companyId, orderedId: ordered.orderedId, document: doc_num, currency: currency };
-      let common_data = {
-        default_data: default_data,
-        table_data: table
+      if (cond) {
+        const default_data = { companyId: company.companyId, orderedId: ordered.orderedId, document: doc_num, currency: currency };
+        let common_data = {
+          default_data: default_data,
+          table_data: table
+        }
+        dispatch(CreateTableService.receiveWarehouse(common_data));
+
       }
-      dispatch(CreateTableService.receiveWarehouse(common_data));
+      else {
+        dispatch(setShowErrorTrue());
+        setTimeout(() => {
+          dispatch(setShowErrorFalse());
+        }, 2000)
+      }
 
     }
     else {
+      setMessage('You dont have permissions for this operation');
       dispatch(setShowErrorTrue());
       setTimeout(() => {
         dispatch(setShowErrorFalse());
       }, 2000)
     }
+
+
   }
   const listenCompany = (val, second_val) => {
     setCompany((each) => ({
@@ -195,10 +206,10 @@ function CreateMaterialPage() {
     setIsUserDropDown(!isUserDropDown);
   }
   const filterChange = (event, comp) => {
-    if(comp === 'username'){
+    if (comp === 'username') {
       dispatch(CommonService.filterOrdereds(event.target.value));
     }
-    else if(comp === 'company_name'){
+    else if (comp === 'company_name') {
       dispatch(CommonService.filterCompanies(event.target.value));
     }
   }
@@ -211,8 +222,8 @@ function CreateMaterialPage() {
     setOrderedRefreshMessage(true)
   }
 
-  function handleEscape(e){
-    if(e.key === 'Escape'){
+  function handleEscape(e) {
+    if (e.key === 'Escape') {
       setIsCompanyDropDown(false);
       setIsUserDropDown(false)
     }
@@ -232,20 +243,20 @@ function CreateMaterialPage() {
     setTotalPrice(price);
   },);
 
-  useEffect(()=>{
-    if(company_refresh_message){
-      setTimeout(()=>{
+  useEffect(() => {
+    if (company_refresh_message) {
+      setTimeout(() => {
         setCompanyRefreshMessage(false);
-      },1500,)
+      }, 1500,)
     }
-    if(ordered_refresh_message){
-      setTimeout(()=>{
+    if (ordered_refresh_message) {
+      setTimeout(() => {
         setOrderedRefreshMessage(false);
-      },1500)
+      }, 1500)
     }
-  },[company_refresh_message, ordered_refresh_message])
+  }, [company_refresh_message, ordered_refresh_message])
 
-  useEffect(()=>{document.addEventListener('keydown', handleEscape, true); },[])
+  useEffect(() => { document.addEventListener('keydown', handleEscape, true); }, [])
 
   return (
 
@@ -259,7 +270,7 @@ function CreateMaterialPage() {
         show_message && <MessageBox message={show_message_text} color={show_message_color} />
       }
 
-      
+
       { // Checked
         add_company && <AdminModal title={'Add Company'} closeModal={closeModal} show_component={'company'} />
       }
@@ -307,15 +318,15 @@ function CreateMaterialPage() {
         <div className='flex flex-row justify-between items-center px-4'>
           <span style={{ fontWeight: 500 }} className='py-2 px-1 rounded-lg text-2xl text-start my-2'>Work With Tables</span>
           <div className='text-xs' style={{ fontWeight: 500 }}>
-            
+
             <button onClick={addCompany} className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:bg-orange-400 hover:text-white duration-200' >Add Company</button>
             <button onClick={addOrdered} className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:bg-orange-400 hover:text-white duration-200' >Add Ordered</button>
             <button onClick={addGroup} className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:bg-orange-400 hover:text-white duration-200' >Add Group</button>
             <button onClick={addMaterialCode} className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:bg-orange-400 hover:text-white duration-200' >Add Material Code</button>
-            
+
             <button onClick={addRows} className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:bg-orange-400 hover:text-white duration-200' >Add Row</button>
             <button onClick={delRows} className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:bg-orange-400 hover:text-white duration-200' >Delete Row</button>
-            
+
             <button onClick={postFunc} className='py-2 px-5 border rounded-md border-gray-400 bg-white text-green-500 mx-2 hover:bg-green-500 hover:text-white duration-200' >Insert From Excel </button>
           </div>
         </div>
@@ -331,7 +342,7 @@ function CreateMaterialPage() {
               </span>
               <span className='bg-gray-200 h-2 rounded-lg w-36'>
               </span>
-              <span style={{fontWeight: 600}} className='text-green-500 text-sm ml-4'>
+              <span style={{ fontWeight: 600 }} className='text-green-500 text-sm ml-4'>
                 {type_data.Project}
               </span>
             </div>
@@ -341,7 +352,7 @@ function CreateMaterialPage() {
               </span>
               <span className='bg-gray-200 h-2 rounded-lg w-36'>
               </span>
-              <span style={{fontWeight: 600}} className='text-green-500 text-sm ml-4'>
+              <span style={{ fontWeight: 600 }} className='text-green-500 text-sm ml-4'>
                 {type_data.Fixture}
               </span>
             </div>
@@ -351,7 +362,7 @@ function CreateMaterialPage() {
               </span>
               <span className='bg-gray-200 h-2 rounded-lg w-36'>
               </span>
-              <span style={{fontWeight: 600}} className='text-green-500 text-sm ml-4'>
+              <span style={{ fontWeight: 600 }} className='text-green-500 text-sm ml-4'>
                 {type_data.Consumable}
               </span>
             </div>
@@ -360,13 +371,13 @@ function CreateMaterialPage() {
 
           <div className='flex flex-col items-end'>
             <div className='px-4 text-sm flex items-center'>
-              <span style={{fontWeight: 500}} className='text-xs text-gray-400'>Select Currency</span>
+              <span style={{ fontWeight: 500 }} className='text-xs text-gray-400'>Select Currency</span>
               <select
-                  className=' mx-2 text-xs border-2 border-orange-400 text-orange-400 font-bold outline-none rounded-md'
-                  defaultValue={'rub'} name="" id="" onChange={(e) => {
-                setCurrency(e.target.value);
-              }}>
-                
+                className=' mx-2 text-xs border-2 border-orange-400 text-orange-400 font-bold outline-none rounded-md'
+                defaultValue={'rub'} name="" id="" onChange={(e) => {
+                  setCurrency(e.target.value);
+                }}>
+
                 {
                   CURRENCIES.map((each, index) => (
                     <option key={index} value={each}>{each}</option>
@@ -412,7 +423,7 @@ function CreateMaterialPage() {
 
         {/* Default Table Information */}
         <div className='flex items-center justify-between mb-3 px-5'>
-          
+
           {/* Doc, Company, Ordered Dropdown */}
           <div className='flex items-center'>
 
@@ -423,7 +434,7 @@ function CreateMaterialPage() {
                 setDocNum(e.target.value);
               }} />
             </div>
-            
+
             {/* Company Side */}
             <div className='relative mr-6'>
               <p className='text-xs text-gray-400 pl-1'>Company</p>
@@ -437,12 +448,12 @@ function CreateMaterialPage() {
                   data={companies}
                   text_name={'company_name'}
                   input_name={'Company...'}
-                  listenFunc={listenCompany} 
+                  listenFunc={listenCompany}
                   filterChange={filterChange}
-                  />
+                />
               }
             </div>
-            
+
             {/* Ordered Side */}
             <div className='relative'>
               <p className='text-xs text-gray-400 pl-1'>Ordered</p>
@@ -456,29 +467,29 @@ function CreateMaterialPage() {
                   data={ordereds}
                   text_name={'username'}
                   input_name={'Orderer...'}
-                  listenFunc={listenUser} 
+                  listenFunc={listenUser}
                   filterChange={filterChange}
-                  />
+                />
               }
             </div>
-            
+
           </div>
 
           {/* Ordered Dropdown */}
           <div className='flex '>
 
             <div className='flex px-2 mt-3 items-center hover:cursor-pointer' onClick={refreshCompany}>
-              <LuRefreshCw className='text-green-500'/>
+              <LuRefreshCw className='text-green-500' />
               <span className='text-sm text-gray-700 ml-2 font-bold' >Companies</span>
             </div>
 
             <div className='flex px-2 mt-3 items-center hover:cursor-pointer' onClick={refreshOrdereds}>
-              <LuRefreshCw className='text-green-500'/>
+              <LuRefreshCw className='text-green-500' />
               <span className='text-sm text-gray-700 ml-2 font-bold' >Ordereds</span>
             </div>
-            
+
           </div>
-        
+
         </div>
 
 

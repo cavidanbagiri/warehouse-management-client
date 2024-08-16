@@ -8,6 +8,7 @@ import adminSlice from './admin-store';
 import warehouseSlice from './warehouse-store';
 import stockSlice from "./stock-store.js";
 import areaSlice from './area-store.js';
+import profileSlice from './profile-store.js';
 
 
 export const store = configureStore({
@@ -19,7 +20,8 @@ export const store = configureStore({
     adminSlice,
     warehouseSlice,
     stockSlice,
-    areaSlice
+    areaSlice,
+    profileSlice,
   },
   // middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
 })

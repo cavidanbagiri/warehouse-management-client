@@ -8,6 +8,7 @@ import { PiStackThin } from "react-icons/pi";
 import { CiLogout } from "react-icons/ci";
 import { PiFactoryThin } from "react-icons/pi";
 
+import '../../css/dropdown.css';
 
 function NavbarItemComponent(props) {
     return (
@@ -25,11 +26,13 @@ function NavbarItemComponent(props) {
             </span>
             {
                 props.isShown &&
-                <span
-                    style={{fontWeight: 600}}
-                    className="text-ellipsis absolute top-3 left-10 ml-1 bg-slate-900 py-2 px-4 text-white border text-md rounded-md flex">
-                    {props.iconValue}
-                </span>
+                <div>
+                    <span
+                        style={{fontWeight: 600}}
+                        className="text-ellipsis tooltip-box-animation absolute top-3 left-10 ml-1 bg-slate-900 py-3 px-5 text-white border text-xl rounded-md flex">
+                        {props.iconValue}
+                    </span>
+                </div>
 
             }
 

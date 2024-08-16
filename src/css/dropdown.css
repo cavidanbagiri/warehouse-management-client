@@ -1,13 +1,57 @@
+
+.materialcodedropdown-box-animation {
+    animation: materialcodedropdown-box-frame 0.4s;
+}
+@keyframes materialcodedropdown-box-frame {
+    from {
+        opacity: 0;
+        /* width: 0rem;
+        height: 0px; */
+    }
+
+    to {
+        opacity: 1;
+        /* width: 48rem;
+        height: 24rem; */
+    }
+}
+
+
+.dropdown-box-animation {
+    animation: dropdown-box-frame 0.4s;
+}
+@keyframes dropdown-box-frame {
+    from {
+        opacity: 0;
+        /* width: 0rem;
+        height: 0px; */
+    }
+
+    to {
+        opacity: 1;
+        /* width: 24rem;
+        height: 24rem; */
+    }
+}
+
+
+.tooltip-box-animation {
+    animation: tooltip-box-frame 0.5s;
+}
+@keyframes tooltip-box-frame {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+
 .message-box-animation {
     animation: message-box-frame 0.5s;
 }
-
-.selected-row-animation {
-    animation: selected-row-frame 0.5s;
-}
-
-
-
 @keyframes message-box-frame {
     from {
         transform: translateX(120%);
@@ -19,6 +63,10 @@
 }
 
 
+
+.selected-row-animation {
+    animation: selected-row-frame 0.5s;
+}
 @keyframes selected-row-frame {
     from {
         transform: translateY(120%);

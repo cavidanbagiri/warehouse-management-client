@@ -19,6 +19,7 @@ import SpinnerComponent from '../components/common/SpinnerComponent.jsx';
 
 import { IoFilterOutline } from "react-icons/io5";
 
+import CommonService from '../services/common.services.js';
 
 import {
     setOrderSelectionUpdateToggleTrue,
@@ -29,9 +30,9 @@ import {
     setCertificateAndPassportMessageBoxFalse,
     setUploadCertificateAndPassportMessageBoxFalse
 } from "../store/warehouse-store.js";
-
 import { rowInformToggleTrue } from "../store/common-store.js";
-import CommonService from '../services/common.services.js';
+
+
 
 function WarehousePage() {
 
@@ -227,9 +228,12 @@ function WarehousePage() {
                                 if (selected_items.length === 0) {
                                     showMessageBoxMessageHandle('addstock', 'Please, Choose at least one row to adding stock');
                                 }
-                                else {
+                                else if(user.is_admin || user.status_code === 1000 || user.status_code === 10000 || user.status_code === 10001){
                                     dispatch(addStockToggleTrue());
                                     dispatch(WarehouseService.fetchSelectedItemsById(selected_items));
+                                }
+                                else {
+                                    showMessageBoxMessageHandle('addstock', 'Dont have authorization for adding stock');
                                 }
                             }}
                                 className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400  hover:bg-orange-400 hover:text-white duration-200' >Add To Stock</button>
@@ -241,9 +245,12 @@ function WarehousePage() {
                                 else if (selected_items.length === 0) {
                                     showMessageBoxMessageHandle('update', 'Please Choose at least one row');
                                 }
-                                else {
+                                else if(user.is_admin || user.status_code === 1000 || user.status_code === 10000 || user.status_code === 10001){
                                     dispatch(setOrderSelectionUpdateToggleTrue());
                                     dispatch(WarehouseService.getPOById(selected_items[0]));
+                                }
+                                else {
+                                    showMessageBoxMessageHandle('update', 'Dont have authorization for updating');
                                 }
                             }}
                                 className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400 hover:bg-orange-400 hover:text-white duration-200' >Update Row</button>
@@ -274,7 +281,7 @@ function WarehousePage() {
                         </div>
 
                         {/* Table Column Name Section */}
-                        <div className='flex justify-end items-center relative text-xs w-full px-4 mt-8' style={{ fontWeight: 600 }}>
+                        <div className=' flex justify-end items-center relative text-xs w-full px-4 mt-8' style={{ fontWeight: 600 }}>
                             <span onClick={() => {
                                 show_table_column_component ? setShowTableColumnCompoenent(false) : setShowTableColumnCompoenent(true);
                             }}

@@ -11,6 +11,7 @@ const initialState = {
         projectId: 0,
         user_status: 0,
         is_admin: false,
+        profile_image: '',
     },
     is_auth: false,
     is_login_error: false,
@@ -39,10 +40,14 @@ export const userSlice = createSlice({
                 localStorage.setItem('status_code', action.payload.user.status_code)
                 localStorage.setItem('projectId', action.payload.user.projectId);
                 localStorage.setItem('username', action.payload.user.username);
+                localStorage.setItem('status_name', action.payload.user.status_name);
+                localStorage.setItem('profile_image', action.payload.user.profileImage);
                 state.user.is_admin = action.payload.user.is_admin;
                 state.user.projectId = action.payload.user.projectId;
                 state.user.user_status = action.payload.user.status_code;
                 state.user.username = action.payload.user.username;
+                state.user.status_name = action.payload.user.status_name;
+                state.user.profile_image = action.payload.user.profileImage;
                 state.is_login_error = false;
             }
             else {
@@ -56,11 +61,18 @@ export const userSlice = createSlice({
                 localStorage.setItem('status_code', action.payload.user.status_code)
                 localStorage.setItem('projectId', action.payload.user.projectId);
                 localStorage.setItem('username', action.payload.user.username);
+                localStorage.setItem('status_name', action.payload.user.status_name);
+                localStorage.setItem('profile_image', action.payload.user.profileImage);
                 state.user = action.payload.user;
                 state.user.projectId = action.payload.user.projectId
                 state.user.user_status = action.payload.user.status_code;
                 state.user.is_admin = action.payload.user.is_admin;
                 state.user.username = action.payload.user.username;
+                state.user.status_name = action.payload.user.status_name;
+                if(action.payload.user.profileImage !== null){
+                    state.user.profile_image = localStorage.getItem('profile_image');
+                    console.log('enter here');
+                }
                 state.is_auth = true;
             }
         })
