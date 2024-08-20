@@ -14,6 +14,8 @@ import StockService from "../../services/stock-service.js";
 import CustomLoadingButton from "../common/CustomLoadingButton.jsx";
 import SpinnerComponent from '../common/SpinnerComponent.jsx';
 
+import { AnimatePresence, motion } from 'framer-motion';
+
 function OrderUpdateComponent() {
 
     const dispatch = useDispatch();
@@ -42,7 +44,7 @@ function OrderUpdateComponent() {
             cond = false;
             dispatch(setOrderReturnMessageBoxTrue());
             dispatch(setOrderReturnColorCond({ color: 'bg-red-500' }));
-            dispatch(setOrderReturnErrorMessage({ message: 'Entering Amount greater than stock' }));
+            dispatch(setOrderReturnErrorMessage({ message: 'Girilen miktar stock miktarindan buyuk olmamali' }));
             return
         }
         if (cond) {
@@ -83,13 +85,16 @@ function OrderUpdateComponent() {
 
     return (
 
-        <div className='flex flex-row justify-between z-10 fixed top-0 right-0 w-full h-full bg-black bg-opacity-30'>
+        <div exit={{ opacity: 0, x: -1000, }} initial={{ opacity: 0, x: 1000, }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.3 }} 
+        className='flex flex-row justify-between z-10 fixed top-0 right-0 w-full h-full bg-black bg-opacity-30'>
             <div className='w-1/2' ></div>
-            <div className='flex flex-col bg-white w-1/2' >
+            <AnimatePresence>
+            <motion.div exit={{ opacity: 0, x: -1000, }} initial={{ opacity: 0, x: 1000, }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.3 }}
+            className='flex flex-col bg-white w-1/2' >
                 {/* Close and Title Component Section */}
                 <div className='flex justify-between p-5 text-end'>
                     <span style={{ fontWeight: 600, fontFamily: 'Open Sans' }} className='text-3xl'>
-                        Order Return Section
+                        Malzeme Geri Al
                     </span>
                     <span
                         onClick={() => {
@@ -107,7 +112,7 @@ function OrderUpdateComponent() {
 
                         {/* Material Name Side */}
                         <div className='flex items-center justify-between mt-3'>
-                            <span className='w-1/3'>Material Name </span>
+                            <span className='w-1/3'>Malzeme Ismi </span>
                             <div className='relative w-full flex justify-end'>
                                 <span className={''}>
                                     {material_name}
@@ -117,7 +122,7 @@ function OrderUpdateComponent() {
 
                         {/* Material Qty Side */}
                         <div className='flex items-center justify-between mt-3'>
-                            <span className='w-1/3'>Quantity </span>
+                            <span className='w-1/3'>Sayisi </span>
                             <div className='relative'>
                                 {qty}
                             </div>
@@ -125,7 +130,7 @@ function OrderUpdateComponent() {
 
                         {/* Material Stock Side */}
                         <div className='flex items-center justify-between mt-3'>
-                            <span className='w-1/3'>Stock </span>
+                            <span className='w-1/3'>Stok Miktari </span>
                             <div className='relative'>
                                 {stock}
                             </div>
@@ -133,7 +138,7 @@ function OrderUpdateComponent() {
 
                         {/* Material Stock Side */}
                         <div className='flex items-center justify-between mt-3'>
-                            <span className='w-1/3'>Return Amount </span>
+                            <span className='w-1/3'>Gonderiklen Miktar </span>
                             <div className='relative'>
                                 <input type="number" value={return_amount}
                                     className={'border p-2'}
@@ -144,12 +149,12 @@ function OrderUpdateComponent() {
                                         else if (e.target.value < 0) {
                                             dispatch(setOrderReturnMessageBoxTrue());
                                             dispatch(setOrderReturnColorCond({ color: 'bg-red-500' }));
-                                            dispatch(setOrderReturnErrorMessage({ message: 'Entering Amount greater than stock' }));
+                                            dispatch(setOrderReturnErrorMessage({ message: 'Girilen miktar stock miktarindan fazla olamaz' }));
                                         }
                                         else {
                                             dispatch(setOrderReturnMessageBoxTrue());
                                             dispatch(setOrderReturnColorCond({ color: 'bg-red-500' }));
-                                            dispatch(setOrderReturnErrorMessage({ message: 'Entering Amount greater than stock' }));
+                                            dispatch(setOrderReturnErrorMessage({ message: 'Girilen miktar stock miktarindan fazla olamaz' }));
                                         }
                                     }} />
                             </div>
@@ -157,7 +162,7 @@ function OrderUpdateComponent() {
 
                         {/* Matterial Type Side */}
                         <div className='flex items-center justify-between mt-3'>
-                            <span className='w-1/3'>Unit </span>
+                            <span className='w-1/3'>Birim </span>
                             <div className='relative'>
                                 {unit}
                             </div>
@@ -165,7 +170,7 @@ function OrderUpdateComponent() {
 
                         {/* Serial Number Side */}
                         <div className='flex items-center justify-between mt-3'>
-                            <span className='w-1/3'>Serial Number </span>
+                            <span className='w-1/3'>Seri Numarasi </span>
                             <div className='relative w-full'>
                                 <div className='relative'>
                                     {serial_number}
@@ -175,7 +180,7 @@ function OrderUpdateComponent() {
 
                         {/* Material ID Side */}
                         <div className='flex items-center justify-between mt-3'>
-                            <span className='w-1/3'>Material ID </span>
+                            <span className='w-1/3'>Malzeme ID Kodu </span>
                             <div className='relative w-full'>
                                 <div className='relative'>
                                     {material_id}
@@ -189,7 +194,7 @@ function OrderUpdateComponent() {
                             !order_return.order_return_pending ?
                                 <div className='flex justify-end mt-10'>
                                     <button onClick={postFunc}
-                                        className='px-6 py-3 bg-green-500 rounded-lg text-white'>Post</button>
+                                        className='px-6 py-3 bg-green-500 rounded-lg text-white'>Onayla</button>
                                 </div>
                                 :
                                 <CustomLoadingButton />
@@ -197,8 +202,10 @@ function OrderUpdateComponent() {
                     </div>
                 }
 
-            </div>
+            </motion.div>
+            </AnimatePresence>
         </div>
+
     )
 }
 

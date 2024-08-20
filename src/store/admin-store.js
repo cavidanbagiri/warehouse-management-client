@@ -141,15 +141,15 @@ export const adminSlice = createSlice({
             state.ordered.pending = false;
             if (action.payload.status === 201) {
                 state.ordered.status = 1;
-                state.ordered.message = 'New Ordered Created Successfully';
+                state.ordered.message = 'Siparisci Olusturuldu';
             }
             else if (action.payload.status === 500) {
                 state.ordered.status = 0;
-                state.ordered.message = 'Ordered Already Exists';
+                state.ordered.message = 'Bu Siparisci Zaten Mevcut';
             }
             else {
                 state.ordered.status = 0;
-                state.ordered.message = 'Ordered Creation Failed';
+                state.ordered.message = 'Siparisci Olusturulamadi';
             }
         })
         builder.addCase(AdminService.fetchOrdereds.fulfilled, (state, action) => {
@@ -165,7 +165,7 @@ export const adminSlice = createSlice({
             state.user.pending = false;
             if (action.payload.status === 201) {
                 state.user.status = 1;
-                state.user.message = 'New User Created Successfully';
+                state.user.message = 'Kullanici Basariyla Olusturuldu';
             }
             else if (action.payload.status === 400) {
                 state.user.status = 0;
@@ -173,7 +173,7 @@ export const adminSlice = createSlice({
             }
             else {
                 state.user.status = 0;
-                state.user.message = 'User Creation Failed';
+                state.user.message = 'Kullanici Olusturulamadi';
             }
         })
         builder.addCase(AdminService.fetchUsers.fulfilled, (state, action) => {
@@ -189,15 +189,15 @@ export const adminSlice = createSlice({
             state.company.pending = false;
             if (action.payload.status === 201) {
                 state.company.status = 1;
-                state.company.message = 'New Company Created Successfully';
+                state.company.message = 'Yeni Firma Basariyla Olusturuldu';
             }
             else if (action.payload.status === 500) {
                 state.company.status = 0;
-                state.company.message = 'Company Already Exists';
+                state.company.message = 'Bu Firma Zaten Mevcut';
             }
             else {
                 state.company.status = 0;
-                state.company.message = 'Company Creation Failed';
+                state.company.message = 'Firma Olusturulamadi';
             }
         })
         builder.addCase(AdminService.fetchCompanies.fulfilled, (state, action) => {
@@ -214,15 +214,15 @@ export const adminSlice = createSlice({
             state.create_group_message_cond = true;
             if (action.payload.status === 201) {
                 state.group.status = 1;
-                state.group.message = 'New Group Created Successfully';
+                state.group.message = 'Yeni Grup Basariyla Olusturuldu';
             }
             else if (action.payload.status === 500) {
                 state.group.status = 0;
-                state.group.message = 'Group Already Exists';
+                state.group.message = 'Bu Grup Zaten Mevcut';
             }
             else {
                 state.group.status = 0;
-                state.group.message = 'Group Creation Failed';
+                state.group.message = 'Grup Olusturulamadi';
             }
         })
         builder.addCase(AdminService.fetchGroups.fulfilled, (state, action) => {
@@ -238,7 +238,7 @@ export const adminSlice = createSlice({
             state.project.pending = false;
             if (action.payload.status === 201) {
                 state.project.status = 1;
-                state.project.message = 'New Project Created Successfully';
+                state.project.message = 'Yeni Proje Basariyla Olusturuldu';
             }
             else if (action.payload.status === 500) {
                 state.project.status = 0;
@@ -271,7 +271,7 @@ export const adminSlice = createSlice({
             state.material_code.pending = false;
             if (action.payload.status === 201) {
                 state.material_code.status = 1;
-                state.material_code.message = 'New Material Code Created Successfully';
+                state.material_code.message = 'Malzeme Kodu Basariyla Olusturuldu';
                 state.material_code.created_data = action.payload.data
             }
             else if (action.payload.status === 500) {
@@ -280,7 +280,7 @@ export const adminSlice = createSlice({
             }
             else {
                 state.material_code.status = 0;
-                state.material_code.message = 'Material Code Creation Failed';
+                state.material_code.message = 'Malzeme Kodu Olusturulamadi';
             }
         })
         builder.addCase(AdminService.fetchMaterialCodes.fulfilled, (state, action) => {

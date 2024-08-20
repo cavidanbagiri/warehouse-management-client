@@ -72,7 +72,7 @@ function OrderProvideTableHeaderComponent(props) {
                         <input onChange={
                             (event) => {
                                 if (event.target.value > props.item.stock || event.target.value < 0) {
-                                    showMessageBoxMessageHandle('provide', 'Please provide valid amount');
+                                    showMessageBoxMessageHandle('provide', 'Lutfen Gecerli Bir Miktar Giriniz');
                                 }                                
                                 else {
                                     setRow((each) => ({

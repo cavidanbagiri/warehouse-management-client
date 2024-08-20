@@ -29,7 +29,7 @@ function AddCompanyComponent() {
     function createNewCompany() {
         if (company_data.company_name.trim() === '') {
             dispatch(setCreateCompanyStatusError());
-            dispatch(setCreateCompanyMessage('Company Name Required'));
+            dispatch(setCreateCompanyMessage('Firma Ismi Gerekli'));
         }
         else {
             dispatch(AdminService.createCompany(company_data));
@@ -56,7 +56,7 @@ function AddCompanyComponent() {
     return (
         <div className='flex flex-col'>
 
-        {
+            {
                 company.status === 1 && <span className={`flex justify-end bg-green-300 w-full text-end text-green-500 font-bold p-1`}>{company.message}</span>
             }
 
@@ -77,7 +77,7 @@ function AddCompanyComponent() {
                         }} />
                 </div>
                 <div className='w-1/2 ml-2'>
-                    <span className='text-gray-400'>Phone</span>
+                    <span className='text-gray-400'>Iletisim Numarasi</span>
                     <input className='bg-gray-100 w-full my-2 px-2 py-4 rounded-lg outline-none' type="text" placeholder='+(8) 9656666666' value={company_data.phone}
                         onChange={(event) => {
                             setCompanyData((each) => ({
@@ -88,7 +88,7 @@ function AddCompanyComponent() {
                 </div>
             </div>
             <div className='text-sm my-3'>
-                <p className='text-gray-400'>Country</p>
+                <p className='text-gray-400'>Ulke Sec</p>
                 <select name="" id="" className='bg-gray-100 w-full my-2 px-2 py-4 rounded-lg text-gray-800 outline-none'
                     onChange={(event) => {
                         setCompanyData((each) => ({
@@ -102,8 +102,8 @@ function AddCompanyComponent() {
                 </select>
             </div>
             <div className='text-sm'>
-                <span className='text-gray-400'>Company Name</span>
-                <input className='bg-gray-100 w-full mb-4 mt-2 px-2 py-4 rounded-lg outline-none' type="text" placeholder='Company Name...' value={company_data.company_name}
+                <span className='text-gray-400'>Firma Ismi</span>
+                <input className='bg-gray-100 w-full mb-4 mt-2 px-2 py-4 rounded-lg outline-none' type="text" placeholder='Firma ismi' value={company_data.company_name}
                     onChange={(event) => {
                         setCompanyData((each) => ({
                             ...each,
@@ -114,15 +114,15 @@ function AddCompanyComponent() {
 
 
             </div>
-            <div className='opacity-70'>
+            <div className=''>
                 {
                     !company.pending ?
-                        <button onClick={createNewCompany} className='bg-orange-300 text-gray-800 hover:bg-orange-400 duration-200  w-full py-4 rounded-lg my-4 text-lg'>
-                            Confirm
+                        <button onClick={createNewCompany} className='bg-orange-400 text-gray-800 hover:bg-orange-300 duration-200  w-full py-4 rounded-lg my-4 text-lg'>
+                            Onayla
                         </button>
                         :
                         <LoadingButton loading variant="outlined" className='text-black w-full p-4'>
-                            Please Submit
+                            Waiting
                         </LoadingButton>
                 }
 

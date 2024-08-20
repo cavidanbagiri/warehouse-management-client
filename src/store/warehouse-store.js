@@ -50,7 +50,8 @@ const initialState = {
         ordered: false,
         po: false,
         certificate: true,
-        passport: true
+        passport: true,
+        project_name: true,
     },
 
     order_update:{

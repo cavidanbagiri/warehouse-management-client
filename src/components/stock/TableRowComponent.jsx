@@ -6,6 +6,8 @@ import Checkbox from '@mui/material/Checkbox';
 import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 
+import '../../css/dropdown.css';
+
 function TableRowComponent(props) {
 
     const dispatch = useDispatch();
@@ -66,8 +68,10 @@ function TableRowComponent(props) {
             }
             {
                 props.stock_column_filter.material_name &&
-                <td className='text-start px-1'>
-                    {props.item.material_name} 
+                <td className='text-start px-1 '>
+                    <span className='max_two_line_table_row'>
+                        {props.item.material_name} 
+                    </span>
                 </td>
             }
             {
@@ -139,6 +143,12 @@ function TableRowComponent(props) {
                 props.stock_column_filter.po &&
                 <td>
                     {props.item.po === '' ? '-' : props.item.po}
+                </td>
+            }
+            {
+                props.stock_column_filter.project_name &&
+                <td>
+                    {props.item.abbrevation_name}
                 </td>
             }
 

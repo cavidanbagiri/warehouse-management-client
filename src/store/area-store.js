@@ -56,13 +56,14 @@ const initialState = {
         material_name: true,
         qty: true,
         unit: true,
-        type: true,
+        type: false,
         group_name: true,
-        serial_number: true,
-        material_id: true,
+        serial_number: false,
+        material_id: false,
         deliver_date: true,
         provideType: true,
-        po: true,
+        po: false,
+        project_name: true,
     },
 
 }

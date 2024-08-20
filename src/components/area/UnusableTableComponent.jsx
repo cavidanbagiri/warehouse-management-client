@@ -24,9 +24,9 @@ function UnusableTable() {
     dispatch(AreaService.getUnusableMaterials(user.projectId));
   }, [dispatch])
 
-  useEffect(() => {
-    dispatch(AreaService.getServiceMaterials(user.projectId));
-  }, [dispatch])
+  // useEffect(() => {
+  //   dispatch(AreaService.getServiceMaterials(user.projectId));
+  // }, [dispatch])
 
   useEffect(() => {
     if (unusable_to_stock.message_box) {
@@ -55,7 +55,7 @@ function UnusableTable() {
       </table>
 
       {
-          unusable_materials_pending && <div className='flex justify-center items-center h-96 w-full '><SpinnerComponent /></div>
+          unusable_materials_pending && <div className='flex justify-center items-center h-96 w-full '><SpinnerComponent/></div>
       }
 
     </div>

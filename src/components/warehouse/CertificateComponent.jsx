@@ -42,7 +42,7 @@ function CertificateComponent(props) {
 
     const handleUploadClick = () => {
         if (!file) {
-            alert('Please select a file');
+            alert('Lutfen dosya seciniz');
             return;
         }
         else {
@@ -62,12 +62,12 @@ function CertificateComponent(props) {
             className={`absolute flex flex-col items-start top-5 right-1 p-5 w-[30rem]  rounded-xl border-2 bg-white z-10 shadow-2xl border-b border-gray-200 `}>
 
             <span className='text-3xl my-3 text-center w-full font-bold'>
-                Certificates
+                Sertifikalar
             </span>
 
             <div className='my-3'>
                 <p className='text-start text-2xl text-gray-400 mb-2'>
-                    Documents
+                    Dosyalar
                 </p>
 
                 {
@@ -91,7 +91,7 @@ function CertificateComponent(props) {
                 {
                     certificate_and_passport_data.length === 0 && !certificate_and_passport_data_pending &&
                     <p className='text-base  text-gray-400'>
-                        There is not any documents
+                        Girilmis bir dosya yok
                     </p>
                 }
 
@@ -100,7 +100,7 @@ function CertificateComponent(props) {
 
             <div className='flex flex-col my-3'>
                 <p className='text-start text-2xl  text-gray-400'>
-                    Add File
+                    Dosya Ekle
                 </p>
                 <input placeholder='Add Certificate or Passport' type='file'
                     onChange={handleFileChange}
@@ -120,7 +120,7 @@ function CertificateComponent(props) {
                 !certificate_and_passport.pending ?
                     <span onClick={changeCertificate}
                         className={`hover:bg-slate-700 bg-slate-800 text-gray-100 p-3 rounded-lg text-base my-3`}>
-                        Set Opposite <MdUpdate className='ml-3 inline text-2xl' />
+                        Tersini Isaretle <MdUpdate className='ml-3 inline text-2xl' />
                     </span>
                     :
                     <CustomLoadingButton />

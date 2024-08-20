@@ -24,7 +24,7 @@ function AddOrderedComponent() {
     function createNewGroup() {
         if (group_data.group_name.trim() === '') {
             dispatch(setCreateGroupStatusError());
-            dispatch(setCreateGroupMessage('Group Name Required'));
+            dispatch(setCreateGroupMessage('Grup Ismi Gereklidir'));
         }
         else {
             dispatch(AdminService.createGroup(group_data));
@@ -64,7 +64,7 @@ function AddOrderedComponent() {
 
                 <div className='flex  justify-between text-sm my-3'>
                     <div className='w-full'>
-                        <span className='text-gray-400'>Group name</span>
+                        <span className='text-gray-400'>Grup Ismi</span>
                         <input className='bg-gray-100 w-full my-2 px-2 py-4 rounded-lg outline-none' type="text" placeholder='' value={group_data.group_name}
                             onChange={(event) => {
                                 setGroupData((each) => ({
@@ -75,7 +75,7 @@ function AddOrderedComponent() {
                     </div>
                 </div>
                 <div className='text-sm my-3'>
-                    <p className='text-gray-400'>Available Group</p>
+                    <p className='text-gray-400'>Mevcut Gruplar</p>
                     <select name="" id="" className='bg-gray-100 w-full my-2 px-2 py-4 rounded-lg text-gray-800 outline-none'
                         onChange={(event) => {
                             setGroupData((each) => ({
@@ -95,11 +95,11 @@ function AddOrderedComponent() {
                     {
                         !group.pending ?
                             <button onClick={createNewGroup} className='bg-orange-300 text-gray-800 hover:bg-orange-400 duration-200  w-full py-4 rounded-lg my-4 text-lg'>
-                                Confirm
+                                Onayla
                             </button>
                             :
                             <LoadingButton loading variant="outlined" className='text-black w-full p-4'>
-                                Please Submit
+                                Waiting
                             </LoadingButton>
                     }
 

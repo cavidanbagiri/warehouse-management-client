@@ -1,4 +1,13 @@
 
+.max_two_line_table_row{
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+
+}
+
 .materialcodedropdown-box-animation {
     animation: materialcodedropdown-box-frame 0.4s;
 }

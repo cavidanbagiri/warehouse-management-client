@@ -22,31 +22,31 @@ function CreateTableNavbarHeaderComponent() {
           area_column_filter.deliver_date &&
           <th scope="col" className="px-6 py-1 text-center border font-medium ">
             <div className="">
-              Date
+              Tarih
             </div>
           </th>
         }
-          { /* Material code */
-                area_column_filter.material_code &&
-                <th scope="col" className="px-6 py-1 text-center border font-medium ">
-                  <div className="">
-                    Code
-                  </div>
-                </th>
-            }
-            { /* Material description */
-                area_column_filter.material_description &&
-                <th scope="col" className="px-6 py-1 text-center border  min-w-24 font-medium ">
-                  <div className="">
-                    Description
-                  </div>
-                </th>
-            }
+        { /* Material code */
+          area_column_filter.material_code &&
+          <th scope="col" className="px-6 py-1 text-center border font-medium ">
+            <div className="">
+              Malzeme Kodu
+            </div>
+          </th>
+        }
+        { /* Material description */
+          area_column_filter.material_description &&
+          <th scope="col" className="px-6 py-1 text-center border  min-w-24 font-medium ">
+            <div className="">
+              Aciklama
+            </div>
+          </th>
+        }
         { /* Material Name */
           area_column_filter.material_name &&
-          <th scope="col" className="px-6 py-1 text-center border min-w-60 font-medium">
+          <th scope="col" className="px-6 py-1 text-center border min-w-96 font-medium">
             <div className="">
-              Material Name
+              Malzeme Ismi
             </div>
           </th>
         }
@@ -55,7 +55,7 @@ function CreateTableNavbarHeaderComponent() {
           area_column_filter.type &&
           <th scope="col" className="px-6 py-1 text-center border font-medium ">
             <div className="">
-              Type
+              Tipi
             </div>
           </th>
         }
@@ -65,7 +65,7 @@ function CreateTableNavbarHeaderComponent() {
           area_column_filter.qty &&
           <th scope="col" className="px-6 py-1 text-center border font-medium ">
             <div className="">
-              Amount
+              Say
             </div>
           </th>
         }
@@ -73,7 +73,7 @@ function CreateTableNavbarHeaderComponent() {
           area_column_filter.unit &&
           <th scope="col" className="px-6 py-1 text-center border  font-medium ">
             <div className="">
-              Unit
+              Birim
             </div>
           </th>
         }
@@ -81,49 +81,56 @@ function CreateTableNavbarHeaderComponent() {
         { /* Serial Number */
           area_column_filter.serial_number &&
           <th scope="col" className="px-6 py-1 text-center border font-medium min-w-32">
-            Serial No
+            Seri Numara
           </th>
         }
 
         { /* Material ID */
           area_column_filter.material_id &&
           <th scope="col" className="px-6 py-1 text-center border font-medium min-w-32">
-            Material ID
+            Malzeme ID Kodu
           </th>
         }
 
         { /* Card Number */
           area_column_filter.card_number &&
           <th scope="col" className="px-6 py-1 text-center border font-medium min-w-32">
-            Card Number
+            Sicil Numara
           </th>
         }
 
         { /* Username */
           area_column_filter.username &&
           <th scope="col" className="px-6 py-1 text-center border font-medium min-w-32">
-            Username
+            Alici Ismi
           </th>
         }
 
         { /* Group name */
           area_column_filter.group_name &&
           <th scope="col" className="px-6 py-1 text-center border min-w-40 font-medium ">
-            Group Name
+            Grup Ismi
           </th>
         }
 
         { /* Group name */
           area_column_filter.provideType &&
-          <th scope="col" className="px-6 py-1 text-center border min-w-40 font-medium ">
-            Provide Type
+          <th scope="col" className="px-6 py-1 text-center border font-medium ">
+            Temin Tipi
           </th>
         }
 
         { /* Group name */
           area_column_filter.po &&
           <th scope="col" className="px-6 py-1 text-center border min-w-40 font-medium ">
-            PO
+            STF No
+          </th>
+        }
+
+        { /* project name */
+          area_column_filter.project_name &&
+          <th scope="col" className="px-6 py-1 text-center border min-w-40 font-medium ">
+            Proje
           </th>
         }
 

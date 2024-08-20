@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react'
-import {useDispatch, useSelector} from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import UserService from "../services/user-service.js";
 import MessageBox from "../layouts/MessageBox.jsx";
 
-import {setLoginErrorFalse} from "../store/user-store.js";
+import { setLoginErrorFalse } from "../store/user-store.js";
+
+import warehouse_management_logo from '../assets/warehouse_management_logo.png'
 
 function LoginPage() {
     const dispatch = useDispatch();
@@ -29,7 +31,7 @@ function LoginPage() {
     }
 
     useEffect(() => {
-        if(is_login_error === true){
+        if (is_login_error === true) {
             setTimeout(() => {
                 dispatch(setLoginErrorFalse());
             }, 1500)
@@ -37,34 +39,41 @@ function LoginPage() {
     }, [is_login_error])
 
 
-    return (    
-        <div style={{ fontFamily: 'Saire Condensed' }} className='flex justify-center items-center h-screen'>
+    return (
+
+        <div style={{ fontFamily: 'IBM Plex Sans' }} className='flex justify-center items-center h-screen'>
 
             {
                 is_login_error &&
-                    <MessageBox color={'bg-red-500'} message={'User Not Found'} />
+                <MessageBox color={'bg-red-500'} message={'Boyle bir kullanici bulunamadi'} />
             }
 
-            <div className='flex flex-col w-1/4 rounded-lg shadow-lg justify-center items-center p-5'>
-                <span className='text-4xl my-8 font-bold'>
-                    Welcome Back
-                </span>
-                <div className='flex flex-col  w-full justify-center items-center'>
-                    
-                    {/* <form onSubmit={signIn}> */}
-                        <input className='bg-gray-100 p-2 rounded-lg outline-none my-3 w-full' type="text" name="email" id="email" onChange={changeUsernameInform} placeholder='Username or Email' />
-                        <input className='bg-gray-100 p-2 rounded-lg outline-none my-3 w-full' type="password" name="password" id="password" onChange={changePasswordInform} placeholder='Password' />
-                        <button onClick={signIn} className='bg-slate-900 w-full px-5 py-2 my-3 rounded-lg text-white font-bold hover:bg-slate-800 duPasswordon-300'>
-                            Sign In
-                        </button>
-                    {/* </form> */}
-                    <span className='w-full text-xs underline duration-300 cursor-pointer hover:text-blue-400'>
-                        Forget Password
+            <div className='flex rounded-xl border shadow-2xl'>
+                <div className=' w-[500px] h-[550px]  rounded-s-xl'>
+                    <img src={warehouse_management_logo} alt="" className='w-[500px] h-[550px]' />
+                </div>
+
+                <div className='flex flex-col w-[500px] h-[550px] justify-center items-center p-5'>
+                    <span className='text-5xl my-8 font-bold'>
+                        Welcome Back
                     </span>
+                    <div className='flex flex-col h-full w-full justify-center items-around'>
+
+                        {/* <form onSubmit={signIn}> */}
+                        <input className='bg-gray-100 p-4 rounded-lg outline-none my-5 w-full' type="text" name="email" id="email" onChange={changeUsernameInform} placeholder='Username or Email' />
+                        <input className='bg-gray-100 p-4 rounded-lg outline-none my-5 w-full' type="password" name="password" id="password" onChange={changePasswordInform} placeholder='Password' />
+                        <button onClick={signIn} className='text-xl bg-slate-900 w-full px-5 py-4 my-3 rounded-lg text-white font-bold hover:bg-slate-800 '>
+                            Giris Yap
+                        </button>
+                        {/* </form> */}
+                        <span className='w-full text-base underline duration-300 cursor-pointer hover:text-blue-400 text-gray-400 font-bold mt-4'>
+                            Parolayi Unutdum
+                        </span>
+                    </div>
                 </div>
             </div>
-
         </div>
+        
     )
 }
 

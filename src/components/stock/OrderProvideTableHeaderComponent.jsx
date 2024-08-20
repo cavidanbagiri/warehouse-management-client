@@ -13,57 +13,57 @@ function OrderProvideTableHeaderComponent() {
                 { /* Material name */
                     <th scope="col" className="px-6 py-1 text-center border  min-w-60 font-medium ">
                         <div className="">
-                            Material Name
+                            Malzeme Ismi
                         </div>
                     </th>
                 }
                 { /* Type */
                     <th scope="col" className="px-6 py-1 text-center border font-medium ">
                         <div className="">
-                            Type
+                            Tipi
                         </div>
                     </th>
                 }
 
                 { /* Stock */
                     <th scope="col" className="px-6 py-1 text-center border w-28 font-medium ">
-                        Stock
+                        Stok
                     </th>
                 }
                 { /* Unit */
                     <th scope="col" className="px-6 py-1 text-center border w-28 font-medium ">
-                        Unit
+                        Birim
                     </th>
                 }
                 { /* Serial No */
                     <th scope="col" className="px-6 py-1 text-center border font-medium min-w-32">
-                        Serial No
+                        Seri Numara
                     </th>
                 }
                 { /* Material ID */
                     <th scope="col" className="px-6 py-1 text-center border font-medium min-w-32">
-                        Material ID
+                        Malzeme ID Kodu
                     </th>
                 }
 
                 { /* Amount */
                     <th scope="col" className="px-6 py-1 text-center border font-medium min-w-32">
-                        Amount
+                        Miktar
                     </th>
                 }
                 { /* Serial No */
                     <th scope="col" className="px-6 py-1 text-center border font-medium min-w-32">
-                        Set Serial Number
+                        Serial No Gir
                     </th>
                 }
                 { /* Material ID */
                     <th scope="col" className="px-6 py-1 text-center border font-medium min-w-32">
-                        Set Material Id
+                        Malzeme ID Kodu Gir
                     </th>
                 }
                 { /* Material ID */
                     <th scope="col" className="px-6 py-1 text-center border font-medium min-w-32">
-                        Provide Type
+                        Temin Tipi
                     </th>
                 }
 

@@ -6,12 +6,12 @@ import Checkbox from '@mui/material/Checkbox';
 import { BsThreeDotsVertical } from "react-icons/bs";
 import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import WarehouseService from "../../services/warehouse-service.js";
+
+import '../../css/dropdown.css';
 
 import CertificateComponent from "./CertificateComponent.jsx";
 import PassportComponent from "./PassportComponent.jsx";
 
-import { keyframes } from '@emotion/react';
 
 function TableRowComponent(props) {
 
@@ -52,7 +52,7 @@ function TableRowComponent(props) {
             onDoubleClick={()=>{
                 props.doubleClickInform(props.item.id)
             }}
-            className={`relative border-b hover:bg-gray-100 cursor-pointer `}>
+            className={`relative border-b hover:bg-gray-100  cursor-pointer `}>
             <td className='py-1'>
                 {props.index}
             </td>
@@ -93,8 +93,10 @@ function TableRowComponent(props) {
             }
             {
                 props.warehouse_column_filter.material_name &&
-                <td className='text-start px-1' >
-                    {props.item.material_name}
+                <td className='text-start px-1 min-w-[512px]' >
+                    <span className='max_two_line_table_row' alt={props.item.material_name}>
+                        {props.item.material_name}
+                    </span>
                 </td>
             }
             {
@@ -220,6 +222,12 @@ function TableRowComponent(props) {
                                 <PassportComponent item={props.item} setPassportOpposite={setPassportOpposite}/>
                         }
                     </div>
+                </td>
+            }
+            {
+                props.warehouse_column_filter.project_name &&
+                <td>
+                    {props.item.abbrevation_name}
                 </td>
             }
         </tr>

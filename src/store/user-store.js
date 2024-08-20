@@ -4,6 +4,7 @@ import axios from 'axios';
 import $api from '../http';
 import UserService from "../services/user-service.js";
 axios.defaults.withCredentials = true;
+
 const initialState = {
     user: {
         email: 'unknown',

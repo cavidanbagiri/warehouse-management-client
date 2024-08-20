@@ -28,6 +28,7 @@ import StockService from "../../services/stock-service.js";
 import CommonService from '../../services/common.services.js';
 
 import { AnimatePresence, motion } from 'framer-motion';
+import { USER_MESSAGES } from '../../constants/values.js';
 
 
 function OrderSelectedComponent(props) {
@@ -49,7 +50,7 @@ function OrderSelectedComponent(props) {
                     <div className="flex items-center">
                         <span className="bg-orange-500 py-4 px-6 text-white font-bold rounded-l-md text-2xl">{selected_items.length}</span>
                         <div className="mx-3">
-                            <p style={{ fontWeight: 500 }} className='text-2xl'>Selected</p>
+                            <p style={{ fontWeight: 500 }} className='text-2xl'>Secilenler</p>
                         </div>
                     </div>
                     <div
@@ -58,7 +59,7 @@ function OrderSelectedComponent(props) {
                         <motion.div exit={{ opacity: 0, x: -200, }} initial={{ opacity: 0, x: 200, }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.4 }}
                             onClick={() => {
                                 if (selected_items.length > 1) {
-                                    props.showMessaggeBoxMessageHandle('inform', 'Cant get inform two or more column same time');
+                                    props.showMessaggeBoxMessageHandle('inform', USER_MESSAGES.TWO_OR_MORE_ROW_OPTION);
                                 }
                                 else {
                                     dispatch(rowInformToggleTrue());
@@ -68,14 +69,14 @@ function OrderSelectedComponent(props) {
                             }}
                             className="flex flex-col items-center mx-3 cursor-pointer w-full hover:bg-gray-50">
                             <IoIosInformationCircleOutline className='text-2xl text-gray-800' />
-                            <span className="text-xs w-20 text-center">Get Inform</span>
+                            <span className="text-xs w-20 text-center">Genel Bilgi</span>
                         </motion.div>
 
                         {/* Provide Row Side */}
                         <motion.div exit={{ opacity: 0, x: -200, }} initial={{ opacity: 0, x: 200, }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }}
                             onClick={() => {
                                 if (selected_items.length === 0) {
-                                    props.showMessageBoxMessageHandle('provide', 'Please choose at least one column for provide to warehouse');
+                                    props.showMessageBoxMessageHandle('provide', USER_MESSAGES.ATLEAST_ONE_ROW_OPTION);
                                 }
                                 else {
                                     dispatch(setOrderSelectionProvideToggleTrue());
@@ -84,68 +85,68 @@ function OrderSelectedComponent(props) {
                             }}
                             className="flex flex-col items-center mx-3 cursor-pointer w-full hover:bg-gray-50">
                             <AiOutlineSend className='text-2xl text-gray-800' />
-                            <span className="text-xs w-20 text-center">Provide</span>
+                            <span className="text-xs w-20 text-center">Sahaya Cik</span>
                         </motion.div>
 
                         {/* Update Row Side */}
                         <motion.div exit={{ opacity: 0, x: -200, }} initial={{ opacity: 0, x: 200, }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.6 }}
                             onClick={() => {
                                 if (selected_items.length > 1) {
-                                    props.showMessaggeBoxMessageHandle('update', 'Cant update two or more column same time');
+                                    props.showMessaggeBoxMessageHandle('update', USER_MESSAGES.TWO_OR_MORE_ROW_OPTION);
                                 }
                                 else if(user.is_admin || user.status_code === 1000 || user.status_code === 10000 || user.status_code === 10001){
                                     dispatch(setOrderSelectionUpdateToggleTrue());
                                     dispatch(StockService.getById(selected_items[0]));
                                 }
                                 else {
-                                    props.showMessaggeBoxMessageHandle('update', 'You dont have permission to update');
+                                    props.showMessaggeBoxMessageHandle('update', USER_MESSAGES.AUTHORIZATION_ERROR);
                                 }
                             }}
                             className="flex flex-col items-center mx-3 cursor-pointer hover:bg-gray-50">
                             <CiEdit className='text-2xl text-gray-800' />
-                            <span className="text-xs w-20 text-center">Update Row</span>
+                            <span className="text-xs w-20 text-center">Guncelle</span>
                         </motion.div>
 
                         {/* Delete Side */}
                         <motion.div exit={{ opacity: 0, x: -200, }} initial={{ opacity: 0, x: 200, }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.7 }}
                             onClick={() => {
-                                props.showMessaggeBoxMessageHandle('delete', 'Dont have authorization for deleting');
+                                props.showMessaggeBoxMessageHandle('delete', USER_MESSAGES.AUTHORIZATION_ERROR);
                             }}
                             className="flex flex-col items-center mx-3 cursor-pointer hover:bg-gray-50">
                             <MdDeleteOutline className='text-2xl text-gray-800' />
-                            <span className="text-xs w-20 text-center">Delete Row</span>
+                            <span className="text-xs w-20 text-center">Secileni Sil</span>
                         </motion.div>
 
                         {/* Return Warehouse Side */}
                         <motion.div exit={{ opacity: 0, x: -200, }} initial={{ opacity: 0, x: 200, }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }}
                             onClick={() => {
                                 if (selected_items.length === 0) {
-                                    props.showMessaggeBoxMessageHandle('return', 'Please, Choose at least one row to adding stock');
+                                    props.showMessaggeBoxMessageHandle('return', USER_MESSAGES.ATLEAST_ONE_ROW_OPTION);
                                 }
                                 else if (selected_items.length > 1) {
-                                    props.showMessaggeBoxMessageHandle('return', 'Please, Max 1 Row can selected to return to warehouse');
+                                    props.showMessaggeBoxMessageHandle('return', USER_MESSAGES.TWO_OR_MORE_ROW_OPTION);
                                 }
                                 else if(user.is_admin || user.status_code === 1000 || user.status_code === 10000 || user.status_code === 10001){
                                     dispatch(setOrderSelectionReturnToggleTrue());
                                     dispatch(StockService.getById(selected_items[0]));
                                 }
                                 else {
-                                    props.showMessaggeBoxMessageHandle('return', 'You dont have permission to return');
+                                    props.showMessaggeBoxMessageHandle('return', USER_MESSAGES.AUTHORIZATION_ERROR);
                                 }
                             }}
                             className="flex flex-col items-center mx-3 cursor-pointer w-full hover:bg-gray-50">
                             <BsArrowReturnLeft className='text-2xl text-gray-800' />
-                            <span className="text-xs w-20 text-center">Return</span>
+                            <span className="text-xs w-20 text-center">Geri Al</span>
                         </motion.div>
 
                         {/* Set unusable materials Side */}
                         <motion.div exit={{ opacity: 0, x: -200, }} initial={{ opacity: 0, x: 200, }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.9 }}
                             onClick={() => {
                                 if (selected_items.length === 0) {
-                                    props.showMessaggeBoxMessageHandle('unusablematerial', 'Please, Choose at least one row to unusuable');
+                                    props.showMessaggeBoxMessageHandle('unusablematerial', USER_MESSAGES.ATLEAST_ONE_ROW_OPTION);
                                 }
                                 else if (selected_items.length > 1) {
-                                    props.showMessaggeBoxMessageHandle('unusablematerial', 'Please, Max 1 Row can selected to unusuable');
+                                    props.showMessaggeBoxMessageHandle('unusablematerial', USER_MESSAGES.TWO_OR_MORE_ROW_OPTION);
                                 }
                                 else {
                                     dispatch(setOrderSelectionMaterialUnusableToggleTrue());
@@ -154,16 +155,16 @@ function OrderSelectedComponent(props) {
                             }}
                             className="flex flex-col items-center mx-2 cursor-pointer w-full hover:bg-gray-50">
                             <IoIosCloseCircleOutline className='text-2xl text-gray-800' />
-                            <span className="text-xs w-20 text-center">Set Unusable</span>
+                            <span className="text-xs w-20 text-center">Zayiat Cikar</span>
                         </motion.div>
 
                         <motion.div exit={{ opacity: 0, x: -200, }} initial={{ opacity: 0, x: 200, }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 1.0 }}
                             onClick={() => {
                                 if (selected_items.length === 0) {
-                                    props.showMessaggeBoxMessageHandle('servicematerial', 'Please, Choose at least one row to sending service');
+                                    props.showMessaggeBoxMessageHandle('servicematerial', USER_MESSAGES.ATLEAST_ONE_ROW_OPTION);
                                 }
                                 else if (selected_items.length > 1) {
-                                    props.showMessaggeBoxMessageHandle('servicematerial', 'Please, Max 1 Row can selected to sending service');
+                                    props.showMessaggeBoxMessageHandle('servicematerial', USER_MESSAGES.TWO_OR_MORE_ROW_OPTION);
                                 }
                                 else {
                                     dispatch(setOrderSelectionMaterialServiceToggleTrue());
@@ -172,7 +173,7 @@ function OrderSelectedComponent(props) {
                             }}
                             className="flex flex-col items-center mx-2 cursor-pointer w-full hover:bg-gray-50">
                             <PiWrenchLight className='text-2xl text-gray-800' />
-                            <span className="text-xs w-20 text-center">Send Service</span>
+                            <span className="text-xs w-20 text-center">Servise Gonder</span>
                         </motion.div>
 
                     </div>

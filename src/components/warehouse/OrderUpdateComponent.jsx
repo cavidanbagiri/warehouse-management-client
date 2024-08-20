@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import DropDownComponent from '../common/DropdownComponent';
 import CustomLoadingButton from "../common/CustomLoadingButton.jsx";
 
+import { AnimatePresence, motion } from 'framer-motion';
+
 import WarehouseService from '../../services/warehouse-service';
 
 import {
@@ -17,6 +19,7 @@ import {
 
 import { IoMdClose } from "react-icons/io";
 import SpinnerComponent from '../common/SpinnerComponent.jsx';
+import { USER_MESSAGES } from '../../constants/values.js';
 
 
 function OrderUpdateComponent() {
@@ -84,18 +87,30 @@ function OrderUpdateComponent() {
             cond = false;
             dispatch(setOrderUpdateMessageBoxTrue());
             dispatch(setOrderUpdateColorCond({color:'bg-red-500'}))
-            dispatch(setOrderUpdateErrorMessage({ message: 'Leftover is 0, Cant change quantity' }));
+            dispatch(setOrderUpdateErrorMessage({ message: 'Kalan malzeme 0 oldugu icin, islem gerceklesdirilmedi' }));
         }
         if (material_name.toString().trim().length === 0) {
             dispatch(setOrderUpdateMessageBoxTrue());
             dispatch(setOrderUpdateColorCond({color:'bg-red-500'}))
-            dispatch(setOrderUpdateErrorMessage({ message: 'Material name cant be empty' }))
+            dispatch(setOrderUpdateErrorMessage({ message: 'Malzeme ismi bos birakilamaz' }))
             cond = false;
         }
         else if (qty <= 0) {
             dispatch(setOrderUpdateMessageBoxTrue());
             dispatch(setOrderUpdateColorCond({color:'bg-red-500'}))
-            dispatch(setOrderUpdateErrorMessage({ message: 'Quantity Cant be less than zero' }))
+            dispatch(setOrderUpdateErrorMessage({ message: 'Malzeme miktari 0 ve ya negativ olamaz' }))
+            cond = false;
+        }
+        else if (price < 0) {
+            dispatch(setOrderUpdateMessageBoxTrue());
+            dispatch(setOrderUpdateColorCond({color:'bg-red-500'}))
+            dispatch(setOrderUpdateErrorMessage({ message: 'Malzeme fiyati negativ olamaz' }))
+            cond = false;
+        }
+        else if (!price) {
+            dispatch(setOrderUpdateMessageBoxTrue());
+            dispatch(setOrderUpdateColorCond({color:'bg-red-500'}))
+            dispatch(setOrderUpdateErrorMessage({ message: USER_MESSAGES.NON_VALID_NUMBER }))
             cond = false;
         }
         const updated_data = {
@@ -153,13 +168,16 @@ function OrderUpdateComponent() {
             
             <div className='w-1/2' ></div>
             
+            <AnimatePresence>
 
-            <div className='flex flex-col bg-white w-1/2' >
+
+            <motion.div exit={{ opacity: 0, x: -400, }} initial={{ opacity: 0, x: 200, }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.3 }}
+            className='flex flex-col bg-white w-1/2' >
             
                 {/* Close and Title Component Section */}
                 <div className='flex justify-between p-5 text-end'>
                     <span style={{ fontWeight: 600, fontFamily: 'Open Sans' }} className='text-3xl'>
-                        Order Update Section
+                        Secileni Guncele
                     </span>
                     <span
                         onClick={() => {
@@ -175,12 +193,12 @@ function OrderUpdateComponent() {
                     <div className='flex flex-col p-4 '>
                         {/* Company Section */}
                         <div className='flex items-center justify-between'>
-                            <span className='w-1/3'>Company Name </span>
+                            <span className='w-1/3'>Firma Ismi </span>
                             <div className='relative'>
                                 <button className='text-xs bg-white border border-gray-300 w-96 rounded-lg p-2 text-ellipsis overflow-hidden text-nowrap outline-none' onClick={() => {
                                     setIsCompanyDropDown(!isCompanyDropDown)
                                 }}>
-                                    {company.companyId === '' ? 'Company' : company.company_name}
+                                    {company.companyId === '' ? 'Firma' : company.company_name}
                                 </button>
                                 {
                                     isCompanyDropDown && <DropDownComponent
@@ -196,12 +214,12 @@ function OrderUpdateComponent() {
 
                         {/* Ordered Side */}
                         <div className='flex items-center justify-between mt-3'>
-                            <span className='w-1/3'>Ordered Name </span>
+                            <span className='w-1/3'>Siparisci </span>
                             <div className='relative'>
                                 <button className='text-xs bg-white border border-gray-300 w-64 rounded-lg  p-2  text-ellipsis overflow-hidden text-nowrap outline-none' onClick={() => {
                                     setIsOrderedDropDown(!isOrderedDropDown)
                                 }}>
-                                    {ordered.orderedId === '' ? 'Orderer' : ordered.ordered_name}
+                                    {ordered.orderedId === '' ? 'Siparisci' : ordered.ordered_name}
                                 </button>
                                 {
                                     isOrderedDropDown && <DropDownComponent
@@ -217,9 +235,9 @@ function OrderUpdateComponent() {
 
                         {/* Doc Number Side */}
                         <div className='flex items-center justify-between mt-3'>
-                            <span className='w-1/3'>Document Number </span>
+                            <span className='w-1/3'>Dokuman Numarasi </span>
                             <div className='relative'>
-                                <input value={documentnum} className='placeholder-black text-xs bg-white border border-gray-300 rounded-lg p-2 outline-none text-center' type="text" placeholder='Document' onChange={(e) => {
+                                <input value={documentnum} className='placeholder-black text-xs bg-white border border-gray-300 rounded-lg p-2 outline-none text-center' type="text" placeholder='Dokuman Numarasi' onChange={(e) => {
                                     setDocumentNum(e.target.value);
                                 }} />
                             </div>
@@ -227,9 +245,9 @@ function OrderUpdateComponent() {
 
                         {/* Material Name Side */}
                         <div className='flex items-center justify-between mt-3'>
-                            <span className='w-1/3'>Material Name </span>
+                            <span className='w-1/3'>Malzeme Ismi </span>
                             <div className='relative w-full'>
-                                <input value={material_name} className='placeholder-black text-xs bg-white border border-gray-300 w-full rounded-lg p-2 outline-none text-center ' type="text" placeholder='Material Name' onChange={(e) => {
+                                <input value={material_name} className='placeholder-black text-xs bg-white border border-gray-300 w-full rounded-lg p-2 outline-none text-center ' type="text" placeholder='Malzeme Ismi' onChange={(e) => {
                                     setMaterialName(e.target.value);
                                 }} />
                             </div>
@@ -237,13 +255,13 @@ function OrderUpdateComponent() {
 
                         {/* Material Qty Side */}
                         <div className='flex items-center justify-between mt-3'>
-                            <span className='w-1/3'>Quantity </span>
+                            <span className='w-1/3'>Sayi </span>
                             <div className='relative'>
-                                <input value={qty} type="number" className='placeholder-black text-xs bg-white border border-gray-300 rounded-lg p-2 outline-none text-center ' placeholder='Quantity' onChange={(e) => {
+                                <input value={qty} type="number" className='placeholder-black text-xs bg-white border border-gray-300 rounded-lg p-2 outline-none text-center ' placeholder='Sayi' onChange={(e) => {
                                     if(e.target.value<0){
                                         dispatch(setOrderUpdateMessageBoxTrue());
                                         dispatch(setOrderUpdateColorCond({color:'bg-red-500'}))
-                                        dispatch(setOrderUpdateErrorMessage({ message: 'Invalid Quantity' }));
+                                        dispatch(setOrderUpdateErrorMessage({ message: 'Dogru Sayi Giriniz' }));
                                     }
                                     else{
                                         setQty(e.target.value);
@@ -254,7 +272,7 @@ function OrderUpdateComponent() {
 
                         {/* Matterial Type Side */}
                         <div className='flex items-center justify-between mt-3'>
-                            <span className='w-1/3'>Unit </span>
+                            <span className='w-1/3'>Birim </span>
                             <div className='relative'>
                                 <select value={unit} className='w-48 border p-2 outline-none rounded-lg text-xs text-center'
                                     onChange={(e) => {
@@ -273,9 +291,9 @@ function OrderUpdateComponent() {
 
                         {/* Material Qty Side */}
                         <div className='flex items-center justify-between mt-3'>
-                            <span className='w-1/3'>Price </span>
+                            <span className='w-1/3'>Fiyat </span>
                             <div className='relative'>
-                                <input value={price} className='placeholder-black text-xs bg-white border border-gray-300 rounded-lg w-36  p-2 outline-none text-center ' type="text" placeholder='Price' onChange={(e) => {
+                                <input value={price} className='placeholder-black text-xs bg-white border border-gray-300 rounded-lg w-36  p-2 outline-none text-center ' type="text" placeholder='Fiyat' onChange={(e) => {
                                     setPrice(e.target.value);
                                 }} />
                             </div>
@@ -283,11 +301,11 @@ function OrderUpdateComponent() {
 
                         {/* Material Name Side */}
                         <div className='flex items-center justify-between mt-3'>
-                            <span className='w-1/3'>Order Num </span>
+                            <span className='w-1/3'>Siparis Numarasi </span>
                             <div className='relative'>
                                 <input value={po}
                                     className='placeholder-black text-xs bg-white border border-gray-300 rounded-lg   p-2 outline-none text-center '
-                                    type="text" placeholder='Order Num' onChange={(e) => {
+                                    type="text" placeholder='Siparis Numarasi' onChange={(e) => {
                                         setPO(e.target.value);
                                     }} />
                             </div>
@@ -295,17 +313,17 @@ function OrderUpdateComponent() {
 
                         {/* Matterial Type Side */}
                         <div className='flex items-center justify-between mt-3'>
-                            <span className='w-1/3'>Material Type </span>
+                            <span className='w-1/3'>Malzeme Tipi </span>
                             <div className='relative '>
                                 <select onChange={(event) => {
                                     setMaterialType(event.target.value);
                                 }}
                                     className='w-full border p-2 outline-none rounded-lg text-xs'
                                     value={material_type}>
-                                    <option value="Project">Project</option>
-                                    <option value="Consumable">Consumable</option>
-                                    <option value="Fixture">Fixture</option>
-                                    <option value="Hand Tools">Hand Tools</option>
+                                    <option value="Project">Proje</option>
+                                    <option value="Consumable">Sarf</option>
+                                    <option value="Fixture">Demirbas</option>
+                                    <option value="Hand Tools">El Aletleri</option>
                                     <option value="Safety">Safety</option>
                                 </select>
                             </div>
@@ -316,7 +334,7 @@ function OrderUpdateComponent() {
                             !order_update.order_update_pending ?
                         <div className='flex justify-end mt-10'>
                             <button onClick={postFunc}
-                                className='px-6 py-3 bg-green-500 rounded-lg text-white'>Post</button>
+                                className='px-6 py-3 bg-green-500 rounded-lg text-white'>Onayla</button>
                         </div>
                                 :
                                 <CustomLoadingButton/>
@@ -324,7 +342,10 @@ function OrderUpdateComponent() {
                     </div>
                 }
             
-            </div>
+            </motion.div>
+
+            </AnimatePresence>
+
         </div>
     )
 }

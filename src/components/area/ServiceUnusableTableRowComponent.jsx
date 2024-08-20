@@ -26,7 +26,7 @@ function ServiceUnusableTableRowComponent(props) {
         <PiDotsThreeOutlineVerticalThin className=' text-center text-lg'/>
       </td>
       <td className='py-2'>{props.index + 1}</td>
-      <td className='text-start px-2'>{props.item.material_name} </td>
+      <td className='text-start px-2 max_two_line_table_row'>{props.item.material_name} </td>
       <td className='px-2'>{props.item.unit}</td>
       <td className='px-2'>{props.item.amount}</td>
       <td>{props.item.serial_number}</td>
@@ -43,6 +43,7 @@ function ServiceUnusableTableRowComponent(props) {
       <td className='px-2'>{props.item.po}</td>
       <td className='px-2'>{props.item.created_by}</td>
       <td className='px-2'>{props.item.date}</td>
+      
       {
         props.header_for === "unusable" &&
         <td className='px-2'>{props.item.price}</td>
@@ -51,6 +52,7 @@ function ServiceUnusableTableRowComponent(props) {
         props.header_for === "unusable" &&
         <td className='px-2'>{props.item.currency}</td>
       }
+      <td className='px-2'>{props.item.abbrevation_name}</td>
 
       <td className='relative'>
         {
@@ -58,7 +60,6 @@ function ServiceUnusableTableRowComponent(props) {
           item={props.item} header_for={props.header_for} closeReturnBox={closeReturnBox} />
         }
       </td>
-
 
     </tr>
   )

@@ -15,7 +15,7 @@ function TableColumnComponentToggle() {
             <span onClick={() => {
                 show_table_column_component ? setShowTableColumnCompoenent(false) : setShowTableColumnCompoenent(true);
             }}
-                className='text-sm font-medium text-gray-700 ml-2 hover:cursor-pointer'>Table Columns Filter</span>
+                className='text-sm font-medium text-gray-700 ml-2 hover:cursor-pointer'>Tablo Sutunlarini Ozellestir </span>
             <span onClick={() => {
                 show_table_column_component ? setShowTableColumnCompoenent(false) : setShowTableColumnCompoenent(true);
             }}

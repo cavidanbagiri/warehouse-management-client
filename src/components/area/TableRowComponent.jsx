@@ -56,8 +56,10 @@ function TableRowComponent(props) {
             }
             {
                 props.area_column_filter.material_name &&
-                <td className='text-start px-1'>
-                    {props.item.material_name }
+                <td className='text-start px-1 '>
+                    <span className='max_two_line_table_row'>
+                        {props.item.material_name }
+                    </span>
                 </td>
             }
             {
@@ -126,6 +128,13 @@ function TableRowComponent(props) {
                 props.area_column_filter.po &&
                 <td className='pl-1 text-center'>
                     {props.item.po}
+                </td>
+            }
+
+{
+                props.area_column_filter.project_name &&
+                <td className='pl-1 text-center'>
+                    {props.item.abbrevation_name}
                 </td>
             }
 

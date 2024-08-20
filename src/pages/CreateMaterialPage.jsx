@@ -17,7 +17,7 @@ import AdminModal from '../layouts/AdminModal';
 
 import LoadingButton from '@mui/lab/LoadingButton';
 
-import { CURRENCIES } from '../constants/values';
+import { CURRENCIES, USER_MESSAGES } from '../constants/values';
 
 import { LuRefreshCw } from "react-icons/lu";
 
@@ -66,7 +66,7 @@ function CreateMaterialPage() {
     if (user.is_admin || user.status_code === 1000 || user.status_code === 10000 || user.status_code === 10001 )
       setAddCompany(true);
     else {
-      setMessage('You dont have permissions for this operation');
+      setMessage(USER_MESSAGES.AUTHORIZATION_ERROR);
       dispatch(setShowErrorTrue());
       setTimeout(() => {
         dispatch(setShowErrorFalse());
@@ -77,7 +77,7 @@ function CreateMaterialPage() {
     if (user.is_admin || user.status_code === 1000 || user.status_code === 10000 || user.status_code === 10001 )
       setAddOrdered(true);
     else {
-      setMessage('You dont have permissions for this operation');
+      setMessage(USER_MESSAGES.AUTHORIZATION_ERROR);
       dispatch(setShowErrorTrue());
       setTimeout(() => {
         dispatch(setShowErrorFalse());
@@ -88,7 +88,7 @@ function CreateMaterialPage() {
     if (user.is_admin || user.status_code === 1000 || user.status_code === 10000 || user.status_code === 10001 )
       setAddGroup(true);
     else {
-      setMessage('You dont have permissions for this operation');
+      setMessage(USER_MESSAGES.AUTHORIZATION_ERROR);
       dispatch(setShowErrorTrue());
       setTimeout(() => {
         dispatch(setShowErrorFalse());
@@ -99,7 +99,7 @@ function CreateMaterialPage() {
     if (user.is_admin || user.status_code === 1000 || user.status_code === 10000 || user.status_code === 10001 )
       setAddMaterialCode(true);
     else {
-      setMessage('You dont have permissions for this operation');
+      setMessage(USER_MESSAGES.AUTHORIZATION_ERROR);
       dispatch(setShowErrorTrue());
       setTimeout(() => {
         dispatch(setShowErrorFalse());
@@ -113,7 +113,7 @@ function CreateMaterialPage() {
       dispatch(delRow());
     }
     else {
-      setMessage('Minimum must be one row');
+      setMessage('En az bir satir olmalidir');
       dispatch(setShowErrorTrue());
       setTimeout(() => {
         dispatch(setShowErrorFalse());
@@ -132,31 +132,31 @@ function CreateMaterialPage() {
     if (user.is_admin || user.status_code === 1000 || user.status_code === 10000 || user.status_code === 10001 ) {
       let cond = true;
       if (company.company_name === '') {
-        setMessage(`Company name must be selected`)
+        setMessage(`Firma ismi secilmesi zorunludur`);
         cond = false;
       }
       else if (ordered.ordered_name === '') {
-        setMessage(`Ordered name must be selected`);
+        setMessage(`Siparisci ismi secilmesi zorunludur`);
         cond = false;
       }
       if (table.length === 0) {
-        setMessage('Table is empty');
+        setMessage('Setir sayisi bos olamaz');
         cond = false;
       }
       else {
         for (let i of table) {
           if (i.material_name === "") {
-            setMessage(`In ${i.ss} row, Material name must be selected`);
+            setMessage(`In ${i.ss} Setir, Malzeme ismi girilmesi zorunludur`);
             cond = false;
             break;
           }
           else if (i.qty <= 0) {
-            setMessage(`In ${i.ss} row, Quantity is not valid`);
+            setMessage(`In ${i.ss} Setir, Malzeme miktari 0 veya negatif olamaz`);
             cond = false;
             break;
           }
           else if (i.material_code_id === '') {
-            setMessage(`In ${i.ss} row, Material Code doesnt entered`);
+            setMessage(`In ${i.ss} Setir, Malzeme kodu secilmesi zorunludur`);
             cond = false;
             break;
           }
@@ -180,7 +180,7 @@ function CreateMaterialPage() {
 
     }
     else {
-      setMessage('You dont have permissions for this operation');
+      setMessage(USER_MESSAGES.AUTHORIZATION_ERROR);
       dispatch(setShowErrorTrue());
       setTimeout(() => {
         dispatch(setShowErrorFalse());
@@ -272,27 +272,27 @@ function CreateMaterialPage() {
 
 
       { // Checked
-        add_company && <AdminModal title={'Add Company'} closeModal={closeModal} show_component={'company'} />
+        add_company && <AdminModal title={'Firma Ekle'} closeModal={closeModal} show_component={'company'} />
       }
 
       { // Checked
-        add_ordered && <AdminModal title={'Add Ordered'} closeModal={closeModal} show_component={'ordered'} />
+        add_ordered && <AdminModal title={'Siparisci Ekle'} closeModal={closeModal} show_component={'ordered'} />
       }
 
       { // Checked
-        add_group && <AdminModal title={'Add Group'} closeModal={closeModal} show_component={'group'} />
+        add_group && <AdminModal title={'Grup Ekle'} closeModal={closeModal} show_component={'group'} />
       }
 
       { // Checked
-        add_material_code && <AdminModal title={'Add Material Code'} closeModal={closeModal} show_component={'material_code'} />
+        add_material_code && <AdminModal title={'Malzeme Kodu Ekle'} closeModal={closeModal} show_component={'material_code'} />
       }
 
       {
-        company_refresh_message && <MessageBox message={'Companies Refreshed'} color={'bg-green-500'} />
+        company_refresh_message && <MessageBox message={'Firmalar Yenilendi'} color={'bg-green-500'} />
       }
 
       {
-        ordered_refresh_message && <MessageBox message={'Ordered Refreshed'} color={'bg-green-500'} />
+        ordered_refresh_message && <MessageBox message={'Siparisciler Yenilendi'} color={'bg-green-500'} />
       }
 
 
@@ -300,15 +300,14 @@ function CreateMaterialPage() {
 
         {/* Table page informa */}
         <div className='flex flex-row justify-between items-center bg-gray-100 rounded-lg px-4 mt-4 mb-3'>
-          <span style={{ fontWeight: 500 }} className='py-4 px-2 rounded-lg text-3xl text-start '>Add Material To Warehouse</span>
+          <span style={{ fontWeight: 600 }} className='py-4 px-2 rounded-lg text-4xl text-start '>Malzeme Giris Sayfasi</span>
           <div className='text-xs' style={{ fontWeight: 500 }}>
-            {/* <button onClick={addRows} className='py-2 px-4 border rounded-md border-gray-300 bg-orange-400 text-white mx-1 hover:shadow-md duration-200' >Go To Warehouse </button> */}
             {
               !show_load ?
-                <button onClick={postFunc} className='text-sm py-2 px-5 border rounded-md border-green-500 bg-green-500 text-white mx-2 hover:bg-white hover:text-green-500 duration-200' >Receive Warehouse</button>
+                <button onClick={postFunc} className='text-sm py-2 px-5 border rounded-md border-green-500 bg-green-500 text-white mx-2 hover:bg-white hover:text-green-500 duration-200' >Ambara Teslim Al</button>
                 :
                 <LoadingButton loading variant="outlined" className='text-black'>
-                  Please Submit
+                  Waiting
                 </LoadingButton>
             }
           </div>
@@ -316,18 +315,18 @@ function CreateMaterialPage() {
 
         {/* Button Information */}
         <div className='flex flex-row justify-between items-center px-4'>
-          <span style={{ fontWeight: 500 }} className='py-2 px-1 rounded-lg text-2xl text-start my-2'>Work With Tables</span>
+          <span style={{ fontWeight: 500 }} className='py-2 px-1 rounded-lg text-3xl text-start my-2'>Tablo Kontrol</span>
           <div className='text-xs' style={{ fontWeight: 500 }}>
 
-            <button onClick={addCompany} className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:bg-orange-400 hover:text-white duration-200' >Add Company</button>
-            <button onClick={addOrdered} className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:bg-orange-400 hover:text-white duration-200' >Add Ordered</button>
-            <button onClick={addGroup} className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:bg-orange-400 hover:text-white duration-200' >Add Group</button>
-            <button onClick={addMaterialCode} className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:bg-orange-400 hover:text-white duration-200' >Add Material Code</button>
+            <button onClick={addCompany} className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:bg-orange-400 hover:text-white duration-200' >Yeni Firma Ekle</button>
+            <button onClick={addOrdered} className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:bg-orange-400 hover:text-white duration-200' >Yeni Siparisci Ekle</button>
+            <button onClick={addGroup} className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:bg-orange-400 hover:text-white duration-200' >Yeni Group Ekle</button>
+            <button onClick={addMaterialCode} className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:bg-orange-400 hover:text-white duration-200' >Malzeme Kodu Ekle</button>
 
-            <button onClick={addRows} className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:bg-orange-400 hover:text-white duration-200' >Add Row</button>
-            <button onClick={delRows} className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:bg-orange-400 hover:text-white duration-200' >Delete Row</button>
+            <button onClick={addRows} className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:bg-orange-400 hover:text-white duration-200' >Satir Ilave Et</button>
+            <button onClick={delRows} className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:bg-orange-400 hover:text-white duration-200' >Satir Sil</button>
 
-            <button onClick={postFunc} className='py-2 px-5 border rounded-md border-gray-400 bg-white text-green-500 mx-2 hover:bg-green-500 hover:text-white duration-200' >Insert From Excel </button>
+            {/* <button onClick={postFunc} className='py-2 px-5 border rounded-md border-gray-400 bg-white text-green-500 mx-2 hover:bg-green-500 hover:text-white duration-200' >Insert From Excel </button> */}
           </div>
         </div>
 
@@ -338,7 +337,7 @@ function CreateMaterialPage() {
 
             <div className='flex text-lg text-gray-400 items-center'>
               <span className='w-28 text-base py-0.5'>
-                Project
+                Proje
               </span>
               <span className='bg-gray-200 h-2 rounded-lg w-36'>
               </span>
@@ -348,7 +347,7 @@ function CreateMaterialPage() {
             </div>
             <div className='flex text-lg text-gray-400 items-center'>
               <span className='w-28 text-base py-0.5'>
-                Fixture
+                Demirbas
               </span>
               <span className='bg-gray-200 h-2 rounded-lg w-36'>
               </span>
@@ -358,7 +357,7 @@ function CreateMaterialPage() {
             </div>
             <div className='flex text-lg text-gray-400 items-center'>
               <span className='w-28 text-base py-0.5'>
-                Consumable
+                Sarf
               </span>
               <span className='bg-gray-200 h-2 rounded-lg w-36'>
               </span>
@@ -371,7 +370,7 @@ function CreateMaterialPage() {
 
           <div className='flex flex-col items-end'>
             <div className='px-4 text-sm flex items-center'>
-              <span style={{ fontWeight: 500 }} className='text-xs text-gray-400'>Select Currency</span>
+              <span style={{ fontWeight: 500 }} className='text-xs text-gray-400'>Para Birimi</span>
               <select
                 className=' mx-2 text-xs border-2 border-orange-400 text-orange-400 font-bold outline-none rounded-md'
                 defaultValue={'rub'} name="" id="" onChange={(e) => {
@@ -396,7 +395,7 @@ function CreateMaterialPage() {
           <div className='flex justify-start text-lg'>
             <div className='' >
               <p className='text-gray-400 text-md'>
-                Total Row Size:
+                Toplam Satir:
               </p>
               <span className='font-bold text-2xl'>
                 {table.length}
@@ -404,7 +403,7 @@ function CreateMaterialPage() {
             </div>
             <div className='pl-40' >
               <p className='text-gray-400 text-md'>
-                Current Received Price:
+                Cari Girilen Fiyat:
               </p>
               <span className='font-bold text-2xl'>
                 {total_price.toFixed(2)} ₽
@@ -412,7 +411,7 @@ function CreateMaterialPage() {
             </div>
             <div className='pl-40' >
               <p className='text-gray-400 text-md'>
-                Daily Total Price:
+                Toplam Girilen Fiyat:
               </p>
               <span className='font-bold text-2xl'>
                 {total_price.toFixed(2)} ₽
@@ -429,15 +428,15 @@ function CreateMaterialPage() {
 
             {/* Doc Number Side */}
             <div className='mr-6'>
-              <p className='text-xs text-gray-400 pl-1'>Doc Num</p>
-              <input className=' text-xs bg-white border border-gray-300 rounded-lg w-36 p-2 outline-none text-center' type="text" placeholder='Doc Num' onChange={(e) => {
+              <p className='text-sm text-gray-400 pl-1'>Dokuman Numarasi</p>
+              <input className=' text-xs bg-white border border-gray-300 rounded-lg w-36 p-2 outline-none text-center' type="text" placeholder='Dokuman Numarasi' onChange={(e) => {
                 setDocNum(e.target.value);
               }} />
             </div>
 
             {/* Company Side */}
             <div className='relative mr-6'>
-              <p className='text-xs text-gray-400 pl-1'>Company</p>
+              <p className='text-sm text-gray-400 pl-1'>Firma</p>
               <button className='text-xs bg-white border border-gray-300  rounded-lg  p-2 w-48 text-ellipsis overflow-hidden text-nowrap outline-none' onClick={() => {
                 setIsCompanyDropDown(!isCompanyDropDown)
               }}>
@@ -447,7 +446,7 @@ function CreateMaterialPage() {
                 isCompanyDropDown && <DropDownComponent
                   data={companies}
                   text_name={'company_name'}
-                  input_name={'Company...'}
+                  input_name={'Firma Ismi'}
                   listenFunc={listenCompany}
                   filterChange={filterChange}
                 />
@@ -456,7 +455,7 @@ function CreateMaterialPage() {
 
             {/* Ordered Side */}
             <div className='relative'>
-              <p className='text-xs text-gray-400 pl-1'>Ordered</p>
+              <p className='text-sm text-gray-400 pl-1'>Siparisci</p>
               <button className='text-xs bg-white border border-gray-300 rounded-lg p-2 w-48 text-ellipsis overflow-hidden text-nowrap outline-none hover:border-orange-300 ' onClick={() => {
                 setIsUserDropDown(!isUserDropDown)
               }}>
@@ -466,7 +465,7 @@ function CreateMaterialPage() {
                 isUserDropDown && <DropDownComponent
                   data={ordereds}
                   text_name={'username'}
-                  input_name={'Orderer...'}
+                  input_name={'Siparisci Ismi'}
                   listenFunc={listenUser}
                   filterChange={filterChange}
                 />
@@ -480,12 +479,12 @@ function CreateMaterialPage() {
 
             <div className='flex px-2 mt-3 items-center hover:cursor-pointer' onClick={refreshCompany}>
               <LuRefreshCw className='text-green-500' />
-              <span className='text-sm text-gray-700 ml-2 font-bold' >Companies</span>
+              <span className='text-sm text-gray-700 ml-2 font-bold' >Firma Yenile</span>
             </div>
 
             <div className='flex px-2 mt-3 items-center hover:cursor-pointer' onClick={refreshOrdereds}>
               <LuRefreshCw className='text-green-500' />
-              <span className='text-sm text-gray-700 ml-2 font-bold' >Ordereds</span>
+              <span className='text-sm text-gray-700 ml-2 font-bold' >Siparisci Yenile</span>
             </div>
 
           </div>

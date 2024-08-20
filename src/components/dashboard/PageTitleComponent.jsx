@@ -20,12 +20,12 @@ function PageTitleComponent(props) {
             <div className='flex flex-row  justify-between items-center mt-1'>
                 <div className='flex flex-row items-center'>
                     {
-                        props.user.profile_image ? <img className="w-20 h-20 rounded-full ring-1 ring-gray-300 dark:ring-gray-500" src={props.user.profile_image} alt="cavidan "></img> :
+                        props.user.profile_image ? <img className="w-20 h-20 rounded-full ring-1 ring-gray-300 dark:ring-gray-500" src={props.user.profile_image} alt="Loading..."></img> :
                             <img className="w-20 h-20 rounded-full ring-1 ring-gray-300 dark:ring-gray-500" src={temp_user_image} alt="Large avatar"></img>
                     }
                     {/* <img className="w-20 h-20 rounded-full ring-1 ring-gray-300 dark:ring-gray-500" src={temp_user_image} alt="Large avatar"></img> */}
                     <div className='flex flex-col ml-6 px-1 '>
-                        <span className='rounded-lg text-[30px] font-bold ' >Hello, {props.user.username}</span>
+                        <span className='rounded-lg text-[34px] font-bold ' >Merhaba, {props.user.username}</span>
                         <span className=' px-1 text-[20px] text-gray-500 '>{props.user.status_name}</span>
                         {/* <span className='px-1 text-[12px] text-black'>(Ustay Moscow SRU Project)</span> */}
                     </div>
@@ -33,7 +33,7 @@ function PageTitleComponent(props) {
                 <div className='text-sm' style={{ fontWeight: 500 }}>
                     <Link to="/warehouse" >
                         <button className='bg-indigo-500 text-white px-5 py-3 rounded-lg text-lg hover:bg-indigo-600 duration-200'>
-                            Warehouse
+                            Ambara Git
                         </button>
                     </Link>
                     

@@ -31,6 +31,7 @@ import {
     setUploadCertificateAndPassportMessageBoxFalse
 } from "../store/warehouse-store.js";
 import { rowInformToggleTrue } from "../store/common-store.js";
+import { USER_MESSAGES } from '../constants/values.js';
 
 
 
@@ -200,7 +201,7 @@ function WarehousePage() {
 
             {/* Type Information */}
             <div className='flex flex-col w-full px-1'>
-                <span style={{ fontWeight: 500, fontFamily: 'IBM Plex Sans' }} className='px-2 text-2xl text-start my-2 '>Material Type Information</span>
+                <span style={{ fontWeight: 500, fontFamily: 'IBM Plex Sans' }} className='px-2 text-3xl text-start my-2 '>Malzeme Tip Ozeti</span>
                 <div className='flex  w-full items-start px-2 mt-2 mb-5 '>
 
                     {/* Material Type Section */}
@@ -208,12 +209,12 @@ function WarehousePage() {
                         {
                             type_count.length > 0 &&
                             type_count.map((item, index) => (
-                                item.type === 'Consumable' ? <MaterialTypeInform color={'border-red-500'} key={index + 1} item={item} getTypeFilter={getTypeFilter} />
-                                    : item.type === 'Project' ? <MaterialTypeInform color={'border-green-500'} key={index + 1} item={item} getTypeFilter={getTypeFilter} />
-                                        : item.type === 'Fixture' ? <MaterialTypeInform color={'border-blue-500'} key={index + 1} item={item} getTypeFilter={getTypeFilter} />
-                                            : item.type === 'Safety' ? <MaterialTypeInform color={'border-pink-500'} key={index + 1} item={item} getTypeFilter={getTypeFilter} />
-                                                : item.type === 'Administrative' ? <MaterialTypeInform color={'border-sky-500'} key={index + 1} item={item} getTypeFilter={getTypeFilter} />
-                                                    : <MaterialTypeInform key={index + 1} color={'border-orange-500'} item={item} getTypeFilter={getTypeFilter} />
+                                item.type === 'Consumable' ? <MaterialTypeInform color={'border-red-500'} key={index + 1} title={'Sarf'} item={item} getTypeFilter={getTypeFilter} />
+                                    : item.type === 'Project' ? <MaterialTypeInform color={'border-green-500'} key={index + 1} title={'Proje'} item={item} getTypeFilter={getTypeFilter} />
+                                        : item.type === 'Fixture' ? <MaterialTypeInform color={'border-blue-500'} key={index + 1} title={'Demirbas'} item={item} getTypeFilter={getTypeFilter} />
+                                            : item.type === 'Safety' ? <MaterialTypeInform color={'border-pink-500'} key={index + 1} title={'Safety'} item={item} getTypeFilter={getTypeFilter} />
+                                                : item.type === 'Administrative' ? <MaterialTypeInform color={'border-sky-500'} key={index + 1} title={'Idari Isler'} item={item} getTypeFilter={getTypeFilter} />
+                                                    : <MaterialTypeInform key={index + 1} color={'border-orange-500'} item={item} title={'El Aletleri'} getTypeFilter={getTypeFilter} />
                             ))
                         }
                     </div>
@@ -226,45 +227,46 @@ function WarehousePage() {
 
                             <button onClick={() => {
                                 if (selected_items.length === 0) {
-                                    showMessageBoxMessageHandle('addstock', 'Please, Choose at least one row to adding stock');
+                                    showMessageBoxMessageHandle('addstock', USER_MESSAGES.ATLEAST_ONE_ROW_OPTION);
                                 }
                                 else if(user.is_admin || user.status_code === 1000 || user.status_code === 10000 || user.status_code === 10001){
                                     dispatch(addStockToggleTrue());
                                     dispatch(WarehouseService.fetchSelectedItemsById(selected_items));
                                 }
                                 else {
-                                    showMessageBoxMessageHandle('addstock', 'Dont have authorization for adding stock');
+                                    showMessageBoxMessageHandle('addstock', USER_MESSAGES.AUTHORIZATION_ERROR);
                                 }
                             }}
-                                className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400  hover:bg-orange-400 hover:text-white duration-200' >Add To Stock</button>
+                                className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400  hover:bg-orange-400 hover:text-white duration-200' >Stoka Ekle</button>
 
                             <button onClick={() => {
                                 if (selected_items.length > 1) {
-                                    showMessageBoxMessageHandle('update', 'Cant update two or more column same time');
+                                    showMessageBoxMessageHandle('update', USER_MESSAGES.TWO_OR_MORE_ROW_OPTION);
                                 }
                                 else if (selected_items.length === 0) {
-                                    showMessageBoxMessageHandle('update', 'Please Choose at least one row');
+                                    showMessageBoxMessageHandle('update', USER_MESSAGES.ATLEAST_ONE_ROW_OPTION);
                                 }
                                 else if(user.is_admin || user.status_code === 1000 || user.status_code === 10000 || user.status_code === 10001){
                                     dispatch(setOrderSelectionUpdateToggleTrue());
                                     dispatch(WarehouseService.getPOById(selected_items[0]));
                                 }
                                 else {
-                                    showMessageBoxMessageHandle('update', 'Dont have authorization for updating');
+                                    showMessageBoxMessageHandle('update', USER_MESSAGES.AUTHORIZATION_ERROR);
                                 }
                             }}
-                                className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400 hover:bg-orange-400 hover:text-white duration-200' >Update Row</button>
+                                className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400 hover:bg-orange-400 hover:text-white duration-200' >Secileni Guncelle</button>
+                           
                             <button onClick={() => {
-                                showMessageBoxMessageHandle('delete', 'Dont have authorization for deleting');
+                                showMessageBoxMessageHandle('delete', USER_MESSAGES.AUTHORIZATION_ERROR);
                             }}
-                                className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400 hover:bg-orange-400 hover:text-white duration-200' >Delete Row</button>
+                                className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400 hover:bg-orange-400 hover:text-white duration-200' >Secileni Sil</button>
 
                             <button onClick={() => {
                                 if (selected_items.length > 1) {
-                                    showMessageBoxMessageHandle('inform', 'Cant get inform two or more column same time');
+                                    showMessageBoxMessageHandle('inform', USER_MESSAGES.TWO_OR_MORE_ROW_OPTION);
                                 }
                                 else if (selected_items.length === 0) {
-                                    showMessageBoxMessageHandle('inform', 'Please Choose at least one row');
+                                    showMessageBoxMessageHandle('inform', USER_MESSAGES.ATLEAST_ONE_ROW_OPTION);
                                 }
                                 else {
                                     dispatch(rowInformToggleTrue());
@@ -272,12 +274,14 @@ function WarehousePage() {
                                     dispatch(CommonService.getRowInform(data));
                                 }
                             }}
-                                className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400 hover:bg-orange-400 hover:text-white duration-200' >Get Information</button>
-                            <button onClick={clearFilter} className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400 hover:bg-orange-400 hover:text-white duration-200' >Clear Filter</button>
+                                className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400 hover:bg-orange-400 hover:text-white duration-200' >Genel Bilgi</button>
+                            
+                            <button onClick={clearFilter} className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400 hover:bg-orange-400 hover:text-white duration-200' >Filtereyi Temizle</button>
 
                             <button onClick={() => {
                                 dispatch(clearSelected());
-                            }} className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400 hover:bg-orange-400 hover:text-white duration-200' >Reset Select</button>
+                            }} className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400 hover:bg-orange-400 hover:text-white duration-200' >Secilenleri Temizle</button>
+                        
                         </div>
 
                         {/* Table Column Name Section */}
@@ -285,7 +289,7 @@ function WarehousePage() {
                             <span onClick={() => {
                                 show_table_column_component ? setShowTableColumnCompoenent(false) : setShowTableColumnCompoenent(true);
                             }}
-                                className='text-sm font-medium text-gray-700 ml-2 hover:cursor-pointer' >Table Columns Filter</span>
+                                className='text-sm font-medium text-gray-700 ml-2 hover:cursor-pointer' >Tablo Sutunlarini Ozellestir</span>
                             <span onClick={() => {
                                 show_table_column_component ? setShowTableColumnCompoenent(false) : setShowTableColumnCompoenent(true);
                             }}
@@ -301,8 +305,8 @@ function WarehousePage() {
 
 
             {/* Filter Title Section */}
-            <div className='flex px-4 justify-start w-full'>
-                <span className='text-2xl  tracking-tighter' style={{ fontWeight: 500, fontFamily: 'IBM Plex Sans' }}>Filter</span>
+            <div className='flex px-4 my-2 justify-start w-full'>
+                <span className='text-3xl  tracking-tighter' style={{ fontWeight: 600, fontFamily: 'IBM Plex Sans' }}>Filtre Islemleri</span>
             </div>
 
             <FilterComponent />

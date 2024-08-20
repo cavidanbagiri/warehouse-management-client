@@ -21,6 +21,7 @@ function AddProjectsComponent() {
     let project = useSelector((state) => state.adminSlice.project);
     let [project_data, setProjectData] = useState({
         project_name: '',
+        abbrevation_name: '',
     });
 
     function createNewProject() {
@@ -46,6 +47,7 @@ function AddProjectsComponent() {
                 setProjectData((each) => ({
                     ...each,
                     project_name: '',
+                    abbrevation_name: ''
                 }));
             }, 2000)
         }
@@ -66,12 +68,24 @@ function AddProjectsComponent() {
 
                 <div className='flex  justify-between text-sm my-3'>
                     <div className='w-full'>
-                        <span className='text-gray-400'>Project name</span>
+                        <span className='text-gray-400'>Proje Ismi</span>
                         <input className='bg-gray-100 w-full my-2 px-2 py-4 rounded-lg outline-none' type="text" placeholder='' value={project_data.project_name}
                             onChange={(event) => {
                                 setProjectData((each) => ({
                                     ...each,
                                     project_name: event.target.value
+                                }))
+                            }} />
+                    </div>
+                </div>
+                <div className='flex  justify-between text-sm my-3'>
+                    <div className='w-full'>
+                        <span className='text-gray-400'>Kisa Isim</span>
+                        <input className='bg-gray-100 w-full my-2 px-2 py-4 rounded-lg outline-none' type="text" placeholder='' value={project_data.abbrevation_name}
+                            onChange={(event) => {
+                                setProjectData((each) => ({
+                                    ...each,
+                                    abbrevation_name: event.target.value
                                 }))
                             }} />
                     </div>

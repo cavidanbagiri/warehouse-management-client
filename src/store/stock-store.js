@@ -31,6 +31,7 @@ const initialState = {
         ordered: true,
         group: true,
         po: false,
+        project_name: true,
     },
 
 

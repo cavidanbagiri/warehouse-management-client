@@ -27,6 +27,7 @@ import { IoFilterOutline } from "react-icons/io5";
 import { clearSelected } from '../store/area-store.js';
 import TabComponent from '../components/area/TabComponent.jsx'
 import TableColumnComponentToggle from '../components/area/TableColumnComponentToggle.jsx'
+import { USER_MESSAGES } from '../constants/values.js'
 
 function AreaPage() {
 
@@ -151,44 +152,45 @@ function AreaPage() {
                                     {/* Return Row  */}
                                     <button onClick={() => {
                                         if (selected_items.length > 1) {
-                                            showMessageBoxMessageHandle('return', 'Cant return two or more column same time');
+                                            showMessageBoxMessageHandle('return', USER_MESSAGES.TWO_OR_MORE_ROW_OPTION);
                                         }
                                         else if (selected_items.length === 0) {
-                                            showMessageBoxMessageHandle('return', 'Please choose at least one column for returning to stock');
+                                            showMessageBoxMessageHandle('return', USER_MESSAGES.ATLEAST_ONE_ROW_OPTION);
                                         }
                                         else {
                                             dispatch(setOrderSelectionReturnToggleTrue());
                                             dispatch(AreaService.getById(selected_items[0]));
                                         }
                                     }}
-                                        className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400 hover:bg-orange-400 hover:text-white duration-200' >Return</button>
+                                        className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400 hover:bg-orange-400 hover:text-white duration-200' >Geri Al</button>
 
 
                                     {/* Update Row  */}
                                     <button onClick={() => {
                                         if (selected_items.length > 1) {
-                                            showMessageBoxMessageHandle('update', 'Cant update two or more column same time');
+                                            showMessageBoxMessageHandle('update', USER_MESSAGES.TWO_OR_MORE_ROW_OPTION);
                                         }
                                         else if (selected_items.length === 0) {
-                                            showMessageBoxMessageHandle('update', 'Please choose at least one column');
+                                            showMessageBoxMessageHandle('update', USER_MESSAGES.ATLEAST_ONE_ROW_OPTION);
                                         }
                                         else {
                                             dispatch(setOrderSelectionUpdateToggleTrue());
                                             dispatch(AreaService.getById(selected_items[0]));
                                         }
                                     }}
-                                        className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400 hover:bg-orange-400 hover:text-white duration-200' >Update</button>
+                                        className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400 hover:bg-orange-400 hover:text-white duration-200' >Duzenle</button>
 
 
                                     {/* Clear Filter */}
                                     <button onClick={() => {
                                         dispatch(clearFilter);
-                                    }} className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400 hover:bg-orange-400 hover:text-white duration-200' >Clear Filter</button>
+                                    }} className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400 hover:bg-orange-400 hover:text-white duration-200' >Filtreyi Temizle</button>
+
 
                                     {/* Clear Selected  */}
                                     <button onClick={() => {
                                         dispatch(clearSelected());
-                                    }} className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400 hover:bg-orange-400 hover:text-white duration-200' >Reset Select</button>
+                                    }} className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400 hover:bg-orange-400 hover:text-white duration-200' >Secilenleri Temizle</button>
 
                                 </div>
 

@@ -15,7 +15,7 @@ import TableServiceUnusableBody from './TableServiceUnusableBody';
 
 import SpinnerComponent from '../common/SpinnerComponent';
 
-import {rowInformToggleTrue} from '../../store/common-store';
+import { rowInformToggleTrue } from '../../store/common-store';
 
 import under_construction from '../../assets/under_construction.png'
 
@@ -29,16 +29,16 @@ function RowInformationComponent() {
     <div className='flex flex-row justify-end z-20 fixed top-0 right-0 w-full overflow-auto h-full bg-white'>
 
       {
-        row_inform.pending ? 
-        <div className='flex items-center justify-center w-full h-full'>
-          <SpinnerComponent />
-        </div>
+        row_inform.pending ?
+          <div className='flex items-center justify-center w-full h-full'>
+            <SpinnerComponent />
+          </div>
           :
           <div className='flex flex-col bg-white w-full'>
             {/* Title and Close Component Section */}
-            <div className='flex justify-between items-center font-medium p-5 text-end border-b'>
-              <span className='text-2xl'>
-                Row Information Section
+            <div className='flex justify-between items-center font-medium p-5 mt-5 text-end border-b'>
+              <span className='text-4xl'>
+                Secilen uzere Genel Bilgi
               </span>
               <span
                 onClick={() => {
@@ -53,13 +53,13 @@ function RowInformationComponent() {
             <div className='flex flex-col p-4 '>
 
               <span className='text-center mb-4 text-3xl font-bold'>
-                Warehouse information
+                Ambar Bilgisi
               </span>
 
               {/* Project Information */}
               <div className='flex'>
                 <div className='w-44 '>
-                  <span className='text-xl'>Project</span>
+                  <span className='text-xl'>Proje</span>
                 </div>
                 <span className='text-xl pl-10 text-gray-500' >{row_inform.data.ProjectModel?.project_name}</span>
               </div>
@@ -67,7 +67,7 @@ function RowInformationComponent() {
               {/* Ordered By */}
               <div className='flex'>
                 <div className='w-44 '>
-                  <span className='text-xl' >Ordered By</span>
+                  <span className='text-xl' >Siparisci</span>
                 </div>
                 <span className='text-xl pl-10 text-gray-500' >{row_inform.data.UserModel?.firstName.charAt(0).toUpperCase() + row_inform.data.UserModel?.firstName.slice(1).toLowerCase()} {row_inform.data.UserModel?.lastName.charAt(0).toUpperCase() + row_inform.data.UserModel?.lastName.slice(1).toLowerCase()}</span>
               </div>
@@ -75,7 +75,7 @@ function RowInformationComponent() {
               {/* Material Name */}
               <div className='flex'>
                 <div className='w-44 '>
-                  <span className='text-xl' >Material name</span>
+                  <span className='text-xl' >Malzeme Ismi</span>
                 </div>
                 <span className='text-xl pl-10 text-gray-500' >{row_inform.data.material_name}</span>
               </div>
@@ -83,7 +83,7 @@ function RowInformationComponent() {
               {/* Material Type */}
               <div className='flex'>
                 <div className='w-44 '>
-                  <span className='text-xl' >Material Type</span>
+                  <span className='text-xl' >Malzeme Tipi</span>
                 </div>
                 <span className='text-xl pl-10 text-gray-500' >{row_inform.data.type}</span>
               </div>
@@ -91,7 +91,7 @@ function RowInformationComponent() {
               {/* Material Amount */}
               <div className='flex'>
                 <div className='w-44 '>
-                  <span className='text-xl' >Quantity</span>
+                  <span className='text-xl' >Miktar</span>
                 </div>
                 <span className='text-xl pl-10 text-gray-500' >{row_inform.data.qty} {row_inform.data.unit}</span>
               </div>
@@ -99,7 +99,7 @@ function RowInformationComponent() {
               {/* Leftover Amount */}
               <div className='flex'>
                 <div className='w-44 '>
-                  <span className='text-xl' >Leftover</span>
+                  <span className='text-xl' >Kalan</span>
                 </div>
                 <span className='text-xl pl-10 text-gray-500' >{row_inform.data.leftover} {row_inform.data.unit}</span>
               </div>
@@ -107,7 +107,7 @@ function RowInformationComponent() {
               {/* PO */}
               <div className='flex'>
                 <div className='w-44 '>
-                  <span className='text-xl' >Order num</span>
+                  <span className='text-xl' >STF Numarasi</span>
                 </div>
                 <span className='text-xl pl-10 text-gray-500' >{row_inform.data.po} </span>
               </div>
@@ -115,7 +115,7 @@ function RowInformationComponent() {
               {/* Document */}
               <div className='flex'>
                 <div className='w-44 '>
-                  <span className='text-xl' >Document num</span>
+                  <span className='text-xl' >Dokuman Numarasi</span>
                 </div>
                 <span className='text-xl pl-10 text-gray-500' >{row_inform.data.document} </span>
               </div>
@@ -127,29 +127,35 @@ function RowInformationComponent() {
 
               {/* Title */}
               <span className='text-center mb-4 text-3xl font-bold'>
-                Stock information
+                Stock Bilgisi
               </span>
 
               {/* Table Section */}
 
-              <table className=''>
-                <TableStockHeader />
-                <tbody className='text-base text-center' style={{ fontFamily: 'Roboto' }}>
-                  {
-                    row_inform.data?.StockModels?.map((item, index) =>
-                      <TableStockBody item={item} index={index + 1} key={index} />
-                    )
-                  }
-                </tbody>
-              </table>
+              {
+                row_inform.data?.StockModels?.length === 0 ?
+                  <span className='text-gray-400 text-3xl font-bold w-full text-center'>Bilgi Yok</span>
+                  :
+
+                  <table className=''>
+                    <TableStockHeader />
+                    <tbody className='text-base text-center' style={{ fontFamily: 'Roboto' }}>
+                      {
+                        row_inform.data?.StockModels?.map((item, index) =>
+                          <TableStockBody item={item} index={index + 1} key={index} />
+                        )
+                      }
+                    </tbody>
+                  </table>
+              }
 
             </div>
 
             {/* Area Section */}
 
-            <div className='flex flex-col p-4 '>
+            <div className='flex flex-col p-4 mt-2'>
               <span className='text-center mb-4 text-3xl font-bold'>
-                Area information
+                Sahaya Cikilan
               </span>
 
               {/* Table Section */}
@@ -171,9 +177,9 @@ function RowInformationComponent() {
 
             {/* Service Section */}
 
-            <div className='flex flex-col p-4 '>
+            <div className='flex flex-col p-4 mt-2'>
               <span className='text-center mb-4 text-3xl font-bold'>
-                Service information
+                Servise Gonderilen
               </span>
 
               {/* Table Section */}
@@ -195,9 +201,9 @@ function RowInformationComponent() {
 
             {/* Unusable Section */}
 
-            <div className='flex flex-col p-4 '>
+            <div className='flex flex-col p-4 mt-2'>
               <span className='text-center mb-4 text-3xl font-bold'>
-                Unusable Materials information
+                Zayiat Cikilan
               </span>
 
               {/* Table Section */}

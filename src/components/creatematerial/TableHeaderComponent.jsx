@@ -9,44 +9,44 @@ function TableHeaderComponent() {
       </th>
       <th scope="col" className="px-6 py-1 text-center border min-w-40 font-medium ">
         <div className="">
-          Material Code
+          Malzeme Kodu
         </div>
       </th>
       <th scope="col" className="px-6 py-1 text-center border min-w-64 font-medium ">
         <div className="">
-          Code Desription
+          Malzeme Aciklama
         </div>
       </th>
       <th scope="col" className="px-6 py-1 text-center border w-1/3 font-medium ">
         <div className="">
-          Material Name
+          Malzeme Ismi
         </div>
       </th>
       <th scope="col" className="px-6 py-1 text-center border font-medium ">
         <div className="">
-          Type
+          Malzeme Tipi
         </div>
       </th>
       <th scope="col" className="px-6 py-1 text-center border min-w-28 font-medium ">
-        Qty
+        Sayi
       </th>
       <th scope="col" className="px-6 py-1 text-center border w-4 font-medium ">
-        Unit
+        Birim
       </th>
       <th scope="col" className="px-6 py-1 text-center border w-28 font-medium ">
-        Price
+        Fiyat
       </th>
       <th scope="col" className="px-6 py-1 text-center border font-medium  min-w-28">
-        Total
+        Toplam
       </th>
       <th scope="col" className="px-6 py-1 text-center border font-medium min-w-24">
-        PO No
+        Siparis Numarasi
       </th>
       <th scope="col" className="px-6 py-1 text-center border font-medium w-28">
-        Certificate
+        Sertifika
       </th>
       <th scope="col" className="px-6 py-1 text-center border font-medium w-28">
-        Passport
+        Pasaport
       </th>
 
     </tr>

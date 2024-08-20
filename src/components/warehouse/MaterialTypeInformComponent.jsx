@@ -8,7 +8,7 @@ function MaterialTypeInform(props) {
             props.getTypeFilter(props.item.type);
         }} 
         className='flex flex-col items-center mr-6 hover:cursor-pointer'>
-            <span className='text-gray-500 text-sm mb-1'>{props.item.type}</span>
+            <span className='text-gray-500 text-sm mb-1'>{props.title}</span>
             <div className={`flex items-center justify-center border-[8px] ${props.color} rounded-full w-[75px] h-[75px]`}>
                 <span style={{ fontWeight: 700 }} className='text-xl'>{props.item.count}%</span>
             </div>

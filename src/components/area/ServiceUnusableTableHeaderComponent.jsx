@@ -13,44 +13,47 @@ function ServiceUnusableTableHeaderComponent(props) {
                 S/S
             </th>
             <th scope="col" className="px-6 py-3 text-center border min-w-96">
-                Material Name
+                Malzeme Ismi
             </th>
             <th scope="col" className="px-6 py-3 text-center border">
-                Unit
+                Birim
             </th>
             <th scope="col" className="px-6 py-3 text-center border">
-                Amount
+                Miktar
             </th>
             <th scope="col" className="px-6 py-3 text-center border">
-                Serial No
+                Seri No
             </th>
             <th scope="col" className="px-6 py-3 text-center border">
-                Material ID
+                Malzeme ID Kodu
             </th>
             <th scope="col" className="px-6 py-3 text-center border ">
-                Comment
+                Koment
             </th>
             <th scope="col" className="px-6 py-3 text-center border">
-                PO
+                STF No
             </th>
             <th scope="col" className="px-6 py-3 text-center border">
-                Created
+                Yaratildi
             </th>
             <th scope="col" className="px-6 py-3 text-center border">
-                Date
+                Tarih
             </th>
             {
                 props.header_for === "unusable" &&
                 <th scope="col" className="px-6 py-3 text-center border">
-                    Price
+                    Fiyat
                 </th>
             }
             {
                 props.header_for === "unusable" &&
                 <th scope="col" className="px-6 py-3 text-center border">
-                    Currency
+                    Para Birimi
                 </th>
             }
+            <th scope="col" className="px-6 py-3 text-center border">
+                Proje
+            </th>
         </tr>
     </thead>
   )

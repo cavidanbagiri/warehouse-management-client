@@ -80,18 +80,22 @@ function FilterComponent() {
             material_name: material_name.toString(),
             createdAt: createdAt.toString(),
             po: po,
-            projectId: user.projectId,
             materialCodeId: material_code_id
         };
-        console.log(data);
+        if(user.projectId == 13){
+
+        }
+        else{
+            data.projectId = user.projectId      
+        }
         dispatch(StockService.filterStockData(data));
     }
 
     return (
 
         <div className="flex flex-col w-full mt-5">
-            <div className='flex px-4 justify-start w-full'>
-                <span className='text-2xl  tracking-tighter' style={{ fontWeight: 500, fontFamily: 'IBM Plex Sans' }}>Filter</span>
+            <div className='flex px-4 justify-start w-full '>
+                <span className='text-3xl my-3 tracking-tighter' style={{ fontWeight: 600, fontFamily: 'IBM Plex Sans' }}>Filtre Islemleri</span>
             </div>
 
             <div className='flex items-end justify-between w-full mb-3 px-4'>
@@ -100,7 +104,7 @@ function FilterComponent() {
 
                     {/* Selected Date Filter */}
                     <div className='mr-3'>
-                        <p className='text-xs text-gray-400 pl-1'>Date</p>
+                        <p className='text-sm text-gray-400 pl-1'>Tarih</p>
                         <input
                             className='text-xs bg-white border border-gray-300 rounded-lg w-28 p-2 outline-none text-center hover:border-orange-300 '
                             type="date" name="" id="" onChange={(e) => {
@@ -110,13 +114,13 @@ function FilterComponent() {
 
                     {/* Company Side */}
                     <div className='relative mr-3'>
-                        <p className='text-xs text-gray-400 pl-1'>Company</p>
+                        <p className='text-sm text-gray-400 pl-1'>Firma</p>
                         <button
                             className='text-xs bg-white border border-gray-300  rounded-lg  p-2 w-36 text-ellipsis overflow-hidden text-nowrap outline-none hover:border-orange-300 '
                             onClick={() => {
                                 setIsCompanyDropDown(!isCompanyDropDown)
                             }}>
-                            {company.companyId === '' ? 'Company' : company.company_name}
+                            {company.companyId === '' ? 'Firma' : company.company_name}
                         </button>
                         {
                             isCompanyDropDown && <DropDownComponent
@@ -131,13 +135,13 @@ function FilterComponent() {
 
                     {/* Ordered Side */}
                     <div className='relative mr-3'>
-                        <p className='text-xs text-gray-400 pl-1'>Ordered</p>
+                        <p className='text-sm text-gray-400 pl-1'>Siparisci</p>
                         <button
                             className='text-xs bg-white border border-gray-300 rounded-lg p-2 w-36 text-ellipsis overflow-hidden text-nowrap outline-none hover:border-orange-300 '
                             onClick={() => {
                                 setIsUserDropDown(!isUserDropDown)
                             }}>
-                            {ordered.orderedId === '' ? 'Orderer' : ordered.ordered_name}
+                            {ordered.orderedId === '' ? 'Siparisci' : ordered.ordered_name}
                         </button>
                         {
                             isUserDropDown && <DropDownComponent
@@ -152,44 +156,44 @@ function FilterComponent() {
 
                     {/* Doc Number Side */}
                     <div className='mr-3'>
-                        <p className='text-xs text-gray-400 pl-1'>Document</p>
+                        <p className='text-sm text-gray-400 pl-1'>Dokuman Numarasi</p>
                         <input value={documentnum}
-                            className='placeholder-black text-xs bg-white border border-gray-300 rounded-lg w-24 p-2 outline-none text-center hover:border-orange-300 '
-                            type="text" placeholder='Document' onChange={(e) => {
+                            className='placeholder-black text-xs bg-white border border-gray-300 rounded-lg w-36 p-2 outline-none text-center hover:border-orange-300 '
+                            type="text" placeholder='Dokuman Numarasi' onChange={(e) => {
                                 setDocumentNum(e.target.value);
                             }} />
                     </div>
 
                     {/* Material name */}
                     <div className='mr-3'>
-                        <p className='text-xs text-gray-400 pl-1'>Material Name</p>
+                        <p className='text-sm text-gray-400 pl-1'>Malzeme Ismi</p>
                         <input value={material_name}
                             className='placeholder-black text-xs bg-white border border-gray-300 rounded-lg w-64 p-2 outline-none text-center  hover:border-orange-300 '
-                            type="text" placeholder='Material Name' onChange={(e) => {
+                            type="text" placeholder='Malzeme Ismi' onChange={(e) => {
                                 setMaterialName(e.target.value);
                             }} />
                     </div>
 
                     {/* Material name */}
                     <div className='mr-3'>
-                        <p className='text-xs text-gray-400 pl-1'>Order Num</p>
+                        <p className='text-sm text-gray-400 pl-1'>STF No</p>
                         <input value={po}
                             className='placeholder-black text-xs bg-white border border-gray-300 rounded-lg w-24 p-2 outline-none text-center hover:border-orange-300 '
-                            type="text" placeholder='Order Num' onChange={(e) => {
+                            type="text" placeholder='STF No' onChange={(e) => {
                                 setPO(e.target.value);
                             }} />
                     </div>
 
                     {/* Material Code Side */}
                     <div className='mr-3 relative'>
-                        <p className='text-xs text-gray-400 pl-1'>Material Code</p>
+                        <p className='text-sm text-gray-400 pl-1'>Malzeme Kodu</p>
                         <button onClick={() => {
                             setShowMaterialCode(!show_material_code)
                             console.log('clicked and result is :', show_material_code);
                         }}
                             className='text-xs text-gray-600 bg-gray-200 border border-gray-300 rounded-lg p-2 w-36 text-ellipsis overflow-hidden text-nowrap outline-none hover:border-orange-300 '>
                             {
-                                material_code_description === '' ? 'Material Code' : material_code_description
+                                material_code_description === '' ? 'Malzeme kodu' : material_code_description
                             }
                         </button>
                         {show_material_code &&

@@ -15,6 +15,7 @@ import {
 import { AnimatePresence, motion } from 'framer-motion';
 
 import AreaService from "../../services/area-service.js";
+import { USER_MESSAGES } from '../../constants/values.js';
 
 function OrderSelectedComponent(props) {
 
@@ -32,7 +33,7 @@ function OrderSelectedComponent(props) {
                     <div className="flex items-center">
                         <span className="bg-orange-500 py-4 px-6 text-white font-bold rounded-l-md text-2xl">{selected_items.length}</span>
                         <div className="mx-3">
-                            <p style={{ fontWeight: 500 }} className='text-2xl'>Selected</p>
+                            <p style={{ fontWeight: 500 }} className='text-2xl'>Secilenler</p>
                         </div>
                     </div>
                     <div className="flex items-center  ml-[100px]">
@@ -41,7 +42,7 @@ function OrderSelectedComponent(props) {
                         <motion.div exit={{ opacity: 0, x: -200, }} initial={{ opacity: 0, x: 200, }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.4 }}
                             onClick={() => {
                                 if (selected_items.length > 1) {
-                                    props.showMessaggeBoxMessageHandle('update', 'Cant update two or more column same time');
+                                    props.showMessaggeBoxMessageHandle('update', USER_MESSAGES.TWO_OR_MORE_ROW_OPTION);
                                 }
                                 else {
                                     dispatch(setOrderSelectionUpdateToggleTrue());
@@ -50,7 +51,7 @@ function OrderSelectedComponent(props) {
                             }}
                             className="flex flex-col items-center mx-3 cursor-pointer hover:bg-gray-50">
                             <CiEdit className='text-2xl text-gray-800' />
-                            <span className="text-xs w-20 text-center">Update Row</span>
+                            <span className="text-xs w-20 text-center">Duzenle</span>
                         </motion.div>
 
 
@@ -58,10 +59,10 @@ function OrderSelectedComponent(props) {
                         <motion.div exit={{ opacity: 0, x: -200, }} initial={{ opacity: 0, x: 200, }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }}
                             onClick={() => {
                                 if (selected_items.length === 0) {
-                                    props.showMessaggeBoxMessageHandle('returnstock', 'Please, Choose at least one row to adding stock');
+                                    props.showMessaggeBoxMessageHandle('returnstock', USER_MESSAGES.ATLEAST_ONE_ROW_OPTION);
                                 }
                                 else if (selected_items.length > 1) {
-                                    props.showMessaggeBoxMessageHandle('returnstock', 'Please, Max 1 Row can selected to return to warehouse');
+                                    props.showMessaggeBoxMessageHandle('returnstock', USER_MESSAGES.TWO_OR_MORE_ROW_OPTION);
                                 }
                                 else {
                                     dispatch(setOrderSelectionReturnToggleTrue());
@@ -70,7 +71,7 @@ function OrderSelectedComponent(props) {
                             }}
                             className="flex flex-col items-center mx-3 cursor-pointer w-full hover:bg-gray-50">
                             <BsArrowReturnLeft className='text-2xl text-gray-800' />
-                            <span className="text-xs w-20 text-center">Return</span>
+                            <span className="text-xs w-20 text-center">Geri Al</span>
                         </motion.div>
 
 

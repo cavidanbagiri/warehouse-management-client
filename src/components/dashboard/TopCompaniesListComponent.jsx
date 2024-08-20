@@ -7,7 +7,7 @@ function TopCompaniesListComponent() {
 
   return (
     <div className='flex flex-col col-span-4 justify-between items-around bg-white rounded-xl my-5 mx-8 h-[750px] p-2'>
-      <h2 className='text-center font-bold text-3xl'>Top Companies</h2>
+      <h2 className='text-center font-bold text-3xl'>Top Firmalar</h2>
       <ul className='p-2 font-medium'>
         {
           top_companies.map((el, index) => {

@@ -12,6 +12,9 @@ import CustomLoadingButton from "../common/CustomLoadingButton.jsx";
 import MessageBox from "../../layouts/MessageBox.jsx";
 import SpinnerComponent from "../common/SpinnerComponent.jsx";
 
+
+import { AnimatePresence, motion } from 'framer-motion';
+
 function OrderUpdateComponent() {
 
     const dispatch = useDispatch();
@@ -86,116 +89,120 @@ function OrderUpdateComponent() {
 
             <div className='w-1/2' ></div>
 
-
-            <div className='flex flex-col bg-white w-1/2' >
-                {/* Close and Title Component Section */}
-                <div className='flex justify-between p-5 text-end'>
-                    <span style={{ fontWeight: 600, fontFamily: 'Open Sans' }} className='text-3xl'>
-                        Order Update Section Area
-                    </span>
-                    <span
-                        onClick={() => {
-                            dispatch(setOrderSelectionUpdateToggleFalse());
-                        }}
-                        className='p-2 hover:bg-gray-100 hover:cursor-pointer rounded-lg'>
-                        <IoMdClose className='text-2xl' />
-                    </span>
-                </div>
-                {po_data_pending && <div className='flex justify-center w-full'><SpinnerComponent /></div>}
-                {po_data && !po_data_pending &&
-                    <div className='flex flex-col p-4 '>
-
-                        {/* Material Name Side */}
-                        <div className='flex items-center justify-between mt-3'>
-                            <span className='w-1/3'>Material Name </span>
-                            <div className='relative w-full flex justify-end'>
-                                <span className={''}>
-                                    {material_name}
-                                </span>
-                            </div>
-                        </div>
-
-                        {/* Material Qty Side */}
-                        <div className='flex items-center justify-between mt-3'>
-                            <span className='w-1/3'>Amount</span>
-                            <div className='relative'>
-                                {qty}
-                            </div>
-                        </div>
-
-                        {/* Matterial Type Side */}
-                        <div className='flex items-center justify-between mt-3'>
-                            <span className='w-1/3'>Unit </span>
-                            <div className='relative'>
-                                {unit}
-                            </div>
-                        </div>
-
-                        {/* Serial Number Side */}
-                        <div className='flex items-center justify-between mt-3'>
-                            <span className='w-1/3'>Serial Number </span>
-                            <div className='relative w-full'>
-                                {serial_number}
-                            </div>
-                        </div>
-
-                        {/* Material ID Side */}
-                        <div className='flex items-center justify-between mt-3'>
-                            <span className='w-1/3'>Material ID </span>
-                            <div className='relative w-full'>
-                                {material_id}
-                            </div>
-                        </div>
-
-                        {/* Card Number */}
-                        <div className='flex items-center justify-between mt-3'>
-                            <span className='w-1/3'>Card Number </span>
-                            <div className='relative w-full'>
-                                <input value={card_number} type="text" className={'border p-2 rounded-lg'}
-                                    onChange={(e) => {
-                                        if (e.target.value.length < 4) {
-                                            setShowMessageBox(true);
-                                            setShowMessageBoxMessage('Card Number must be greater than 4 characters');
-                                        }
-                                        else {
-                                            setCardNumber(e.target.value);
-                                        }
-                                    }} />
-                            </div>
-                        </div>
-
-                        {/* Username */}
-                        <div className='flex items-center justify-between mt-3'>
-                            <span className='w-1/3'>Username </span>
-                            <div className='relative w-full'>
-                                <input value={username} type="text" className={'border p-2 rounded-lg'}
-                                    onChange={(e) => {
-                                        if (e.target.value.length <= 5) {
-                                            setShowMessageBox(true);
-                                            setShowMessageBoxMessage('Username must be greater than 5 characters');
-                                        }
-                                        else {
-                                            setUsername(e.target.value);
-                                        }
-                                    }} />
-                            </div>
-                        </div>
-
-
-                        {/* Button Field */}
-                        {
-                            !order_update.order_update_pending ?
-
-                                <div className='flex justify-end mt-10'>
-                                    <button onClick={postFunc}
-                                        className='px-6 py-3 bg-green-500 rounded-lg text-white'>Post Some</button>
-                                </div>
-                                :
-                                <CustomLoadingButton />
-                        }
+            <AnimatePresence>
+                <motion.div exit={{ opacity: 0, x: -400, }} initial={{ opacity: 0, x: 200, }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.3 }}
+                    className='flex flex-col bg-white w-1/2' >
+                    {/* Close and Title Component Section */}
+                    <div className='flex justify-between p-5 text-end'>
+                        <span style={{ fontWeight: 600, fontFamily: 'Open Sans' }} className='text-3xl'>
+                            Guncelle
+                        </span>
+                        <span
+                            onClick={() => {
+                                dispatch(setOrderSelectionUpdateToggleFalse());
+                            }}
+                            className='p-2 hover:bg-gray-100 hover:cursor-pointer rounded-lg'>
+                            <IoMdClose className='text-2xl' />
+                        </span>
                     </div>
-                }
-            </div>
+                    {po_data_pending && <div className='flex justify-center w-full'><SpinnerComponent /></div>}
+                    {po_data && !po_data_pending &&
+                        <div className='flex flex-col p-4 '>
+
+                            {/* Material Name Side */}
+                            <div className='flex items-center justify-between mt-3'>
+                                <span className='w-1/3'>Malzeme Ismi </span>
+                                <div className='relative w-full flex justify-end'>
+                                    <span className={''}>
+                                        {material_name}
+                                    </span>
+                                </div>
+                            </div>
+
+                            {/* Material Qty Side */}
+                            <div className='flex items-center justify-between mt-3'>
+                                <span className='w-1/3'>Sayisi</span>
+                                <div className='relative'>
+                                    {qty}
+                                </div>
+                            </div>
+
+                            {/* Matterial Type Side */}
+                            <div className='flex items-center justify-between mt-3'>
+                                <span className='w-1/3'>Birim </span>
+                                <div className='relative'>
+                                    {unit}
+                                </div>
+                            </div>
+
+                            {/* Serial Number Side */}
+                            <div className='flex items-center justify-between mt-3'>
+                                <span className='w-1/3'>Seri No </span>
+                                <div className='relative w-full'>
+                                    {serial_number}
+                                </div>
+                            </div>
+
+                            {/* Material ID Side */}
+                            <div className='flex items-center justify-between mt-3'>
+                                <span className='w-1/3'>Malzeme ID Kodu </span>
+                                <div className='relative w-full'>
+                                    {material_id}
+                                </div>
+                            </div>
+
+                            {/* Card Number */}
+                            <div className='flex items-center justify-between mt-3'>
+                                <span className='w-1/3'>Sicil No </span>
+                                <div className='relative w-full'>
+                                    <input value={card_number} type="text" className={'border p-2 rounded-lg'}
+                                        onChange={(e) => {
+                                            if (e.target.value.length < 4) {
+                                                setShowMessageBox(true);
+                                                setShowMessageBoxMessage('Sicil Numara en az 4 haneli olmalidir');
+                                            }
+                                            else {
+                                                setCardNumber(e.target.value);
+                                            }
+                                        }} />
+                                </div>
+                            </div>
+
+                            {/* Username */}
+                            <div className='flex items-center justify-between mt-3'>
+                                <span className='w-1/3'>Username </span>
+                                <div className='relative w-full'>
+                                    <input value={username} type="text" className={'border p-2 rounded-lg'}
+                                        onChange={(e) => {
+                                            if (e.target.value.length <= 5) {
+                                                setShowMessageBox(true);
+                                                setShowMessageBoxMessage('Teslim Alan Ismi en az 5 haneli olmalidir');
+                                            }
+                                            else {
+                                                setUsername(e.target.value);
+                                            }
+                                        }} />
+                                </div>
+                            </div>
+
+
+                            {/* Button Field */}
+                            {
+                                !order_update.order_update_pending ?
+
+                                    <div className='flex justify-end mt-10'>
+                                        <button onClick={postFunc}
+                                            className='px-6 py-3 bg-green-500 rounded-lg text-white'>Onayla</button>
+                                    </div>
+                                    :
+                                    <CustomLoadingButton />
+                            }
+                        </div>
+                    }
+                </motion.div>
+            </AnimatePresence>
+
+
         </div>
     )
 }

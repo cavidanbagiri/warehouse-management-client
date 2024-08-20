@@ -31,15 +31,15 @@ function AddOrderedComponent() {
     function createNewOrdered() {
         if(ordered_data.email.trim() === ''){
             dispatch(setCreateOrderedStatusError());
-            dispatch(setCreateOrderedMessage('Email Required'));
+            dispatch(setCreateOrderedMessage('Dogru Email Giriniz'));
         } 
         else if(ordered_data.firstName.trim() === '' ){
             dispatch(setCreateOrderedStatusError());
-            dispatch(setCreateOrderedMessage('First Name Required'));
+            dispatch(setCreateOrderedMessage('Siparisici Adi Giriniz'));
         }
         else if(ordered_data.lastName.trim() === '' ){
             dispatch(setCreateOrderedStatusError());
-            dispatch(setCreateOrderedMessage('Last Name Required'));
+            dispatch(setCreateOrderedMessage('Siparisici Soyadi Giriniz'));
         }
         else{
             dispatch(AdminService.createOrdered(ordered_data));

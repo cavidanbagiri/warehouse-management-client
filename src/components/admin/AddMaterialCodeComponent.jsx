@@ -24,7 +24,7 @@ function AddMaterialCodeComponent() {
     function createNewMaterialCode() {
         if (material_code_data.material_description.trim() === '') {
             dispatch(setCreateMaterialCodeStatusError());
-            dispatch(setCreateMaterialCodeMessage('Material Name Required'));
+            dispatch(setCreateMaterialCodeMessage('Malzeme Ismi Gerekli'));
         }
         else {
             dispatch(AdminService.createMaterialCode(material_code_data));
@@ -64,7 +64,7 @@ function AddMaterialCodeComponent() {
                 {/* Material Code */}
                 <div className='flex  justify-between text-sm my-3'>
                     <div className='w-full'>
-                        <span className='text-gray-400'>Material Code</span>
+                        <span className='text-gray-400'>Malzeme Ismi</span>
                         <input className='bg-gray-100 w-full my-2 px-2 py-4 rounded-lg outline-none' type="text" placeholder='' value={material_code_data.material_description}
                             onChange={(event) => {
                                 setMaterialCodeData((each) => ({
@@ -76,7 +76,7 @@ function AddMaterialCodeComponent() {
                 </div>
                 {/* Available Material Codes */}
                 <div className='text-sm my-3'>
-                    <p className='text-gray-400'>Available Material Codes</p>
+                    <p className='text-gray-400'>Mavcut Malzeme Isimleri</p>
                     <select name="" id="" className='bg-gray-100 w-full my-2 px-2 py-4 rounded-lg text-gray-800 outline-none'
                         onChange={(event) => {
                             
@@ -94,11 +94,11 @@ function AddMaterialCodeComponent() {
                     {
                         !material_code.pending ?
                             <button onClick={createNewMaterialCode} className='bg-orange-300 text-gray-800 hover:bg-orange-400 duration-200  w-full py-4 rounded-lg my-4 text-lg'>
-                                Confirm
+                                Onayla
                             </button>
                             :
                             <LoadingButton loading variant="outlined" className='text-black w-full p-4'>
-                                Please Submit
+                                Waiting
                             </LoadingButton>
                     }
 

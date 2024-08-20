@@ -55,7 +55,7 @@ function ProfilePage() {
 
       <div className='flex flex-col my-3'>
         <p className='text-start text-2xl  text-gray-400'>
-          Add Profile Image
+          Foto Ekle
         </p>
         <input placeholder='Add Certificate or Passport' type='file'
           onChange={handleFileChange}

@@ -31,7 +31,7 @@ const DashboardPage = () => {
 
       <PageTitleComponent user={user} />
 
-      <span className='ml-16 my-5 text-5xl font-bold'>Dashboard</span>
+      <span className='ml-16 my-5 text-5xl font-bold'>Ana Sayfa</span>
 
       <MenuSideComponent />
 

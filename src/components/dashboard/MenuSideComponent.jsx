@@ -14,7 +14,7 @@ function MenuSideComponent() {
 
       <Link to="/create" className='flex flex-col justify-around bg-white shadow-md items-center p-3 border rounded-xl w-1/4 mx-4 cursor-pointer hover:shadow-xl duration-300'>
         <span className='text-black text-3xl' style={{ fontWeight: 600 }}>
-          Create Material
+          Malzeme Girisi
         </span>
         <img src={create_icon} className='w-24 h-24 p-3' alt="" />
         <hr className='my-1 text-black w-full' />
@@ -26,7 +26,7 @@ function MenuSideComponent() {
 
       <Link to="/warehouse" style={{ fontWeight: 600, }} className='flex flex-col justify-around bg-white shadow-md items-center p-3 border rounded-xl w-1/4 mx-4 cursor-pointer hover:shadow-xl duration-300'>
         <span className='text-black text-3xl '>
-          Warehouse
+          Ambar Sayfasi
         </span>
         <img src={inventory_icon} className='w-24 h-24 p-2' alt="" />
         <hr className='my-1 text-black w-full' />
@@ -37,7 +37,7 @@ function MenuSideComponent() {
 
       <Link to="/stock" style={{ fontWeight: 600, }} className='flex flex-col justify-around bg-white shadow-md items-center p-3 border rounded-xl w-1/4 mx-4 cursor-pointer hover:shadow-xl duration-300'>
         <span className='text-black text-3xl '>
-          Stock
+          Stok Sayfasi
         </span>
         <img src={stock_icon} className='w-24 h-24 p-2' alt="" />
         <hr className='my-1 text-black w-full' />
@@ -48,7 +48,7 @@ function MenuSideComponent() {
 
       <Link to="/area" style={{ fontWeight: 600, }} className='flex flex-col justify-around bg-white shadow-md items-center p-3 border rounded-xl w-1/4 mx-4 cursor-pointer hover:shadow-xl duration-300'>
         <span className='text-black text-3xl '>
-          Area
+          Sahaya Cikilan
         </span>
         <img src={area} className='w-24 h-24 p-1' alt="" />
         <hr className='my-1 text-black w-full' />
@@ -59,7 +59,7 @@ function MenuSideComponent() {
 
       <Link to="/profile" style={{ fontWeight: 600, }} className='flex flex-col justify-around bg-white shadow-md items-center p-3 border rounded-xl w-1/4 mx-4 cursor-pointer hover:shadow-xl duration-300'>
         <span className='text-black text-3xl '>
-          Profile
+          Kullanici Sayfasi
         </span>
         <img src={profile} className='w-24 h-24 p-2' alt="" />
         <hr className='my-1 text-black w-full' />

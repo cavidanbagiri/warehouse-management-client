@@ -77,7 +77,7 @@ function TableRowComponent(props) {
                     row.material_code === '' ?
                         <button onClick={() => setShowMaterialCode(!show_material_code)}
                             className='bg-gray-100 p-3 rounded-lg hover:cursor-pointer hover:bg-gray-200'>
-                            Select Material Code
+                            Malzeme Kodu Sec
                         </button>
                         :
                         row.material_code
@@ -99,7 +99,7 @@ function TableRowComponent(props) {
             </td>
 
             <td>
-                <input className="text-sm outline-none border-none w-full h-full p-2 border-transparent focus:border-transparent focus:ring-0" type="text" placeholder="Material Name..."
+                <input className="text-sm outline-none border-none w-full h-full p-2 border-transparent focus:border-transparent focus:ring-0" type="text" placeholder="Malzeme Ismi"
                     onChange={
                         (event) => {
                             setRow((each) => ({
@@ -128,7 +128,7 @@ function TableRowComponent(props) {
                 </select>
             </td>
             <td>
-                <input className="text-sm outline-none w-full h-full p-2 text-center border-none border-transparent focus:border-transparent focus:ring-0" type="number" placeholder="Amount..."
+                <input className="text-sm outline-none w-full h-full p-2 text-center border-none border-transparent focus:border-transparent focus:ring-0" type="number" placeholder="Miktar"
                     onChange={
                         (event) => {
                             setRow((each) => ({
@@ -151,7 +151,7 @@ function TableRowComponent(props) {
                 </select>
             </td>
             <td>
-                <input className="text-sm outline-none w-full h-full p-2 text-center  border-none border-transparent focus:border-transparent focus:ring-0" type="number" placeholder="Price..."
+                <input className="text-sm outline-none w-full h-full p-2 text-center  border-none border-transparent focus:border-transparent focus:ring-0" type="number" placeholder="Fiyat"
                     onChange={
                         (event) => {
                             setRow((each) => ({
@@ -168,7 +168,7 @@ function TableRowComponent(props) {
             </td>
 
             <td>
-                <input className="text-sm outline-none w-full h-full p-2 text-center border-none border-transparent focus:border-transparent focus:ring-0" type="text" placeholder="PO number..."
+                <input className="text-sm outline-none w-full h-full p-2 text-center border-none border-transparent focus:border-transparent focus:ring-0" type="text" placeholder="STF Numarasi"
                     onChange={
                         (event) => {
                             setRow((each) => ({

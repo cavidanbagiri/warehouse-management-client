@@ -13,7 +13,7 @@ function STFAnalyzComponent() {
   return (
     <div className='col-span-3 mr-8 h-[550px] bg-white rounded-xl'>
       <div className='flex flex-col items-start p-4 h-full'>
-        <h2 className='w-full text-center font-bold text-3xl'>STF Analyz</h2>
+        <h2 className='w-full text-center font-bold text-3xl'>STF Analizi</h2>
         <div className='flex flex-col items-between justify-around  w-full h-full'>
           {
             type_count.length>0 ? type_count.map((item, index) => {

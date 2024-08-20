@@ -11,13 +11,13 @@ function TableAreaHeader() {
                 S/S
             </th>
             <th scope="col" className="px-6 py-3 text-center border">
-                Card Number
+                Sicil Numara
             </th>
             <th scope="col" className="px-6 py-3 text-center border">
-                Username
+                Isim Soyisim
             </th>
             <th scope="col" className="px-6 py-3 text-center border">
-                Group Name
+                Calistigi Grup
             </th>
         </tr>
     </thead>

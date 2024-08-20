@@ -11,10 +11,10 @@ function TableServiceUnusableHeader() {
                 S/S
             </th>
             <th scope="col" className="px-6 py-3 text-center border">
-                Amount
+                Miktar
             </th>
             <th scope="col" className="px-6 py-3 text-center border">
-                Comments
+                Komment
             </th>
         </tr>
     </thead>

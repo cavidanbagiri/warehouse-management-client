@@ -29,10 +29,10 @@ function ServiceUnusableReturnToStockComponent(props) {
             </span>
 
             <span className='text-center text-2xl font-bold mt-5'>
-                Return To Stock
+                Geri Al
             </span>
 
-            <label htmlFor="amount" className='text-start text-gray-400 text-lg mt-10'>Amount</label>
+            <label htmlFor="amount" className='text-start text-gray-400 text-lg mt-10'>Miktar</label>
             <input className='w-full p-3  text-lg rounded-lg border shadow-lg' onChange={(e) => {
                 setReturnAmount(e.target.value)
             }}
@@ -57,7 +57,7 @@ function ServiceUnusableReturnToStockComponent(props) {
                 }}
     
                     className='w-full p-2  text-lg rounded-lg bg-green-500 text-white font-bold shadow-lg mt-10 mb-5'>
-                    Return
+                    Geri Al
                 </button>
 
                 :
