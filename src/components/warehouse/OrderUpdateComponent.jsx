@@ -82,37 +82,44 @@ function OrderUpdateComponent() {
         }
     }
     const postFunc = () => {
+        console.log('this function is work');
         let cond = true;
         if (po_data.leftover <= 0) {
-            cond = false;
+            console.log('1');
             dispatch(setOrderUpdateMessageBoxTrue());
             dispatch(setOrderUpdateColorCond({color:'bg-red-500'}))
             dispatch(setOrderUpdateErrorMessage({ message: 'Kalan malzeme 0 oldugu icin, islem gerceklesdirilmedi' }));
+            cond = false;
         }
         if (material_name.toString().trim().length === 0) {
+            console.log('2');
             dispatch(setOrderUpdateMessageBoxTrue());
             dispatch(setOrderUpdateColorCond({color:'bg-red-500'}))
             dispatch(setOrderUpdateErrorMessage({ message: 'Malzeme ismi bos birakilamaz' }))
             cond = false;
         }
         else if (qty <= 0) {
+            console.log('3');
+            console.log('3');
             dispatch(setOrderUpdateMessageBoxTrue());
             dispatch(setOrderUpdateColorCond({color:'bg-red-500'}))
             dispatch(setOrderUpdateErrorMessage({ message: 'Malzeme miktari 0 ve ya negativ olamaz' }))
             cond = false;
         }
         else if (price < 0) {
+            console.log('4');
             dispatch(setOrderUpdateMessageBoxTrue());
             dispatch(setOrderUpdateColorCond({color:'bg-red-500'}))
             dispatch(setOrderUpdateErrorMessage({ message: 'Malzeme fiyati negativ olamaz' }))
             cond = false;
         }
-        else if (!price) {
-            dispatch(setOrderUpdateMessageBoxTrue());
-            dispatch(setOrderUpdateColorCond({color:'bg-red-500'}))
-            dispatch(setOrderUpdateErrorMessage({ message: USER_MESSAGES.NON_VALID_NUMBER }))
-            cond = false;
-        }
+        // else if (!price) {
+        //     console.log('5');
+        //     dispatch(setOrderUpdateMessageBoxTrue());
+        //     dispatch(setOrderUpdateColorCond({color:'bg-red-500'}))
+        //     dispatch(setOrderUpdateErrorMessage({ message: 'Fiyat icin girilen deyer dogru diyil '+ USER_MESSAGES.NON_VALID_NUMBER }))
+        //     cond = false;
+        // }
         const updated_data = {
             id: selected_items[0],
             companyId: company.companyId,
@@ -125,9 +132,11 @@ function OrderUpdateComponent() {
             type: material_type,
             po: po,
         }
+        console.log('conf is :: ', cond);
         if (cond) {
             dispatch(WarehouseService.updatePO(updated_data))
         }
+
 
     }
 
@@ -293,7 +302,8 @@ function OrderUpdateComponent() {
                         <div className='flex items-center justify-between mt-3'>
                             <span className='w-1/3'>Fiyat </span>
                             <div className='relative'>
-                                <input value={price} className='placeholder-black text-xs bg-white border border-gray-300 rounded-lg w-36  p-2 outline-none text-center ' type="text" placeholder='Fiyat' onChange={(e) => {
+                                <input value={price} className='placeholder-black text-xs bg-white border border-gray-300 rounded-lg w-36  p-2 outline-none text-center ' type="number" placeholder='Fiyat' 
+                                onChange={(e) => {
                                     setPrice(e.target.value);
                                 }} />
                             </div>
