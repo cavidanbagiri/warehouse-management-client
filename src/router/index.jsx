@@ -6,7 +6,7 @@ import {
 import DashboardPage from '../pages/DashboardPage.jsx';
 import StockPage from '../pages/StockPage.jsx';
 import LoginPage from "../pages/LoginPage.jsx";
-import Navbar from "../layouts/Navbar.jsx";
+import Navbar from "../pages/Navbar.jsx";
 import CreateMaterialPage from "../pages/CreateMaterialPage.jsx";
 import WarehousePage from "../pages/WarehousePage.jsx";
 import AreaPage from "../pages/AreaPage.jsx";

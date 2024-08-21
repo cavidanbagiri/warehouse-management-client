@@ -4,12 +4,12 @@ import { useEffect, useState } from 'react';
 import { Outlet, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import NavbarItemComponent from '../components/navbar/navbar_item-component';
+import NavbarItemComponent from '../components/navbar/navbar_item-component.jsx';
 
 
 
 import { TbHexagonLetterWFilled } from "react-icons/tb";
-import LoginPage from "../pages/LoginPage.jsx";
+import LoginPage from "./LoginPage.jsx";
 import UserService from "../services/user-service.js";
 
 function Navbar() {
