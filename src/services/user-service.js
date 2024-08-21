@@ -10,9 +10,7 @@ class UserService {
         'users/login',
         async (user_data) => {
             let data = null;
-            // await axios.post('http://localhost:3001/api/user/login', user_data)
-            console.log('login is : ',API_URL + '/user/refresh');
-            await axios.post($api + '/user/login', user_data)
+            await $api.post('/user/login', user_data)
                 .then((response) => {
                     data = response.data;
                 }).catch((err)=>{
@@ -26,9 +24,7 @@ class UserService {
         'user/refresh',
         async () => {
             let data = null;
-            // await axios.get('http://localhost:3001/api/user/refresh')
-            console.log('refresh is : ',API_URL + '/user/refresh');
-            await axios.post($api + '/user/refresh')
+            await $api.post('/user/refresh')
                 .then((response) => {
                     data = response.data;
                 })
@@ -39,8 +35,7 @@ class UserService {
    static userLogout = createAsyncThunk(
        '/users/logout',
        async ()=>{
-        //    await axios.post('http://localhost:3001/api/user/logout')
-           await axios.post($api+'/user/logout')
+           await $api.post('/user/logout')
            .then((response) => {
                console.log('user logout ',response);
            })
