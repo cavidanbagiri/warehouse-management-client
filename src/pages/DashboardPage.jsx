@@ -38,9 +38,9 @@ const DashboardPage = () => {
 
       <div className='grid grid-cols-11 gap-1 mt-5'>
 
-        <MaterialTypeComponent />
-
         <StockAnalyzComponent />
+
+        <MaterialTypeComponent />
 
         <STFAnalyzComponent />
 

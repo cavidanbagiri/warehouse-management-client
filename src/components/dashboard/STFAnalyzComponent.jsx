@@ -1,42 +1,60 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 
-import { useDispatch, useSelector } from 'react-redux';
+
+import Chart from "chart.js/auto";
+import { CategoryScale } from "chart.js";
+import PieChart from './charts/PieChart';
+import { useSelector } from 'react-redux';
+
+Chart.register(CategoryScale);
 
 function STFAnalyzComponent() {
 
-  const dispatch = useDispatch();
-  const user = useSelector(state => state.userSlice.user);
   const type_count = useSelector(state => state.commonSlice.type_count);
 
+  const [chartData, setChartData] = useState({
+    labels: type_count?.map((data) => data.type),
+    datasets: [
+      {
+        data: type_count?.map((data) => data.count),
+        backgroundColor: [
+          "rgb(139 92 246)",
+          "rgb(20,184,166)",
+          "rgb(14,165,233)",
+          "rgb(99,102,241)",
+          "rgb(168,85,247)"
+        ],
+        borderColor: "black",
+        borderWidth: 0
+      }
+    ]
+  });
 
+  useEffect(() => {
+    setChartData({
+      labels: type_count?.map((data) => data.type),
+      datasets: [
+        {
+          data: type_count?.map((data) => data.count),
+          backgroundColor: [
+            "rgb(139 92 246)",
+            "rgb(20,184,166)",
+            "rgb(14,165,233)",
+            "rgb(99,102,241)",
+            "rgb(168,85,247)"
+          ],
+          borderColor: "black",
+          borderWidth: 0
+        }
+      ]
+    })
+  }, [type_count])
 
   return (
-    <div className='col-span-3 mr-8 h-[550px] bg-white rounded-xl'>
-      <div className='flex flex-col items-start p-4 h-full'>
-        <h2 className='w-full text-center font-bold text-3xl'>STF Analizi</h2>
-        <div className='flex flex-col items-between justify-around  w-full h-full'>
-          {
-            type_count.length>0 ? type_count.map((item, index) => {
-              return (
-                <div key={index} className='flex items-center justify-between mt-2'>
-                  <div className='w-[130px]'>
-                    <div className='flex items-center justify-center border-[8px] border-indigo-500 rounded-full w-[70px] h-[70px]'>
-                      <span className='font-medium'>{item.count}</span>
-                    </div>
-                  </div>
-                  <div className='w-full'>
-                    <span className='font-medium'>{item.type}</span>
-                  </div>
-                </div>
-              )
-            })
-            :
-            <div className='text-center'>
-              <span className='text-gray-400 text-5xl font-bold'>No Data</span>
-            </div>
-          }
-        </div>
-      </div>
+    <div className='col-span-3 mr-8 h-[550px] ml-8 border rounded-xl bg-white p-2'>
+
+      <PieChart chartData={chartData} />
+
     </div>
   )
 }

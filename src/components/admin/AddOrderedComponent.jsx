@@ -167,7 +167,7 @@ function AddOrderedComponent() {
                     }}
                 >
                     {project.projects.map((item) => (
-                        <option key={item.id} value={item.id} >{item.project_name}</option>
+                        <option key={item.id} value={item.id} >{item.project_name.toUpperCase()}</option>
                     ))}
                 </select>
             </div>

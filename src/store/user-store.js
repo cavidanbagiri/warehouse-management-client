@@ -14,6 +14,7 @@ const initialState = {
         is_admin: false,
         profile_image: '',
     },
+    login_pending: false,
     is_auth: false,
     is_login_error: false,
 }
@@ -32,7 +33,11 @@ export const userSlice = createSlice({
     },
     extraReducers: (builder) => {
         // Add reducers for additional action types here, and handle loading state as needed
+        builder.addCase(UserService.userLogin.pending, (state, action) => {
+            state.login_pending = true;
+        })
         builder.addCase(UserService.userLogin.fulfilled, (state, action) => {
+            state.login_pending = false;
             if (action.payload !== null) {
                 state.user = action.payload.user;
                 state.is_auth = true;
@@ -72,18 +77,14 @@ export const userSlice = createSlice({
                 state.user.status_name = action.payload.user.status_name;
                 if(action.payload.user.profileImage !== null){
                     state.user.profile_image = localStorage.getItem('profile_image');
-                    console.log('enter here');
                 }
                 state.is_auth = true;
             }
         })
         builder.addCase(UserService.userLogout.fulfilled, (state, action) => {
             localStorage.clear();
-            state.user = {
-                email: 'unknown'
-            }
+            state.user = null;
             state.is_auth = false;
-            state.projectId = 0;
 
         })
     }
