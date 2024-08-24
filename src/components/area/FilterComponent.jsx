@@ -41,7 +41,7 @@ function FilterComponent() {
             // projectId: user.projectId,
             materialCodeId: material_code_id
         };
-        if(user.projectId == 13){
+        if(user.projectId == 1){
 
         }
         else{

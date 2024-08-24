@@ -82,7 +82,7 @@ function FilterComponent() {
             po: po,
             materialCodeId: material_code_id
         };
-        if(user.projectId == 13){
+        if(user.projectId == 1){
 
         }
         else{
