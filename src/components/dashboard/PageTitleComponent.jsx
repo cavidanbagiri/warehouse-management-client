@@ -25,8 +25,8 @@ function PageTitleComponent(props) {
                     }
                     {/* <img className="w-20 h-20 rounded-full ring-1 ring-gray-300 dark:ring-gray-500" src={temp_user_image} alt="Large avatar"></img> */}
                     <div className='flex flex-col ml-6 px-1 '>
-                        <span className='rounded-lg text-[34px] font-bold ' >Merhaba, {props.user.username}</span>
-                        <span className=' px-1 text-[20px] text-gray-500 '>{
+                        <span className='rounded-lg text-[44px] font-bold ' >Merhaba, {props.user.username}</span>
+                        <span className=' px-1 text-[20px] text-gray-400 '>{
                             props.user.status_name?.charAt(0).toUpperCase() + props.user.status_name?.slice(1)
                         }</span>
                         {/* <span className='px-1 text-[12px] text-black'>(Ustay Moscow SRU Project)</span> */}

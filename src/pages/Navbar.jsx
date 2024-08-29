@@ -51,7 +51,7 @@ function Navbar() {
                     <div className='flex flex-col justify-between h-screen bg-white'>
                         <div className='flex flex-col items-center'>
                             <Link to='/' onClick={() => {setSelected('Home')}}>
-                                <TbHexagonLetterWFilled className='text-orange-400 mt-4 mb-2 text-4xl ' />
+                                <TbHexagonLetterWFilled className='text-indigo-600 mt-4 mb-2 text-4xl ' />
                             </Link>
 
                             {/* Home Page */}

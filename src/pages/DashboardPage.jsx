@@ -27,7 +27,7 @@ const DashboardPage = () => {
   }, [])
 
   return (
-    <div style={{ fontFamily: "IBM Plex Sans", fontSize: '24px' }} className='flex flex-col  bg-gray-100 ' >
+    <div style={{ fontFamily: "IBM Plex Sans", fontSize: '24px' }} className='flex flex-col  bg-white ' >
 
       <PageTitleComponent user={user} />
 

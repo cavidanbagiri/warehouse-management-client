@@ -240,7 +240,7 @@ const StockPage = () => {
 
                 {/* Title Section */}
 
-                <span style={{ fontWeight: 600, fontFamily: 'IBM Plex Sans' }} className='px-2 text-3xl text-start  '>Malzeme Tip Ozeti</span>
+                <span style={{ fontWeight: 700, fontFamily: 'IBM Plex Sans' }} className='px-2 text-[32px] text-start my-2 '>Malzeme Tip Ozeti</span>
 
                 {/* Material Type and Button Section */}
                 <div className={'flex  w-full  '}>

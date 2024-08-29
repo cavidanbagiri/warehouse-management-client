@@ -16,13 +16,13 @@ function NavbarItemComponent(props) {
             <span
                 onMouseEnter={() => props.setIsShown(true)}
                 onMouseLeave={() => props.setIsShown(false)}>
-                {props.iconValue === 'Home' && <CiHome className={`${props.selected === 'Home' ? 'text-orange-500 ' : 'text-black'} my-3 text-3xl`} />}
-                {props.iconValue === 'Stock' && <PiStackThin className={`${props.selected === 'Stock' ? 'text-orange-500' : 'text-black'} my-3 text-3xl`} />}
-                {props.iconValue === 'Create' && <CiSquarePlus className={`${props.selected === 'Create' ? 'text-orange-500' : 'text-black'} my-3 text-3xl`} />}
-                {props.iconValue === 'Warehouse' && <PiWarehouseThin className={`${props.selected === 'Warehouse' ? 'text-orange-500' : 'text-black'} my-3 text-3xl`} />}
-                {props.iconValue === 'Area' && <PiFactoryThin className={`${props.selected === 'Area' ? 'text-orange-500' : 'text-black'} my-3 text-3xl` }/>}
-                {props.iconValue === 'Profile' && <CiUser className={`${props.selected === 'Profile' ? 'text-orange-500' : 'text-black'} my-3 text-3xl` } />}
-                {props.iconValue === 'Logout' && <CiLogout className={`${props.selected === 'Logout' ? 'text-orange-500' : 'text-black'} my-3 text-3xl` }/>}
+                {props.iconValue === 'Home' && <CiHome className={`${props.selected === 'Home' ? 'text-indigo-600 ' : 'text-black'} my-3 text-3xl`} />}
+                {props.iconValue === 'Stock' && <PiStackThin className={`${props.selected === 'Stock' ? 'text-indigo-600' : 'text-black'} my-3 text-3xl`} />}
+                {props.iconValue === 'Create' && <CiSquarePlus className={`${props.selected === 'Create' ? 'text-indigo-600' : 'text-black'} my-3 text-3xl`} />}
+                {props.iconValue === 'Warehouse' && <PiWarehouseThin className={`${props.selected === 'Warehouse' ? 'text-indigo-600' : 'text-black'} my-3 text-3xl`} />}
+                {props.iconValue === 'Area' && <PiFactoryThin className={`${props.selected === 'Area' ? 'text-indigo-600' : 'text-black'} my-3 text-3xl` }/>}
+                {props.iconValue === 'Profile' && <CiUser className={`${props.selected === 'Profile' ? 'text-indigo-600' : 'text-black'} my-3 text-3xl` } />}
+                {props.iconValue === 'Logout' && <CiLogout className={`${props.selected === 'Logout' ? 'text-indigo-600' : 'text-black'} my-3 text-3xl` }/>}
             </span>
             {
                 props.isShown &&

@@ -300,11 +300,11 @@ function CreateMaterialPage() {
 
         {/* Table page informa */}
         <div className='flex flex-row justify-between items-center bg-gray-100 rounded-lg px-4 mt-4 mb-3'>
-          <span style={{ fontWeight: 600 }} className='py-4 px-2 rounded-lg text-4xl text-start '>Malzeme Giris Sayfasi</span>
+          <span style={{ fontWeight: 600 }} className='py-4 px-2 rounded-lg text-5xl text-start '>Malzeme Giris Sayfasi</span>
           <div className='text-xs' style={{ fontWeight: 500 }}>
             {
               !show_load ?
-                <button onClick={postFunc} className='text-sm py-2 px-5 border rounded-md border-green-500 bg-green-500 text-white mx-2 hover:bg-white hover:text-green-500 duration-200' >Ambara Teslim Al</button>
+                <button onClick={postFunc} className='text-base py-3 px-5 border rounded-md border-green-500 bg-green-600 text-white mx-2 hover:bg-white hover:text-green-500 duration-200' >Ambara Teslim Al</button>
                 :
                 <LoadingButton loading variant="outlined" className='text-black'>
                   Waiting
@@ -315,16 +315,16 @@ function CreateMaterialPage() {
 
         {/* Button Information */}
         <div className='flex flex-row justify-between items-center px-4'>
-          <span style={{ fontWeight: 500 }} className='py-2 px-1 rounded-lg text-3xl text-start my-2'>Tablo Kontrol</span>
+          <span style={{ fontWeight: 700 }} className='py-2 px-1 rounded-lg text-[32px] text-start my-2'>Tablo Kontrol</span>
           <div className='text-xs' style={{ fontWeight: 500 }}>
 
-            <button onClick={addCompany} className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:bg-orange-400 hover:text-white duration-200' >Yeni Firma Ekle</button>
-            <button onClick={addOrdered} className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:bg-orange-400 hover:text-white duration-200' >Yeni Siparisci Ekle</button>
-            <button onClick={addGroup} className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:bg-orange-400 hover:text-white duration-200' >Yeni Group Ekle</button>
-            <button onClick={addMaterialCode} className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:bg-orange-400 hover:text-white duration-200' >Malzeme Kodu Ekle</button>
+            <button onClick={addCompany} className='text-[13px] py-2 px-4 border rounded-md border-gray-400 mx-2 hover:bg-orange-400 hover:text-white duration-200' >Yeni Firma Ekle</button>
+            <button onClick={addOrdered} className='text-[13px] py-2 px-4 border rounded-md border-gray-400 mx-2 hover:bg-orange-400 hover:text-white duration-200' >Yeni Siparisci Ekle</button>
+            <button onClick={addGroup} className='text-[13px] py-2 px-4 border rounded-md border-gray-400 mx-2 hover:bg-orange-400 hover:text-white duration-200' >Yeni Group Ekle</button>
+            <button onClick={addMaterialCode} className='text-[13px] py-2 px-4 border rounded-md border-gray-400 mx-2 hover:bg-orange-400 hover:text-white duration-200' >Malzeme Kodu Ekle</button>
 
-            <button onClick={addRows} className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:bg-orange-400 hover:text-white duration-200' >Satir Ilave Et</button>
-            <button onClick={delRows} className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:bg-orange-400 hover:text-white duration-200' >Satir Sil</button>
+            <button onClick={addRows} className='text-[13px] py-2 px-4 border rounded-md border-gray-400 mx-2 hover:bg-orange-400 hover:text-white duration-200' >Satir Ilave Et</button>
+            <button onClick={delRows} className='text-[13px] py-2 px-4 border rounded-md border-gray-400 mx-2 hover:bg-orange-400 hover:text-white duration-200' >Satir Sil</button>
 
             {/* <button onClick={postFunc} className='py-2 px-5 border rounded-md border-gray-400 bg-white text-green-500 mx-2 hover:bg-green-500 hover:text-white duration-200' >Insert From Excel </button> */}
           </div>
@@ -336,32 +336,32 @@ function CreateMaterialPage() {
           <div className='flex flex-col justify-start px-5 '>
 
             <div className='flex text-lg text-gray-400 items-center'>
-              <span className='w-28 text-base py-0.5'>
+              <span className='w-28 text-[17px] py-0.5'>
                 Proje
               </span>
               <span className='bg-gray-200 h-2 rounded-lg w-36'>
               </span>
-              <span style={{ fontWeight: 600 }} className='text-green-500 text-sm ml-4'>
+              <span style={{ fontWeight: 600 }} className='text-green-500 text-[16px] ml-4'>
                 {type_data.Project}
               </span>
             </div>
             <div className='flex text-lg text-gray-400 items-center'>
-              <span className='w-28 text-base py-0.5'>
+              <span className='w-28 text-[17px] py-0.5'>
                 Demirbas
               </span>
               <span className='bg-gray-200 h-2 rounded-lg w-36'>
               </span>
-              <span style={{ fontWeight: 600 }} className='text-green-500 text-sm ml-4'>
+              <span style={{ fontWeight: 600 }} className='text-green-500 text-[16px] ml-4'>
                 {type_data.Fixture}
               </span>
             </div>
             <div className='flex text-lg text-gray-400 items-center'>
-              <span className='w-28 text-base py-0.5'>
+              <span className='w-28 text-[17px] py-0.5'>
                 Sarf
               </span>
               <span className='bg-gray-200 h-2 rounded-lg w-36'>
               </span>
-              <span style={{ fontWeight: 600 }} className='text-green-500 text-sm ml-4'>
+              <span style={{ fontWeight: 600 }} className='text-green-500 text-[16px] ml-4'>
                 {type_data.Consumable}
               </span>
             </div>
@@ -440,7 +440,7 @@ function CreateMaterialPage() {
               <button className='text-xs bg-white border border-gray-300  rounded-lg  p-2 w-48 text-ellipsis overflow-hidden text-nowrap outline-none' onClick={() => {
                 setIsCompanyDropDown(!isCompanyDropDown)
               }}>
-                {company.companyId === '' ? 'Company' : company.company_name}
+                {company.companyId === '' ? 'Firma Sec' : company.company_name}
               </button>
               {
                 isCompanyDropDown && <DropDownComponent
@@ -459,7 +459,7 @@ function CreateMaterialPage() {
               <button className='text-xs bg-white border border-gray-300 rounded-lg p-2 w-48 text-ellipsis overflow-hidden text-nowrap outline-none hover:border-orange-300 ' onClick={() => {
                 setIsUserDropDown(!isUserDropDown)
               }}>
-                {ordered.orderedId === '' ? 'Orderer' : ordered.ordered_name}
+                {ordered.orderedId === '' ? 'Siparisci Sec' : ordered.ordered_name}
               </button>
               {
                 isUserDropDown && <DropDownComponent
