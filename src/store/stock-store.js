@@ -20,7 +20,7 @@ const initialState = {
         material_code: false,
         material_description: false,
         material_name: true,
-        type: true,
+        type: false,
         qty: true,
         stock: true,
         serial_number: true,

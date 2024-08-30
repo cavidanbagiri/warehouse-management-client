@@ -274,7 +274,7 @@ const StockPage = () => {
                     <div className='flex flex-col justify-between items-start w-full '>
 
                         {/* Working Buttons Section */}
-                        <div className='flex justify-end text-xs w-full' style={{ fontWeight: 600 }}>
+                        <div className='flex justify-end text-[11px] w-full' style={{ fontWeight: 600 }}>
 
                             {/* Provide Area */}
                             <button onClick={() => {
@@ -286,7 +286,7 @@ const StockPage = () => {
                                     dispatch(StockService.getDataByIds(selected_items));
                                 }
                             }}
-                                className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400  hover:bg-orange-400 hover:text-white duration-200' >Sahaya Cik</button>
+                                className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-indigo-600  hover:bg-indigo-600 hover:text-white duration-200' >Sahaya Cik</button>
 
                             {/* Return Row  */}
                             <button onClick={() => {
@@ -304,7 +304,7 @@ const StockPage = () => {
                                     showMessageBoxMessageHandle('return', USER_MESSAGES.AUTHORIZATION_ERROR);
                                 }
                             }}
-                                className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400 hover:bg-orange-400 hover:text-white duration-200' >Geri Al</button>
+                                className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-indigo-600 hover:bg-indigo-600 hover:text-white duration-200' >Geri Al</button>
 
 
                             {/* Update Row  */}
@@ -323,13 +323,13 @@ const StockPage = () => {
                                     showMessageBoxMessageHandle('update', USER_MESSAGES.AUTHORIZATION_ERROR);
                                 }
                             }}
-                                className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400 hover:bg-orange-400 hover:text-white duration-200' >Secileni Guncelle</button>
+                                className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-indigo-600 hover:bg-indigo-600 hover:text-white duration-200' >Secileni Guncelle</button>
 
                             {/* Delete Row */}
                             <button onClick={() => {
                                 showMessageBoxMessageHandle('delete', USER_MESSAGES.AUTHORIZATION_ERROR);
                             }}
-                                className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400 hover:bg-orange-400 hover:text-white duration-200' >Secileni Sil</button>
+                                className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-indigo-600 hover:bg-indigo-600 hover:text-white duration-200' >Secileni Sil</button>
 
                             {/* Get Information about row */}
                             <button onClick={() => {
@@ -345,17 +345,17 @@ const StockPage = () => {
                                     dispatch(CommonService.getRowInform(data));
                                 }
                             }}
-                                className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400 hover:bg-orange-400 hover:text-white duration-200' >Genel Bilgi</button>
+                                className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-indigo-600 hover:bg-indigo-600 hover:text-white duration-200' >Genel Bilgi</button>
 
                             {/* Clear Filter */}
                             <button onClick={() => {
                                 dispatch(clearFilter);
-                            }} className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400 hover:bg-orange-400 hover:text-white duration-200' >Filtreyi Temizle</button>
+                            }} className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-indigo-600 hover:bg-indigo-600 hover:text-white duration-200' >Filtreyi Temizle</button>
 
                             {/* Clear Selected  */}
                             <button onClick={() => {
                                 dispatch(clearSelected());
-                            }} className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400 hover:bg-orange-400 hover:text-white duration-200' >Secilenleri Temizle</button>
+                            }} className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-indigo-600 hover:bg-indigo-600 hover:text-white duration-200' >Secilenleri Temizle</button>
 
                         </div>
 

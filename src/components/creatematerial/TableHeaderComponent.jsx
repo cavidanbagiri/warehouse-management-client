@@ -2,7 +2,7 @@ import React from 'react'
 
 function TableHeaderComponent() {
   return (
-    <thead  className="text-black bg-gray-200 border font-medium text-sm" >
+    <thead  className="text-black bg-gray-200 border font-medium text-xs" >
     <tr>
       <th scope="col" className="px-6 py-2 text-center border">
         S/S

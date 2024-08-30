@@ -24,7 +24,7 @@ function TableBodyComponent() {
 
     return (
 
-        <tbody className='text-xs text-center' style={{ fontFamily: 'Roboto' }}>
+        <tbody className='text-[11px] text-center' style={{ fontFamily: 'Roboto' }}>
 
             {
                 filtered_area_data.map((item, index) => (

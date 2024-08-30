@@ -110,9 +110,9 @@ function FilterComponent() {
 
                 {/* Selected Date Filter */}
                 <div className='mr-3'>
-                    <p className='text-sm text-gray-400 pl-1'>Tarih</p>
+                    <p className='text-xs text-gray-400 pl-1'>Tarih</p>
                     <input
-                        className='text-xs bg-white border border-gray-300 rounded-lg w-28 p-2 outline-none text-center hover:border-orange-300 '
+                        className='text-[11px] bg-white border border-gray-300 rounded-lg w-28 p-2 outline-none text-center hover:border-orange-300 '
                         type="date" name="" id="" onChange={(e) => {
                         setSelectedDate(e.target.value)
                     }}/>
@@ -120,9 +120,9 @@ function FilterComponent() {
 
                 {/* Company Side */}
                 <div className='relative mr-3'>
-                    <p className='text-sm text-gray-400 pl-1'>Firma</p>
+                    <p className='text-[11px] text-gray-400 pl-1'>Firma</p>
                     <button
-                        className='text-xs bg-white border border-gray-300  rounded-lg  p-2 w-36 text-ellipsis overflow-hidden text-nowrap outline-none hover:border-orange-300 '
+                        className='text-[11px] bg-white border border-gray-300  rounded-lg  p-3 w-36 text-ellipsis overflow-hidden text-nowrap outline-none hover:border-orange-300 '
                         onClick={() => {
                             setIsCompanyDropDown(!isCompanyDropDown)
                         }}>
@@ -141,9 +141,9 @@ function FilterComponent() {
 
                 {/* Ordered Side */}
                 <div className='relative mr-3'>
-                    <p className='text-sm text-gray-400 pl-1'>Siparisci</p>
+                    <p className='text-xs text-gray-400 pl-1'>Siparisci</p>
                     <button
-                        className='text-xs bg-white border border-gray-300 rounded-lg p-2 w-36 text-ellipsis overflow-hidden text-nowrap outline-none hover:border-orange-300 '
+                        className='text-[11px] bg-white border border-gray-300 rounded-lg p-3 w-36 text-ellipsis overflow-hidden text-nowrap outline-none hover:border-orange-300 '
                         onClick={() => {
                             setIsUserDropDown(!isUserDropDown)
                         }}>
@@ -162,9 +162,9 @@ function FilterComponent() {
 
                 {/* Doc Number Side */}
                 <div className='mr-3'>
-                    <p className='text-sm text-gray-400 pl-1'>Dokuman Numarasi</p>
+                    <p className='text-[11px] text-gray-400 pl-1'>Dokuman Numarasi</p>
                     <input value={documentnum}
-                           className='placeholder-black text-xs bg-white border border-gray-300 rounded-lg w-36 p-2 outline-none text-center hover:border-orange-300 '
+                           className='placeholder-black text-[11px] bg-white border border-gray-300 rounded-lg w-36 p-2 outline-none text-center hover:border-orange-300 '
                            type="text" placeholder='Dokuman Num' onChange={(e) => {
                         setDocumentNum(e.target.value);
                     }}/>
@@ -172,9 +172,9 @@ function FilterComponent() {
 
                 {/* Material name */}
                 <div className='mr-3'>
-                    <p className='text-sm text-gray-400 pl-1'>Malzeme Ismi</p>
+                    <p className='text-[11px] text-gray-400 pl-1'>Malzeme Ismi</p>
                     <input value={material_name}
-                           className='placeholder-black text-xs bg-white border border-gray-300 rounded-lg w-64 p-2 outline-none text-center  hover:border-orange-300 '
+                           className='placeholder-black text-[11px] bg-white border border-gray-300 rounded-lg w-64 p-2 outline-none text-center  hover:border-orange-300 '
                            type="text" placeholder='Malzeme Ismi' onChange={(e) => {
                         setMaterialName(e.target.value);
                     }}/>
@@ -182,9 +182,9 @@ function FilterComponent() {
 
                 {/* PO Number */}
                 <div className='mr-3'>
-                    <p className='text-sm text-gray-400 pl-1'>Siparis Numarasi</p>
+                    <p className='text-[11px] text-gray-400 pl-1'>Siparis Numarasi</p>
                     <input value={po}
-                           className='placeholder-black text-xs bg-white border border-gray-300 rounded-lg w-24 p-2 outline-none text-center hover:border-orange-300 '
+                           className='placeholder-black text-[11px] bg-white border border-gray-300 rounded-lg w-24 p-2 outline-none text-center hover:border-orange-300 '
                            type="text" placeholder='Siparis No' onChange={(e) => {
                         setPO(e.target.value);
                     }}/>
@@ -192,12 +192,12 @@ function FilterComponent() {
 
                 {/* Material Code Side */}
                 <div className='mr-3 relative'>
-                    <p className='text-xs text-gray-400 pl-1'>Malzeme Kodu</p>
+                    <p className='text-[11px] text-gray-400 pl-1'>Malzeme Kodu</p>
                     <button onClick={()=>{
                         setShowMaterialCode(!show_material_code)
                         console.log('clicked and result is :', show_material_code);
                     }}
-                    className='text-xs text-gray-600 bg-gray-200 border border-gray-300 rounded-lg p-2 w-36 text-ellipsis overflow-hidden text-nowrap outline-none hover:border-orange-300 '>
+                    className='text-[11px] text-gray-600 bg-gray-200 border border-gray-300 rounded-lg p-2 w-36 text-ellipsis overflow-hidden text-nowrap outline-none hover:border-orange-300 '>
                         {
                             material_code_description === '' ? 'Malzeme Kodu' : material_code_description
                         }
@@ -214,9 +214,9 @@ function FilterComponent() {
             </div>
 
             <div className='relative'>
-                <p className='text-xs text-gray-400 pl-1'>Search</p>
+                <p className='text-[11px] text-gray-400 pl-1'>Search</p>
                 <button
-                    className='text-sm bg-green-500  border border-gray-300 rounded-lg p-2 w-24 text-ellipsis overflow-hidden text-nowrap outline-none text-white hover:bg-white hover:text-green-500 duration-200'
+                    className='text-[11px] bg-green-500  border border-gray-300 rounded-lg p-2 w-24 text-ellipsis overflow-hidden text-nowrap outline-none text-white hover:bg-white hover:text-green-500 duration-200'
                     onClick={searchFunc}>
                     Search
                 </button>

@@ -51,7 +51,7 @@ function STFAnalyzComponent() {
   }, [type_count])
 
   return (
-    <div className='col-span-3 mr-8 h-[550px] ml-8 border rounded-xl bg-white p-2'>
+    <div className='col-span-3 mr-4 h-[500px] ml-4 border rounded-xl bg-white p-2'>
 
       <PieChart chartData={chartData} />
 

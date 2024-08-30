@@ -27,16 +27,16 @@ const DashboardPage = () => {
   }, [])
 
   return (
-    <div style={{ fontFamily: "IBM Plex Sans", fontSize: '24px' }} className='flex flex-col  bg-white ' >
+    <div style={{ fontFamily: "IBM Plex Sans" }} className='flex flex-col  bg-white ' >
 
       <PageTitleComponent user={user} />
 
-      <span className='ml-16 my-5 text-5xl font-bold'>Ana Sayfa</span>
+      <span className='ml-16 my-5 text-[40px] font-bold'>Ana Sayfa</span>
 
       <MenuSideComponent />
 
 
-      <div className='grid grid-cols-11 gap-1 mt-5'>
+      <div className='grid grid-cols-11 gap-1 mt-10'>
 
         <StockAnalyzComponent />
 

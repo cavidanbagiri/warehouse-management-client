@@ -93,7 +93,7 @@ function TableRowComponent(props) {
             }
             {
                 props.warehouse_column_filter.material_name &&
-                <td className='text-start px-1 min-w-[512px]' >
+                <td className='text-start px-1 min-w-[440px]' >
                     <span className='max_two_line_table_row' alt={props.item.material_name}>
                         {props.item.material_name}
                     </span>

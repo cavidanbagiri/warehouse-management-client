@@ -40,12 +40,6 @@ function MaterialTypeComponent() {
             userGain: 4300,
             userLost: 234
         },
-        {
-            id: 5,
-            year: 'Service',
-            userGain: 4300,
-            userLost: 234
-        }
         
     ];
 
@@ -60,7 +54,6 @@ function MaterialTypeComponent() {
                     "rgb(14,165,233)",
                     "rgb(99,102,241)",
                     "rgb(168,85,247)",
-                    "rgb(168,85,247)",
                 ],
                 borderColor: "indigo",
                 borderWidth: 2
@@ -69,7 +62,7 @@ function MaterialTypeComponent() {
     });
 
     return (
-        <div className='col-span-5 h-[550px] mx-4 border rounded-xl bg-white p-2'>
+        <div className='col-span-5 h-[500px]  border rounded-xl bg-white p-2'>
             <LineChart chartData={chartData} />
         </div>
     )

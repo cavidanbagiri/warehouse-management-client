@@ -99,7 +99,7 @@ function TableRowComponent(props) {
             </td>
 
             <td>
-                <input className="text-sm outline-none border-none w-full h-full p-2 border-transparent focus:border-transparent focus:ring-0" type="text" placeholder="Malzeme Ismi"
+                <input className="text-xs outline-none border-none w-full h-full p-2 border-transparent focus:border-transparent focus:ring-0" type="text" placeholder="Malzeme Ismi"
                     onChange={
                         (event) => {
                             setRow((each) => ({
@@ -111,7 +111,7 @@ function TableRowComponent(props) {
             </td>
             <td>
                 <select defaultValue={'Consumable'}
-                    className='text-sm p-2 outline-none text-gray-500 border-none hover:cursor-pointer border-transparent focus:border-transparent focus:ring-0'
+                    className='text-xs p-2 outline-none text-gray-500 border-none hover:cursor-pointer border-transparent focus:border-transparent focus:ring-0'
                     onChange={(event) => {
                         setRow((each) => ({
                             ...each,
@@ -128,7 +128,7 @@ function TableRowComponent(props) {
                 </select>
             </td>
             <td>
-                <input className="text-sm outline-none w-full h-full p-2 text-center border-none border-transparent focus:border-transparent focus:ring-0" type="number" placeholder="Miktar"
+                <input className="text-xs outline-none w-full h-full p-2 text-center border-none border-transparent focus:border-transparent focus:ring-0" type="number" placeholder="Miktar"
                     onChange={
                         (event) => {
                             setRow((each) => ({
@@ -140,7 +140,7 @@ function TableRowComponent(props) {
                         }} />
             </td>
             <td className=''>
-                <select value={row.unit} className='text-sm p-2 outline-none  border-none border-transparent focus:border-transparent focus:ring-0' onChange={(event) => {
+                <select value={row.unit} className='text-xs p-2 outline-none  border-none border-transparent focus:border-transparent focus:ring-0' onChange={(event) => {
                     setRow((each) => ({
                         ...each,
                         unit: event.target.value
@@ -151,7 +151,7 @@ function TableRowComponent(props) {
                 </select>
             </td>
             <td>
-                <input className="text-sm outline-none w-full h-full p-2 text-center  border-none border-transparent focus:border-transparent focus:ring-0" type="number" placeholder="Fiyat"
+                <input className="text-xs outline-none w-full h-full p-2 text-center  border-none border-transparent focus:border-transparent focus:ring-0" type="number" placeholder="Fiyat"
                     onChange={
                         (event) => {
                             setRow((each) => ({
@@ -168,7 +168,7 @@ function TableRowComponent(props) {
             </td>
 
             <td>
-                <input className="text-sm outline-none w-full h-full p-2 text-center border-none border-transparent focus:border-transparent focus:ring-0" type="text" placeholder="STF Numarasi"
+                <input className="text-xs outline-none w-full h-full p-2 text-center border-none border-transparent focus:border-transparent focus:ring-0" type="text" placeholder="STF Numarasi"
                     onChange={
                         (event) => {
                             setRow((each) => ({

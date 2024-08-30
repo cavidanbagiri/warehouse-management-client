@@ -237,7 +237,7 @@ function WarehousePage() {
                                     showMessageBoxMessageHandle('addstock', USER_MESSAGES.AUTHORIZATION_ERROR);
                                 }
                             }}
-                                className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400  hover:bg-orange-400 hover:text-white duration-200 text-[13px]' >Stoka Ekle</button>
+                                className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-indigo-600  hover:bg-indigo-600 hover:text-white duration-200 text-[11px]' >Stoka Ekle</button>
 
                             <button onClick={() => {
                                 if (selected_items.length > 1) {
@@ -254,12 +254,12 @@ function WarehousePage() {
                                     showMessageBoxMessageHandle('update', USER_MESSAGES.AUTHORIZATION_ERROR);
                                 }
                             }}
-                                className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400 hover:bg-orange-400 hover:text-white duration-200 text-[13px]' >Secileni Guncelle</button>
+                                className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-indigo-600 hover:bg-indigo-600 hover:text-white duration-200 text-[11px]' >Secileni Guncelle</button>
                            
                             <button onClick={() => {
                                 showMessageBoxMessageHandle('delete', USER_MESSAGES.AUTHORIZATION_ERROR);
                             }}
-                                className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400 hover:bg-orange-400 hover:text-white duration-200 text-[13px]' >Secileni Sil</button>
+                                className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-indigo-600 hover:bg-indigo-600 hover:text-white duration-200 text-[11px]' >Secileni Sil</button>
 
                             <button onClick={() => {
                                 if (selected_items.length > 1) {
@@ -274,13 +274,13 @@ function WarehousePage() {
                                     dispatch(CommonService.getRowInform(data));
                                 }
                             }}
-                                className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400 hover:bg-orange-400 hover:text-white duration-200 text-[13px]' >Genel Bilgi</button>
+                                className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-indigo-600 hover:bg-indigo-600 hover:text-white duration-200 text-[11px]' >Genel Bilgi</button>
                             
-                            <button onClick={clearFilter} className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400 hover:bg-orange-400 hover:text-white duration-200 text-[13px]' >Filtereyi Temizle</button>
+                            <button onClick={clearFilter} className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-indigo-600 hover:bg-indigo-600 hover:text-white duration-200 text-[11px]' >Filtereyi Temizle</button>
 
                             <button onClick={() => {
                                 dispatch(clearSelected());
-                            }} className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-orange-400 hover:bg-orange-400 hover:text-white duration-200 text-[13px]' >Secilenleri Temizle</button>
+                            }} className='py-2 px-4 border rounded-md border-gray-400 mx-2 hover:border-indigo-600 hover:bg-indigo-600 hover:text-white duration-200 text-[11px]' >Secilenleri Temizle</button>
                         
                         </div>
 

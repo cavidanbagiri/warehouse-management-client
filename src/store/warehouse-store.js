@@ -49,8 +49,8 @@ const initialState = {
         currency: false,
         ordered: false,
         po: false,
-        certificate: true,
-        passport: true,
+        certificate: false,
+        passport: false,
         project_name: true,
     },
 

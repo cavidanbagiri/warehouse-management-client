@@ -8,7 +8,7 @@ function CreateTableNavbarHeaderComponent() {
   const stock_column_filter = useSelector(state => state.stockSlice.stock_column_filter);
 
   return (
-    <thead style={{ fontFamily: 'IBM Plex Sans' }} className="text-black bg-gray-100 border font-medium text-sm" >
+    <thead style={{ fontFamily: 'IBM Plex Sans' }} className="text-black bg-gray-100 border font-medium text-xs" >
       <tr>
         <th scope="col" className="px-2 py-3 text-center border">
           S/S

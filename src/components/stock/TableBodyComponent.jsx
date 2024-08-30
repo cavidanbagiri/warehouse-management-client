@@ -31,7 +31,7 @@ function TableBodyComponent() {
 
     return (
 
-        <tbody className='text-xs text-center' style={{ fontFamily: 'Roboto' }}>
+        <tbody className='text-[11px] text-center' style={{ fontFamily: 'Roboto' }}>
 
             {
                 filter_stock_data.map((item, index) => (

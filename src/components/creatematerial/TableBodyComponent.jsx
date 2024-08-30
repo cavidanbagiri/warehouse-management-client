@@ -10,7 +10,7 @@ function TableBodyComponent() {
 
     return (
 
-        <tbody className='text-xs text-center' style={{ fontFamily: 'Roboto' }}>
+        <tbody className='text-[11px] text-center' style={{ fontFamily: 'Roboto' }}>
 
             {table_check.map((item, index) => (
                 <TableRowComponent key={index + 1} index={index + 1} data={material_code.material_codes} />

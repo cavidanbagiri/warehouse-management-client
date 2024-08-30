@@ -34,7 +34,7 @@ function TableBodyComponent() {
 
     return (
 
-        <tbody className='text-[12px] text-center ' style={{ fontFamily: 'Roboto' }}>
+        <tbody className='text-[11px] text-center ' style={{ fontFamily: 'Roboto' }}>
 
             {
                 filtered_warehouse_data.map((item, index) => (
